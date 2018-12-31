@@ -220,7 +220,7 @@ namespace TranslationScriptMaker
 			string outputDirectoryPath = RawsLocationFullPath.Substring(0, RawsLocationFullPath.LastIndexOf("\\") + 1);
 			string outputFilepath = outputDirectoryPath + "Ch " + SelectedChapterNumber + " - TL " + TranslatorsName + ".txt";
 
-			File.WriteAllText(outputFilepath, fileContents);
+			File.WriteAllLines(outputFilepath, fileContents.Split('\n'), System.Text.Encoding.UTF8);
 
 			MessageBox.Show(this, "File output to:\n" + outputFilepath, "Script Successfully generated", MessageBoxButtons.OK,
 				MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
