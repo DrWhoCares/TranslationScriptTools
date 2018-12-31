@@ -1,6 +1,8 @@
 # TranslationScriptTools
 A small set of utilities for creating Translation Scripts
 
+An example tutorial with images can be found here: https://imgur.com/a/BAyoz8E
+
 Translation Script Tools is currently just an executable and a Notepad++ language styler file.
 Later, I might make better tools that automate more of the process. We'll see as time goes on.
 
