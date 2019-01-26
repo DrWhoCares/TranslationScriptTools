@@ -3,6 +3,9 @@ A small set of utilities for creating Translation Scripts
 
 An example tutorial with images can be found here: https://imgur.com/a/BAyoz8E
 
+The Notepad++ Dark Theme that I used is located here: https://github.com/Ludomancer/VS2015-Dark-Npp and provided in this repo with the same name, "VS2015-Dark.xml".
+To install, see that link, or otherwise drop into the location at: `%APPDATA% -> Notepad++ -> themes` then switch to it via `Settings -> Style Configurator... -> Select theme: VS2015-Dark`.
+
 Translation Script Tools is currently just an executable and a Notepad++ language styler file.
 Later, I might make better tools that automate more of the process. We'll see as time goes on.
 
