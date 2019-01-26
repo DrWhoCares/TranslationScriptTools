@@ -26,4 +26,21 @@ Import the file that comes with the executable and you'll be set. Anytime you wa
 3. You're done, until you close the file using the X box on the file tab, it will save your language choice.
 You can freely close Notepad++ without having to set the language again, unless you close the actual tab.
 
+**NOTE:** Files opened with the extension of ".txt" will automatically use the TLS formatting. To change this, go to 'Define your language...' and change the language to TLS, then change the 'Ext' box to something else, or make it empty.
+
+**Keywords to note:**
+```
+{           ==> Opening Code Block (For collapsing sections)
+}           ==> Closing Code Block (For collapsing sections)
+Page        ==> Page Keyword (For highlighting)
+Panel       ==> Panel Keyword (For highlighting)
+----------# ==> Opening Page Block (For highlighting)
+#---------- ==> Closing Page Block (For highlighting)
+---#        ==> Opening Panel Block (For highlighting)
+#---        ==> Closing Panel Block (For highlighting)
+[SFX]       ==> SFX Keyword (For highlighting)
+[T/N]       ==> Translation Note (For highlighting)
+``          ==> Single Line Comment/In-line Comment (For highlighting, second backtick is optional)
+(T/P:)      ==> Single/Multi-line Comment (For highlighting, meant for notes to the Proofreader)
+```
 Any questions, contact me.
