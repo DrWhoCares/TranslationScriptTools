@@ -52,6 +52,7 @@
 			this.RawsViewerPanel = new System.Windows.Forms.Panel();
 			this.RawsViewerGroupBox = new System.Windows.Forms.GroupBox();
 			this.MainPanel = new System.Windows.Forms.Panel();
+			this.IsPageASpreadCheckBox = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.RawsPictureBox)).BeginInit();
 			this.InputGroupBox.SuspendLayout();
 			this.PanelsWithSFXGroupBox.SuspendLayout();
@@ -66,13 +67,14 @@
 			this.RawsPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.RawsPictureBox.Location = new System.Drawing.Point(3, 16);
 			this.RawsPictureBox.Name = "RawsPictureBox";
-			this.RawsPictureBox.Size = new System.Drawing.Size(794, 380);
+			this.RawsPictureBox.Size = new System.Drawing.Size(957, 380);
 			this.RawsPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.RawsPictureBox.TabIndex = 0;
 			this.RawsPictureBox.TabStop = false;
 			// 
 			// InputGroupBox
 			// 
+			this.InputGroupBox.Controls.Add(this.IsPageASpreadCheckBox);
 			this.InputGroupBox.Controls.Add(this.PanelsWithSFXGroupBox);
 			this.InputGroupBox.Controls.Add(this.TotalPanelsLabel);
 			this.InputGroupBox.Controls.Add(this.TotalPanelsTextBox);
@@ -82,7 +84,7 @@
 			this.InputGroupBox.ForeColor = System.Drawing.SystemColors.ButtonFace;
 			this.InputGroupBox.Location = new System.Drawing.Point(0, 0);
 			this.InputGroupBox.Name = "InputGroupBox";
-			this.InputGroupBox.Size = new System.Drawing.Size(800, 51);
+			this.InputGroupBox.Size = new System.Drawing.Size(963, 51);
 			this.InputGroupBox.TabIndex = 2;
 			this.InputGroupBox.TabStop = false;
 			this.InputGroupBox.Text = "Input Controls";
@@ -355,7 +357,7 @@
 			this.InputPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this.InputPanel.Location = new System.Drawing.Point(0, 0);
 			this.InputPanel.Name = "InputPanel";
-			this.InputPanel.Size = new System.Drawing.Size(800, 51);
+			this.InputPanel.Size = new System.Drawing.Size(963, 51);
 			this.InputPanel.TabIndex = 1;
 			// 
 			// RawsViewerPanel
@@ -364,7 +366,7 @@
 			this.RawsViewerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.RawsViewerPanel.Location = new System.Drawing.Point(0, 51);
 			this.RawsViewerPanel.Name = "RawsViewerPanel";
-			this.RawsViewerPanel.Size = new System.Drawing.Size(800, 399);
+			this.RawsViewerPanel.Size = new System.Drawing.Size(963, 399);
 			this.RawsViewerPanel.TabIndex = 2;
 			// 
 			// RawsViewerGroupBox
@@ -374,7 +376,7 @@
 			this.RawsViewerGroupBox.ForeColor = System.Drawing.SystemColors.ButtonFace;
 			this.RawsViewerGroupBox.Location = new System.Drawing.Point(0, 0);
 			this.RawsViewerGroupBox.Name = "RawsViewerGroupBox";
-			this.RawsViewerGroupBox.Size = new System.Drawing.Size(800, 399);
+			this.RawsViewerGroupBox.Size = new System.Drawing.Size(963, 399);
 			this.RawsViewerGroupBox.TabIndex = 1;
 			this.RawsViewerGroupBox.TabStop = false;
 			this.RawsViewerGroupBox.Text = "Raws Viewer - Page: XXX / XXX";
@@ -386,15 +388,25 @@
 			this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.MainPanel.Location = new System.Drawing.Point(0, 0);
 			this.MainPanel.Name = "MainPanel";
-			this.MainPanel.Size = new System.Drawing.Size(800, 450);
+			this.MainPanel.Size = new System.Drawing.Size(963, 450);
 			this.MainPanel.TabIndex = 3;
+			// 
+			// IsPageASpreadCheckBox
+			// 
+			this.IsPageASpreadCheckBox.AutoSize = true;
+			this.IsPageASpreadCheckBox.Location = new System.Drawing.Point(776, 28);
+			this.IsPageASpreadCheckBox.Name = "IsPageASpreadCheckBox";
+			this.IsPageASpreadCheckBox.Size = new System.Drawing.Size(86, 17);
+			this.IsPageASpreadCheckBox.TabIndex = 6;
+			this.IsPageASpreadCheckBox.Text = "Is a Spread?";
+			this.IsPageASpreadCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// RawsViewerForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.ClientSize = new System.Drawing.Size(800, 450);
+			this.ClientSize = new System.Drawing.Size(963, 450);
 			this.Controls.Add(this.MainPanel);
 			this.ForeColor = System.Drawing.SystemColors.Control;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -438,5 +450,6 @@
 		private System.Windows.Forms.CheckBox Panel4CheckBox;
 		private System.Windows.Forms.CheckBox Panel3CheckBox;
 		private System.Windows.Forms.CheckBox Panel2CheckBox;
+		private System.Windows.Forms.CheckBox IsPageASpreadCheckBox;
 	}
 }

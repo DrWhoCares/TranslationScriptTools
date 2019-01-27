@@ -20,6 +20,7 @@ namespace TranslationScriptMaker
 
 		class PageInformation
 		{
+			public bool isSpread { get; set; }
 			public int pageNumber { get; set; }
 			public int totalPanels { get; set; }
 			public string filename { get; set; }
@@ -59,6 +60,7 @@ namespace TranslationScriptMaker
 			{
 				PageInformations.Add(new PageInformation
 				{
+					isSpread = false,
 					pageNumber = pageIndex + 1,
 					totalPanels = 0,
 					filename = RawsFiles.ElementAt(pageIndex).Name,
@@ -129,6 +131,7 @@ namespace TranslationScriptMaker
 
 			if ( !didSucceed )
 			{
+				IsPageASpreadCheckBox.Checked = false;
 				return;
 			}
 
@@ -143,6 +146,8 @@ namespace TranslationScriptMaker
 					pageInfo.panelsWithSFX.Add(checkBox.Checked);
 				}
 			}
+
+			pageInfo.isSpread = IsPageASpreadCheckBox.Checked;
 		}
 
 		private void LoadImage()
@@ -161,6 +166,7 @@ namespace TranslationScriptMaker
 
 			if ( pageInfo.panelsWithSFX.Count == 0 )
 			{
+				IsPageASpreadCheckBox.Checked = false;
 				return; // Page has yet to be processed for the first time
 			}
 
@@ -184,6 +190,8 @@ namespace TranslationScriptMaker
 					}
 				}
 			}
+
+			IsPageASpreadCheckBox.Checked = pageInfo.isSpread;
 		}
 
 		private void FinishScriptCreation()
@@ -198,9 +206,17 @@ namespace TranslationScriptMaker
 
 			string fileContents = string.Empty;
 
+			int pageNumberOffset = 0;
+
 			foreach ( PageInformation pageInfo in PageInformations )
 			{
-				fileContents += PAGE_HEADER_BEGIN + pageInfo.pageNumber.ToString() + PAGE_HEADER_END;
+				int currentPageNumber = pageInfo.pageNumber + pageNumberOffset;
+				fileContents += PAGE_HEADER_BEGIN + currentPageNumber.ToString() + (pageInfo.isSpread ? " - " + (currentPageNumber + 1).ToString() : "") + PAGE_HEADER_END;
+
+				if ( pageInfo.isSpread )
+				{
+					++pageNumberOffset;
+				}
 
 				for ( int panelIndex = 0; panelIndex < pageInfo.totalPanels; ++panelIndex )
 				{
