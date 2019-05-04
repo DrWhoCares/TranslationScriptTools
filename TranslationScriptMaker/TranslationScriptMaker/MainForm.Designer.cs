@@ -34,8 +34,19 @@ namespace TranslationScriptMaker
 			this.RawsLocationButton = new System.Windows.Forms.Button();
 			this.TranslatorNameLabel = new System.Windows.Forms.Label();
 			this.TranslatorNameTextBox = new System.Windows.Forms.TextBox();
-			this.ErrorLabel = new System.Windows.Forms.Label();
+			this.ScriptCreationErrorLabel = new System.Windows.Forms.Label();
 			this.BeginScriptCreationButton = new System.Windows.Forms.Button();
+			this.MainTabControl = new System.Windows.Forms.TabControl();
+			this.ScriptCreatorTabPage = new System.Windows.Forms.TabPage();
+			this.ScriptEditorTabPage = new System.Windows.Forms.TabPage();
+			this.BeginScriptEditingButton = new System.Windows.Forms.Button();
+			this.ScriptLocationLabel = new System.Windows.Forms.Label();
+			this.ScriptEditingErrorLabel = new System.Windows.Forms.Label();
+			this.ScriptLocationTextBox = new System.Windows.Forms.TextBox();
+			this.ScriptLocationButton = new System.Windows.Forms.Button();
+			this.MainTabControl.SuspendLayout();
+			this.ScriptCreatorTabPage.SuspendLayout();
+			this.ScriptEditorTabPage.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// RawsLocationLabel
@@ -69,10 +80,10 @@ namespace TranslationScriptMaker
 			this.TranslatorNameTextBox.TextChanged += new System.EventHandler(this.TranslatorNameTextBox_TextChanged);
 			this.TranslatorNameTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TranslatorNameTextBox_KeyDown);
 			// 
-			// ErrorLabel
+			// ScriptCreationErrorLabel
 			// 
-			resources.ApplyResources(this.ErrorLabel, "ErrorLabel");
-			this.ErrorLabel.Name = "ErrorLabel";
+			resources.ApplyResources(this.ScriptCreationErrorLabel, "ScriptCreationErrorLabel");
+			this.ScriptCreationErrorLabel.Name = "ScriptCreationErrorLabel";
 			// 
 			// BeginScriptCreationButton
 			// 
@@ -83,24 +94,89 @@ namespace TranslationScriptMaker
 			this.BeginScriptCreationButton.UseVisualStyleBackColor = false;
 			this.BeginScriptCreationButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BeginScriptCreationButton_MouseClick);
 			// 
+			// MainTabControl
+			// 
+			this.MainTabControl.Controls.Add(this.ScriptCreatorTabPage);
+			this.MainTabControl.Controls.Add(this.ScriptEditorTabPage);
+			resources.ApplyResources(this.MainTabControl, "MainTabControl");
+			this.MainTabControl.Name = "MainTabControl";
+			this.MainTabControl.SelectedIndex = 0;
+			// 
+			// ScriptCreatorTabPage
+			// 
+			this.ScriptCreatorTabPage.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.ScriptCreatorTabPage.Controls.Add(this.BeginScriptCreationButton);
+			this.ScriptCreatorTabPage.Controls.Add(this.RawsLocationLabel);
+			this.ScriptCreatorTabPage.Controls.Add(this.ScriptCreationErrorLabel);
+			this.ScriptCreatorTabPage.Controls.Add(this.RawsLocationTextBox);
+			this.ScriptCreatorTabPage.Controls.Add(this.TranslatorNameTextBox);
+			this.ScriptCreatorTabPage.Controls.Add(this.RawsLocationButton);
+			this.ScriptCreatorTabPage.Controls.Add(this.TranslatorNameLabel);
+			this.ScriptCreatorTabPage.ForeColor = System.Drawing.SystemColors.Control;
+			resources.ApplyResources(this.ScriptCreatorTabPage, "ScriptCreatorTabPage");
+			this.ScriptCreatorTabPage.Name = "ScriptCreatorTabPage";
+			// 
+			// ScriptEditorTabPage
+			// 
+			this.ScriptEditorTabPage.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.ScriptEditorTabPage.Controls.Add(this.BeginScriptEditingButton);
+			this.ScriptEditorTabPage.Controls.Add(this.ScriptLocationLabel);
+			this.ScriptEditorTabPage.Controls.Add(this.ScriptEditingErrorLabel);
+			this.ScriptEditorTabPage.Controls.Add(this.ScriptLocationTextBox);
+			this.ScriptEditorTabPage.Controls.Add(this.ScriptLocationButton);
+			this.ScriptEditorTabPage.ForeColor = System.Drawing.SystemColors.Control;
+			resources.ApplyResources(this.ScriptEditorTabPage, "ScriptEditorTabPage");
+			this.ScriptEditorTabPage.Name = "ScriptEditorTabPage";
+			// 
+			// BeginScriptEditingButton
+			// 
+			this.BeginScriptEditingButton.BackColor = System.Drawing.SystemColors.Control;
+			resources.ApplyResources(this.BeginScriptEditingButton, "BeginScriptEditingButton");
+			this.BeginScriptEditingButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+			this.BeginScriptEditingButton.Name = "BeginScriptEditingButton";
+			this.BeginScriptEditingButton.UseVisualStyleBackColor = false;
+			this.BeginScriptEditingButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BeginScriptEditingButton_MouseClick);
+			// 
+			// ScriptLocationLabel
+			// 
+			resources.ApplyResources(this.ScriptLocationLabel, "ScriptLocationLabel");
+			this.ScriptLocationLabel.Name = "ScriptLocationLabel";
+			// 
+			// ScriptEditingErrorLabel
+			// 
+			resources.ApplyResources(this.ScriptEditingErrorLabel, "ScriptEditingErrorLabel");
+			this.ScriptEditingErrorLabel.Name = "ScriptEditingErrorLabel";
+			// 
+			// ScriptLocationTextBox
+			// 
+			resources.ApplyResources(this.ScriptLocationTextBox, "ScriptLocationTextBox");
+			this.ScriptLocationTextBox.Name = "ScriptLocationTextBox";
+			this.ScriptLocationTextBox.TextChanged += new System.EventHandler(this.ScriptLocationTextBox_TextChanged);
+			// 
+			// ScriptLocationButton
+			// 
+			resources.ApplyResources(this.ScriptLocationButton, "ScriptLocationButton");
+			this.ScriptLocationButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+			this.ScriptLocationButton.Name = "ScriptLocationButton";
+			this.ScriptLocationButton.UseVisualStyleBackColor = true;
+			this.ScriptLocationButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ScriptLocationButton_MouseClick);
+			// 
 			// MainForm
 			// 
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.Controls.Add(this.BeginScriptCreationButton);
-			this.Controls.Add(this.ErrorLabel);
-			this.Controls.Add(this.TranslatorNameTextBox);
-			this.Controls.Add(this.TranslatorNameLabel);
-			this.Controls.Add(this.RawsLocationButton);
-			this.Controls.Add(this.RawsLocationTextBox);
-			this.Controls.Add(this.RawsLocationLabel);
+			this.Controls.Add(this.MainTabControl);
 			this.ForeColor = System.Drawing.SystemColors.ButtonFace;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
 			this.Name = "MainForm";
+			this.MainTabControl.ResumeLayout(false);
+			this.ScriptCreatorTabPage.ResumeLayout(false);
+			this.ScriptCreatorTabPage.PerformLayout();
+			this.ScriptEditorTabPage.ResumeLayout(false);
+			this.ScriptEditorTabPage.PerformLayout();
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
         }
 
@@ -111,8 +187,16 @@ namespace TranslationScriptMaker
         private System.Windows.Forms.Button RawsLocationButton;
         private System.Windows.Forms.Label TranslatorNameLabel;
         private System.Windows.Forms.TextBox TranslatorNameTextBox;
-		private System.Windows.Forms.Label ErrorLabel;
+		private System.Windows.Forms.Label ScriptCreationErrorLabel;
 		private System.Windows.Forms.Button BeginScriptCreationButton;
-	}
+        private System.Windows.Forms.TabControl MainTabControl;
+        private System.Windows.Forms.TabPage ScriptCreatorTabPage;
+        private System.Windows.Forms.TabPage ScriptEditorTabPage;
+        private System.Windows.Forms.Button BeginScriptEditingButton;
+        private System.Windows.Forms.Label ScriptLocationLabel;
+        private System.Windows.Forms.Label ScriptEditingErrorLabel;
+        private System.Windows.Forms.TextBox ScriptLocationTextBox;
+        private System.Windows.Forms.Button ScriptLocationButton;
+    }
 }
 
