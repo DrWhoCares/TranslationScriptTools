@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Linq;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace TranslationScriptMaker
 {
@@ -50,10 +51,12 @@ namespace TranslationScriptMaker
 		private int PreviousPageIndex { get; set; }
 		private List<PageInformation> PageInformations { get; set; }
 
+		private Matrix RawsPictureBoxTransform { get; set; } = new Matrix();
+		private float RawsZoomFactor { get; set; } = 1.0f;
+
 		public RawsViewerForm(string rawsLocationFullPath, string scriptLocationFullPath, string chapterNumber, IEnumerable<FileInfo> rawsFiles, string translatorsName, bool isCreatingScript)
 		{
 			InitializeComponent();
-			RawsPictureBox.MouseWheel += RawsPictureBox_MouseWheel;
 
 			RawsLocationFullPath = rawsLocationFullPath;
 			ScriptLocationFullPath = scriptLocationFullPath;
@@ -134,11 +137,6 @@ namespace TranslationScriptMaker
 					currentPanelIndex = -1;
 				}
 			}
-		}
-
-		private void RawsPictureBox_MouseWheel(object sender, MouseEventArgs e)
-		{
-			// TODO: Handle zooming image
 		}
 
 		private void PreviousImageButton_MouseClick(object sender, MouseEventArgs e)
@@ -236,11 +234,12 @@ namespace TranslationScriptMaker
 
 		private void LoadImage()
 		{
+			RawsImageBox.BeginUpdate();
 			RawsViewerGroupBox.Text = "Raws Viewer - Page: " + (CurrentPageIndex + 1).ToString() + " / " + RawsFiles.Count().ToString();
-			RawsPictureBox.Image = Image.FromFile(RawsFiles.ElementAt(CurrentPageIndex).FullName);
-
-			this.Size = RawsPictureBox.Image.Size;
-
+			RawsImageBox.Image = Image.FromFile(RawsFiles.ElementAt(CurrentPageIndex).FullName);
+			RawsImageBox.ZoomToFit();
+			RawsImageBox.EndUpdate();
+			this.Size = RawsImageBox.Image.Size;
 			TotalPanelsTextBox.Text = "";
 		}
 

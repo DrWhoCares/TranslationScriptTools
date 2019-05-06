@@ -309,54 +309,6 @@
   <data name="&gt;&gt;BeginScriptCreationButton.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;ScriptCreatorTabPage.Name" xml:space="preserve">
-    <value>ScriptCreatorTabPage</value>
-  </data>
-  <data name="&gt;&gt;ScriptCreatorTabPage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ScriptCreatorTabPage.Parent" xml:space="preserve">
-    <value>MainTabControl</value>
-  </data>
-  <data name="&gt;&gt;ScriptCreatorTabPage.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditorTabPage.Name" xml:space="preserve">
-    <value>ScriptEditorTabPage</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditorTabPage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditorTabPage.Parent" xml:space="preserve">
-    <value>MainTabControl</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditorTabPage.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="MainTabControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="MainTabControl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="MainTabControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>371, 193</value>
-  </data>
-  <data name="MainTabControl.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;MainTabControl.Name" xml:space="preserve">
-    <value>MainTabControl</value>
-  </data>
-  <data name="&gt;&gt;MainTabControl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;MainTabControl.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;MainTabControl.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="ScriptCreatorTabPage.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
@@ -383,93 +335,6 @@
   </data>
   <data name="&gt;&gt;ScriptCreatorTabPage.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="&gt;&gt;BeginScriptEditingButton.Name" xml:space="preserve">
-    <value>BeginScriptEditingButton</value>
-  </data>
-  <data name="&gt;&gt;BeginScriptEditingButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;BeginScriptEditingButton.Parent" xml:space="preserve">
-    <value>ScriptEditorTabPage</value>
-  </data>
-  <data name="&gt;&gt;BeginScriptEditingButton.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationLabel.Name" xml:space="preserve">
-    <value>ScriptLocationLabel</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationLabel.Parent" xml:space="preserve">
-    <value>ScriptEditorTabPage</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationLabel.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditingErrorLabel.Name" xml:space="preserve">
-    <value>ScriptEditingErrorLabel</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditingErrorLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditingErrorLabel.Parent" xml:space="preserve">
-    <value>ScriptEditorTabPage</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditingErrorLabel.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationTextBox.Name" xml:space="preserve">
-    <value>ScriptLocationTextBox</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationTextBox.Parent" xml:space="preserve">
-    <value>ScriptEditorTabPage</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationTextBox.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationButton.Name" xml:space="preserve">
-    <value>ScriptLocationButton</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationButton.Parent" xml:space="preserve">
-    <value>ScriptEditorTabPage</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationButton.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="ScriptEditorTabPage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="ScriptEditorTabPage.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="ScriptEditorTabPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>363, 167</value>
-  </data>
-  <data name="ScriptEditorTabPage.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="ScriptEditorTabPage.Text" xml:space="preserve">
-    <value>Script Editor</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditorTabPage.Name" xml:space="preserve">
-    <value>ScriptEditorTabPage</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditorTabPage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditorTabPage.Parent" xml:space="preserve">
-    <value>MainTabControl</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditorTabPage.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="BeginScriptEditingButton.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -618,6 +483,57 @@
   <data name="&gt;&gt;ScriptLocationButton.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="ScriptEditorTabPage.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="ScriptEditorTabPage.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="ScriptEditorTabPage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>363, 167</value>
+  </data>
+  <data name="ScriptEditorTabPage.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ScriptEditorTabPage.Text" xml:space="preserve">
+    <value>Script Editor</value>
+  </data>
+  <data name="&gt;&gt;ScriptEditorTabPage.Name" xml:space="preserve">
+    <value>ScriptEditorTabPage</value>
+  </data>
+  <data name="&gt;&gt;ScriptEditorTabPage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ScriptEditorTabPage.Parent" xml:space="preserve">
+    <value>MainTabControl</value>
+  </data>
+  <data name="&gt;&gt;ScriptEditorTabPage.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="MainTabControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="MainTabControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="MainTabControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>371, 193</value>
+  </data>
+  <data name="MainTabControl.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;MainTabControl.Name" xml:space="preserve">
+    <value>MainTabControl</value>
+  </data>
+  <data name="&gt;&gt;MainTabControl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;MainTabControl.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;MainTabControl.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -707,7 +623,7 @@
     <value>2, 2, 2, 2</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Translation Script Maker v1.2019.5.4</value>
+    <value>Translation Script Maker v1.2019.5.5</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>MainForm</value>

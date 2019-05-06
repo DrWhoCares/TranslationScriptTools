@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Linq;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace TranslationScriptMaker
 {
@@ -29,11 +30,14 @@ namespace TranslationScriptMaker
         #region ScriptCreation
         private void RawsLocationButton_MouseClick(object sender, MouseEventArgs e)
 		{
-			FolderBrowserDialog rawsLocationDialog = new FolderBrowserDialog();
-
-			if ( rawsLocationDialog.ShowDialog() == DialogResult.OK )
+			CommonOpenFileDialog rawsLocationDialog = new CommonOpenFileDialog
 			{
-				RawsLocationTextBox.Text = rawsLocationDialog.SelectedPath;
+				IsFolderPicker = true
+			};
+
+			if ( rawsLocationDialog.ShowDialog() == CommonFileDialogResult.Ok )
+			{
+				RawsLocationTextBox.Text = rawsLocationDialog.FileName;
 			}
 		}
 
