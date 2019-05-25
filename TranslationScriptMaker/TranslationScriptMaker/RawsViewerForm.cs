@@ -51,8 +51,9 @@ namespace TranslationScriptMaker
 		private int PreviousPageIndex { get; set; }
 		private List<PageInformation> PageInformations { get; set; }
 
-		private Matrix RawsPictureBoxTransform { get; set; } = new Matrix();
-		private float RawsZoomFactor { get; set; } = 1.0f;
+		private bool HasUserPromptedZoomChanged { get; set; } = false;
+		private bool HasUserScrolledIn { get; set; } = false;
+
 
 		public RawsViewerForm(string rawsLocationFullPath, string scriptLocationFullPath, string chapterNumber, IEnumerable<FileInfo> rawsFiles, string translatorsName, bool isCreatingScript)
 		{
@@ -73,6 +74,8 @@ namespace TranslationScriptMaker
 
 			LoadImage();
 			InitializePageInformations();
+
+			this.StartPosition = FormStartPosition.Manual;
 		}
 
 		private void InitializePageInformations()
@@ -239,8 +242,20 @@ namespace TranslationScriptMaker
 			RawsImageBox.Image = Image.FromFile(RawsFiles.ElementAt(CurrentPageIndex).FullName);
 			RawsImageBox.ZoomToFit();
 			RawsImageBox.EndUpdate();
-			this.Size = RawsImageBox.Image.Size;
+
+			ResizeWindowToImage();
 			TotalPanelsTextBox.Text = "";
+		}
+
+		private void ResizeWindowToImage()
+		{
+			Size currentScreenSize = Screen.FromControl(this).WorkingArea.Size;
+			this.Width = RawsImageBox.Image.Width < currentScreenSize.Width ? RawsImageBox.Image.Width : currentScreenSize.Width;
+			this.Height = RawsImageBox.Image.Height < currentScreenSize.Height ? RawsImageBox.Image.Height : currentScreenSize.Height;
+			this.Top = 0;
+
+			HasUserPromptedZoomChanged = true;
+			SetSizeMode();
 		}
 
 		private void LoadPageInformation()
@@ -612,6 +627,50 @@ namespace TranslationScriptMaker
 			}
 
 			return false;
+		}
+
+		private void SetSizeMode()
+		{
+			if ( RawsImageBox.Image == null || !HasUserPromptedZoomChanged )
+			{
+				return;
+			}
+
+			HasUserPromptedZoomChanged = false;
+
+			double zoomFactor = RawsImageBox.ZoomFactor;
+			Size imageSize = RawsImageBox.Image.Size;
+			int scaledWidth = Convert.ToInt32(imageSize.Width * zoomFactor);
+			int scaledHeight = Convert.ToInt32(imageSize.Height * zoomFactor);
+
+			Size viewSize = RawsImageBox.GetInsideViewPort().Size;
+
+			if ( scaledWidth < viewSize.Width && scaledHeight < viewSize.Height )
+			{
+				RawsImageBox.SizeMode = Cyotek.Windows.Forms.ImageBoxSizeMode.Stretch;
+			}
+			if ( (scaledWidth < viewSize.Width && viewSize.Height < scaledHeight) && !HasUserScrolledIn )
+			{
+				// If the Image Width is larger than the Image Height, don't use stretched, use Fit
+				RawsImageBox.SizeMode = Cyotek.Windows.Forms.ImageBoxSizeMode.Fit;
+			}
+			else
+			{
+				RawsImageBox.SizeMode = Cyotek.Windows.Forms.ImageBoxSizeMode.Normal;
+			}
+		}
+
+		private void RawsImageBox_MouseWheel(object sender, MouseEventArgs e)
+		{
+			// This event is raised before ImageBox handles the event, so if we set the SizeMode to Normal here, then zooming will work
+			RawsImageBox.SizeMode = Cyotek.Windows.Forms.ImageBoxSizeMode.Normal;
+			HasUserPromptedZoomChanged = true;
+			HasUserScrolledIn = e.Delta > 0;
+		}
+
+		private void RawsImageBox_ZoomChanged(object sender, EventArgs e)
+		{
+			SetSizeMode();
 		}
 	}
 
