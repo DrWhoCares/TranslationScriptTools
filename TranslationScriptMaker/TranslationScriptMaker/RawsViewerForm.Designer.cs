@@ -134,8 +134,6 @@
 			this.Panel1CheckBox.UseVisualStyleBackColor = false;
 			this.Panel1CheckBox.Visible = false;
 			this.Panel1CheckBox.CheckedChanged += new System.EventHandler(this.PanelCheckBox_CheckedChanged);
-			this.Panel1CheckBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TotalPanelsTextBox_KeyDown);
-			this.Panel1CheckBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.TotalPanelsTextBox_PreviewKeyDown);
 			// 
 			// Panel2CheckBox
 			// 
@@ -151,8 +149,6 @@
 			this.Panel2CheckBox.UseVisualStyleBackColor = true;
 			this.Panel2CheckBox.Visible = false;
 			this.Panel2CheckBox.CheckedChanged += new System.EventHandler(this.PanelCheckBox_CheckedChanged);
-			this.Panel2CheckBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TotalPanelsTextBox_KeyDown);
-			this.Panel2CheckBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.TotalPanelsTextBox_PreviewKeyDown);
 			// 
 			// Panel3CheckBox
 			// 
@@ -168,8 +164,6 @@
 			this.Panel3CheckBox.UseVisualStyleBackColor = true;
 			this.Panel3CheckBox.Visible = false;
 			this.Panel3CheckBox.CheckedChanged += new System.EventHandler(this.PanelCheckBox_CheckedChanged);
-			this.Panel3CheckBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TotalPanelsTextBox_KeyDown);
-			this.Panel3CheckBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.TotalPanelsTextBox_PreviewKeyDown);
 			// 
 			// Panel4CheckBox
 			// 
@@ -185,8 +179,6 @@
 			this.Panel4CheckBox.UseVisualStyleBackColor = true;
 			this.Panel4CheckBox.Visible = false;
 			this.Panel4CheckBox.CheckedChanged += new System.EventHandler(this.PanelCheckBox_CheckedChanged);
-			this.Panel4CheckBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TotalPanelsTextBox_KeyDown);
-			this.Panel4CheckBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.TotalPanelsTextBox_PreviewKeyDown);
 			// 
 			// Panel5CheckBox
 			// 
@@ -202,8 +194,6 @@
 			this.Panel5CheckBox.UseVisualStyleBackColor = true;
 			this.Panel5CheckBox.Visible = false;
 			this.Panel5CheckBox.CheckedChanged += new System.EventHandler(this.PanelCheckBox_CheckedChanged);
-			this.Panel5CheckBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TotalPanelsTextBox_KeyDown);
-			this.Panel5CheckBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.TotalPanelsTextBox_PreviewKeyDown);
 			// 
 			// Panel6CheckBox
 			// 
@@ -219,8 +209,6 @@
 			this.Panel6CheckBox.UseVisualStyleBackColor = true;
 			this.Panel6CheckBox.Visible = false;
 			this.Panel6CheckBox.CheckedChanged += new System.EventHandler(this.PanelCheckBox_CheckedChanged);
-			this.Panel6CheckBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TotalPanelsTextBox_KeyDown);
-			this.Panel6CheckBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.TotalPanelsTextBox_PreviewKeyDown);
 			// 
 			// Panel7CheckBox
 			// 
@@ -236,8 +224,6 @@
 			this.Panel7CheckBox.UseVisualStyleBackColor = true;
 			this.Panel7CheckBox.Visible = false;
 			this.Panel7CheckBox.CheckedChanged += new System.EventHandler(this.PanelCheckBox_CheckedChanged);
-			this.Panel7CheckBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TotalPanelsTextBox_KeyDown);
-			this.Panel7CheckBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.TotalPanelsTextBox_PreviewKeyDown);
 			// 
 			// Panel8CheckBox
 			// 
@@ -253,8 +239,6 @@
 			this.Panel8CheckBox.UseVisualStyleBackColor = true;
 			this.Panel8CheckBox.Visible = false;
 			this.Panel8CheckBox.CheckedChanged += new System.EventHandler(this.PanelCheckBox_CheckedChanged);
-			this.Panel8CheckBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TotalPanelsTextBox_KeyDown);
-			this.Panel8CheckBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.TotalPanelsTextBox_PreviewKeyDown);
 			// 
 			// Panel9CheckBox
 			// 
@@ -270,8 +254,6 @@
 			this.Panel9CheckBox.UseVisualStyleBackColor = true;
 			this.Panel9CheckBox.Visible = false;
 			this.Panel9CheckBox.CheckedChanged += new System.EventHandler(this.PanelCheckBox_CheckedChanged);
-			this.Panel9CheckBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TotalPanelsTextBox_KeyDown);
-			this.Panel9CheckBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.TotalPanelsTextBox_PreviewKeyDown);
 			// 
 			// Panel10CheckBox
 			// 
@@ -287,8 +269,6 @@
 			this.Panel10CheckBox.UseVisualStyleBackColor = true;
 			this.Panel10CheckBox.Visible = false;
 			this.Panel10CheckBox.CheckedChanged += new System.EventHandler(this.PanelCheckBox_CheckedChanged);
-			this.Panel10CheckBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TotalPanelsTextBox_KeyDown);
-			this.Panel10CheckBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.TotalPanelsTextBox_PreviewKeyDown);
 			// 
 			// Panel11CheckBox
 			// 
@@ -304,8 +284,6 @@
 			this.Panel11CheckBox.UseVisualStyleBackColor = true;
 			this.Panel11CheckBox.Visible = false;
 			this.Panel11CheckBox.CheckedChanged += new System.EventHandler(this.PanelCheckBox_CheckedChanged);
-			this.Panel11CheckBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TotalPanelsTextBox_KeyDown);
-			this.Panel11CheckBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.TotalPanelsTextBox_PreviewKeyDown);
 			// 
 			// Panel12CheckBox
 			// 
@@ -321,8 +299,6 @@
 			this.Panel12CheckBox.UseVisualStyleBackColor = true;
 			this.Panel12CheckBox.Visible = false;
 			this.Panel12CheckBox.CheckedChanged += new System.EventHandler(this.PanelCheckBox_CheckedChanged);
-			this.Panel12CheckBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TotalPanelsTextBox_KeyDown);
-			this.Panel12CheckBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.TotalPanelsTextBox_PreviewKeyDown);
 			// 
 			// TotalPanelsLabel
 			// 
@@ -341,9 +317,7 @@
 			this.TotalPanelsTextBox.Size = new System.Drawing.Size(42, 20);
 			this.TotalPanelsTextBox.TabIndex = 0;
 			this.TotalPanelsTextBox.TextChanged += new System.EventHandler(this.TotalPanelsTextBox_TextChanged);
-			this.TotalPanelsTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TotalPanelsTextBox_KeyDown);
 			this.TotalPanelsTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TotalPanelsTextBox_KeyPress);
-			this.TotalPanelsTextBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.TotalPanelsTextBox_PreviewKeyDown);
 			// 
 			// NextImageButton
 			// 

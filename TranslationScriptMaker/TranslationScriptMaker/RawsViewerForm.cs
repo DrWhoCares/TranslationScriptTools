@@ -221,6 +221,7 @@ namespace TranslationScriptMaker
 			}
 
 			pageInfo.totalPanels = totalPanelsInput;
+			pageInfo.panelsWithSFX.Clear();
 
 			foreach ( Control control in PanelsWithSFXGroupBox.Controls )
 			{
@@ -491,30 +492,6 @@ namespace TranslationScriptMaker
 			UpdateScriptViewerContents(pageContents);
 		}
 
-		private void TotalPanelsTextBox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-		{
-			if ( e.KeyCode == Keys.Left )
-			{
-				e.IsInputKey = true;
-			}
-			else if ( e.KeyCode == Keys.Right )
-			{
-				e.IsInputKey = true;
-			}
-		}
-
-		private void TotalPanelsTextBox_KeyDown(object sender, KeyEventArgs e)
-		{
-			if ( e.KeyCode == Keys.Left )
-			{
-				SwitchToPreviousPage();
-			}
-			else if ( e.KeyCode == Keys.Right )
-			{
-				SwitchToNextPage();
-			}
-		}
-
 		private void UpdateScriptViewerContents(List<string> newContents)
 		{
 			ScriptViewerRichTextBox.Text = string.Join("", newContents);
@@ -685,6 +662,53 @@ namespace TranslationScriptMaker
 		private void RawsViewerForm_Load(object sender, EventArgs e)
 		{
 			LoadPageInformation();
+		}
+
+		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+		{
+			bool shouldChangePage = FindFocusedControl(this.ActiveControl) != ScriptViewerRichTextBox;//!DoesControlContainControl(this.ActiveControl, ScriptViewerRichTextBox);
+
+			if ( keyData == Keys.Left && shouldChangePage )
+			{
+				SwitchToPreviousPage();
+			}
+			else if ( keyData == Keys.Right && shouldChangePage )
+			{
+				SwitchToNextPage();
+			}
+
+			return base.ProcessCmdKey(ref msg, keyData);
+		}
+
+		private static Control FindFocusedControl(Control control)
+		{
+			IContainerControl container = control as IContainerControl;
+
+			while ( container != null )
+			{
+				control = container.ActiveControl;
+				container = control as IContainerControl;
+			}
+
+			return control;
+		}
+
+		private bool DoesControlContainControl(Control parent, Control searchFor)
+		{
+			if ( parent == searchFor )
+			{
+				return true;
+			}
+
+			foreach ( Control childControl in parent.Controls )
+			{
+				if ( DoesControlContainControl(childControl, searchFor) )
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 	}
 
