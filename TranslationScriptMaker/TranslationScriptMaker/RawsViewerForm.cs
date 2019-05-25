@@ -202,6 +202,7 @@ namespace TranslationScriptMaker
 			SavePageInformation();
 			LoadImage();
 			LoadPageInformation();
+			TotalPanelsTextBox.Select();
 		}
 
 		private void SavePageInformation()
