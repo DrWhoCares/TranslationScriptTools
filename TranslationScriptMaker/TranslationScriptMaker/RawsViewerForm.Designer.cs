@@ -480,6 +480,7 @@
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "RawsViewerForm";
 			this.Text = "Translation Script Maker";
+			this.Load += new System.EventHandler(this.RawsViewerForm_Load);
 			this.InputGroupBox.ResumeLayout(false);
 			this.InputGroupBox.PerformLayout();
 			this.PanelsWithSFXGroupBox.ResumeLayout(false);

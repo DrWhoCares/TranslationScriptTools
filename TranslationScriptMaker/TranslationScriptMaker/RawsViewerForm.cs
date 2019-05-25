@@ -103,7 +103,6 @@ namespace TranslationScriptMaker
 				TotalPanelsTextBox.Enabled = false;
 				PanelsWithSFXGroupBox.Enabled = false;
 				IsPageASpreadCheckBox.Enabled = false;
-				LoadPageInformation();
 			}
 		}
 
@@ -356,6 +355,8 @@ namespace TranslationScriptMaker
 				fileContents += string.Join("", pageInfo.pageScriptContents);
 			}
 
+			fileContents += "\n";
+
 			OutputScript(fileContents);
 		}
 
@@ -397,7 +398,10 @@ namespace TranslationScriptMaker
 
 		private void TotalPanelsTextBox_TextChanged(object sender, EventArgs e)
 		{
-			ResetPageScriptContent();
+			if ( IsCreatingScript )
+			{
+				ResetPageScriptContent();
+			}
 
 			if ( string.IsNullOrWhiteSpace(TotalPanelsTextBox.Text) )
 			{
@@ -424,7 +428,10 @@ namespace TranslationScriptMaker
 				}
 			}
 
-			AddPanelsToScriptPageContent(totalPanels);
+			if ( IsCreatingScript )
+			{
+				AddPanelsToScriptPageContent(totalPanels);
+			}
 		}
 
 		private void ResetPageScriptContent()
@@ -515,7 +522,7 @@ namespace TranslationScriptMaker
 
 		private void PanelCheckBox_CheckedChanged(object sender, EventArgs e)
 		{
-			if ( !((CheckBox)sender).Visible )
+			if ( !IsCreatingScript || !((CheckBox)sender).Visible )
 			{
 				return; // Switching pages
 			}
@@ -673,6 +680,11 @@ namespace TranslationScriptMaker
 		private void RawsImageBox_ZoomChanged(object sender, EventArgs e)
 		{
 			SetSizeMode();
+		}
+
+		private void RawsViewerForm_Load(object sender, EventArgs e)
+		{
+			LoadPageInformation();
 		}
 	}
 
