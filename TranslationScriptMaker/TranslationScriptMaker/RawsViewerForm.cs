@@ -252,6 +252,7 @@ namespace TranslationScriptMaker
 			Size currentScreenSize = Screen.FromControl(this).WorkingArea.Size;
 			this.Width = RawsImageBox.Image.Width < currentScreenSize.Width ? RawsImageBox.Image.Width : currentScreenSize.Width;
 			this.Height = RawsImageBox.Image.Height < currentScreenSize.Height ? RawsImageBox.Image.Height : currentScreenSize.Height;
+			this.Left = 0;
 			this.Top = 0;
 
 			HasUserPromptedZoomChanged = true;
