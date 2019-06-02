@@ -4,7 +4,6 @@ using System.Windows.Forms;
 using System.IO;
 using System.Linq;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 
 namespace TranslationScriptMaker
 {
@@ -342,7 +341,7 @@ namespace TranslationScriptMaker
 				fileContents += PAGE_FOOTER;
 			}
 
-			OutputScript(fileContents);
+			OutputScript(fileContents, true);
 		}
 
 		private void FinishScriptEditing()
@@ -358,20 +357,61 @@ namespace TranslationScriptMaker
 
 			fileContents += "\n";
 
-			OutputScript(fileContents);
+			OutputScript(fileContents, true);
 		}
 
-		private void OutputScript(string fileContents)
+		private void SaveCurrentScript()
+		{
+			SaveCurrentProgress();
+
+			string fileContents = string.Empty;
+
+			foreach ( PageInformation pageInfo in PageInformations )
+			{
+				fileContents += string.Join("", pageInfo.pageScriptContents);
+			}
+
+			fileContents += "\n";
+
+			OutputScript(fileContents, false);
+		}
+
+		private void SaveCurrentProgress()
+		{
+			PageInformation pageInfo = PageInformations.ElementAt(CurrentPageIndex);
+
+			pageInfo.pageScriptContents = new List<string>(TextUtils.ParseScriptPageContents(ScriptViewerRichTextBox.Text));
+
+			pageInfo.totalPanels = int.Parse(TotalPanelsTextBox.Text);
+			pageInfo.panelsWithSFX.Clear();
+
+			foreach ( Control control in PanelsWithSFXGroupBox.Controls )
+			{
+				if ( control.GetType() == typeof(CheckBox) )
+				{
+					CheckBox checkBox = (CheckBox)control;
+
+					pageInfo.panelsWithSFX.Add(checkBox.Checked);
+				}
+			}
+
+			pageInfo.isSpread = IsPageASpreadCheckBox.Checked;
+		}
+
+		private void OutputScript(string fileContents, bool shouldClose)
 		{
 			string outputDirectoryPath = RawsLocationFullPath.Substring(0, RawsLocationFullPath.LastIndexOf("\\") + 1);
 			string outputFilepath = IsCreatingScript ? outputDirectoryPath + "Ch " + SelectedChapterNumber + " - TL " + TranslatorsName + ".txt" : ScriptLocationFullPath;
 
 			File.WriteAllLines(outputFilepath, fileContents.Split('\n'), System.Text.Encoding.UTF8);
 
-			MessageBox.Show(this, "File output to:\n" + outputFilepath, "Script Successfully generated", MessageBoxButtons.OK,
-				MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+			if ( shouldClose )
+			{
+				MessageBox.Show(this, "File output to:\n" + outputFilepath, "Script Successfully generated", MessageBoxButtons.OK,
+					MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 
-			this.Close();
+				this.Close();
+			}
 		}
 
 		private bool AreAllPagesFilledIn()
@@ -666,7 +706,13 @@ namespace TranslationScriptMaker
 
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
-			bool shouldChangePage = FindFocusedControl(this.ActiveControl) != ScriptViewerRichTextBox;//!DoesControlContainControl(this.ActiveControl, ScriptViewerRichTextBox);
+			if ( !IsCreatingScript && keyData == (Keys.Control | Keys.S) )
+			{
+				SaveCurrentScript();
+				return true;
+			}
+
+			bool shouldChangePage = FindFocusedControl(this.ActiveControl) != ScriptViewerRichTextBox;
 
 			if ( keyData == Keys.Left && shouldChangePage )
 			{
