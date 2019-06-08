@@ -39,6 +39,11 @@ namespace TranslationScriptMaker
 			{
 				RawsLocationTextBox.Text = rawsLocationDialog.FileName;
 			}
+
+			if ( AreScriptCreationInputsValid() )
+			{
+				BeginScriptCreation();
+			}
 		}
 
 		private bool VerifyRawsLocation()
@@ -180,6 +185,11 @@ namespace TranslationScriptMaker
 
                 ScriptLocationTextBox.Text = scriptLocationDialog.FileName;
             }
+
+			if ( AreScriptEditingInputsValid() )
+			{
+				BeginScriptEditing();
+			}
         }
 
         private void ScriptLocationTextBox_TextChanged(object sender, EventArgs e)
