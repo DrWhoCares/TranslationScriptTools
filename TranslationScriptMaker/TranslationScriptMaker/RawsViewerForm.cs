@@ -39,7 +39,7 @@ namespace TranslationScriptMaker
 			public List<string> pageScriptContents { get; set; }
 		}
 
-		private string RawsLocationFullPath { get; }
+		private string OutputLocationFullPath { get; }
 		private string ScriptLocationFullPath { get; }
 		private string SelectedChapterNumber { get; }
 		private IEnumerable<FileInfo> RawsFiles { get; set; }
@@ -54,11 +54,11 @@ namespace TranslationScriptMaker
 		private bool HasUserScrolledIn { get; set; } = false;
 
 
-		public RawsViewerForm(string rawsLocationFullPath, string scriptLocationFullPath, string chapterNumber, IEnumerable<FileInfo> rawsFiles, string translatorsName, bool isCreatingScript)
+		public RawsViewerForm(string outputLocationFullPath, string scriptLocationFullPath, string chapterNumber, IEnumerable<FileInfo> rawsFiles, string translatorsName, bool isCreatingScript)
 		{
 			InitializeComponent();
 
-			RawsLocationFullPath = rawsLocationFullPath;
+			OutputLocationFullPath = outputLocationFullPath;
 			ScriptLocationFullPath = scriptLocationFullPath;
 			SelectedChapterNumber = chapterNumber;
 			RawsFiles = rawsFiles;
@@ -400,8 +400,7 @@ namespace TranslationScriptMaker
 
 		private void OutputScript(string fileContents, bool shouldClose)
 		{
-			string outputDirectoryPath = RawsLocationFullPath.Substring(0, RawsLocationFullPath.LastIndexOf("\\") + 1);
-			string outputFilepath = IsCreatingScript ? outputDirectoryPath + "Ch " + SelectedChapterNumber + " - TL " + TranslatorsName + ".txt" : ScriptLocationFullPath;
+			string outputFilepath = IsCreatingScript ? OutputLocationFullPath + "\\Ch " + SelectedChapterNumber + " - TL " + TranslatorsName + ".txt" : ScriptLocationFullPath;
 
 			File.WriteAllLines(outputFilepath, fileContents.Split('\n'), System.Text.Encoding.UTF8);
 

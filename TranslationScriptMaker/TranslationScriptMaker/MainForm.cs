@@ -10,25 +10,89 @@ namespace TranslationScriptMaker
 {
 	public partial class MainForm : Form
 	{
-		private string RawsLocationFullPath { get; set; }
-        private string ScriptLocationFullPath { get; set; }
+		private const string CONFIG_FILENAME = "TSMConfig.txt";
+		private const char CFG_DELIMITER = '=';
+		private const string CFG_TRANSLATOR_NAME = "Translator=";
+		private string OutputLocationFullPath { get; set; }
+		private string TranslatorName { get; set; }
+		private string ScriptLocationFullPath { get; set; }
 		private string SelectedChapterNumber { get; set; }
 		private IEnumerable<FileInfo> RawsFiles { get; set; }
-		private string TranslatorsName { get; set; }
-
+		
+		
 		public MainForm()
 		{
 			InitializeComponent();
+			ReadTSMConfigFile();
+
+			ScriptCreationErrorLabel.Visible = false;
 		}
 
-        private void ShowError(Label errorLabel, string errorMessage)
-        {
-            errorLabel.Text = errorMessage;
-            errorLabel.Visible = true;
-        }
+		private static void ShowError(Label errorLabel, string errorMessage)
+		{
+			errorLabel.Text = errorMessage;
+			errorLabel.Visible = true;
+		}
 
-        #region ScriptCreation
-        private void RawsLocationButton_MouseClick(object sender, MouseEventArgs e)
+		#region ConfigReading
+		private void ReadTSMConfigFile()
+		{
+			if ( !File.Exists(CONFIG_FILENAME) )
+			{
+				StreamWriter configFile = File.CreateText(CONFIG_FILENAME);
+				configFile.WriteLine(CFG_TRANSLATOR_NAME + Environment.UserName);
+				configFile.Close();
+				TranslatorNameTextBox.Text = Environment.UserName;
+				TranslatorName = Environment.UserName;
+				return;
+			}
+
+			string[] configEntries = File.ReadAllLines(CONFIG_FILENAME);
+
+			foreach ( string configEntry in configEntries )
+			{
+				if ( configEntry.Contains(CFG_TRANSLATOR_NAME) )
+				{
+					string translatorName = GetConfigEntryValue(configEntry);
+					TranslatorNameTextBox.Text = translatorName;
+					TranslatorName = translatorName;
+				}
+			}
+
+			if ( string.IsNullOrWhiteSpace(TranslatorName) )
+			{
+				StreamWriter configFile = File.AppendText(CONFIG_FILENAME);
+				configFile.WriteLine(CFG_TRANSLATOR_NAME + Environment.UserName);
+				configFile.Close();
+				TranslatorNameTextBox.Text = Environment.UserName;
+				TranslatorName = Environment.UserName;
+			}
+		}
+
+		private static string GetConfigEntryValue(string configEntry)
+		{
+			return configEntry.Substring(configEntry.IndexOf(CFG_DELIMITER) + 1); // Offset by one to remove the delimiter
+		}
+
+		private void UpdateConfigEntryInFile(string configKeyString, string newValue)
+		{
+			string[] configEntries = File.ReadAllLines(CONFIG_FILENAME);
+
+			for ( int configIndex = 0; configIndex < configEntries.Length; ++configIndex )
+			{
+				if ( configEntries[configIndex].Contains(configKeyString) )
+				{
+					configEntries[configIndex] = configEntries[configIndex].Substring(0, configEntries[configIndex].IndexOf(CFG_DELIMITER) + 1);
+					configEntries[configIndex] += newValue;
+				}
+			}
+
+			File.WriteAllLines(CONFIG_FILENAME, configEntries);
+		}
+		#endregion
+
+		#region ScriptCreation
+		private void RawsLocationButton_MouseClick(object sender, MouseEventArgs e)
 		{
 			CommonOpenFileDialog rawsLocationDialog = new CommonOpenFileDialog
 			{
@@ -39,43 +103,104 @@ namespace TranslationScriptMaker
 			{
 				RawsLocationTextBox.Text = rawsLocationDialog.FileName;
 			}
+		}
 
-			if ( AreScriptCreationInputsValid() )
+		private void RawsLocationTextBox_TextChanged(object sender, System.EventArgs e)
+		{
+			BeginScriptCreationButton.Enabled = AreScriptCreationInputsValid();
+		}
+
+		private void OutputLocationButton_MouseClick(object sender, MouseEventArgs e)
+		{
+			CommonOpenFileDialog outputLocationDialog = new CommonOpenFileDialog
 			{
-				BeginScriptCreation();
+				IsFolderPicker = true
+			};
+
+			if ( outputLocationDialog.ShowDialog() == CommonFileDialogResult.Ok )
+			{
+				OutputLocationTextBox.Text = outputLocationDialog.FileName;
 			}
 		}
 
-		private bool VerifyRawsLocation()
+		private void OutputLocationTextBox_TextChanged(object sender, EventArgs e)
 		{
-			// Must be in a folder marked "Chapter X" (where X is any numerical value) in a subfolder called "Raws" and must contain at least one image in style of XXX.{ext}
-			string pathToCheck = RawsLocationTextBox.Text;
-			int index = pathToCheck.LastIndexOf('\\');
+			BeginScriptCreationButton.Enabled = AreScriptCreationInputsValid();
+		}
 
-			if ( pathToCheck.Substring(index + 1) != "Raws" )
+		private void TranslatorNameTextBox_KeyDown(object sender, KeyEventArgs e)
+		{
+			if ( e.KeyCode == Keys.Enter )
 			{
-				ShowError(ScriptCreationErrorLabel, "Final folder must be named 'Raws'.");
+				if ( AreScriptCreationInputsValid() )
+				{
+					BeginScriptCreation();
+				}
+			}
+		}
+
+		private void TranslatorNameTextBox_TextChanged(object sender, EventArgs e)
+		{
+			BeginScriptCreationButton.Enabled = AreScriptCreationInputsValid();
+		}
+
+		private void ChapterNumberTextBox_KeyDown(object sender, KeyEventArgs e)
+		{
+			if ( e.KeyCode == Keys.Enter )
+			{
+				if ( AreScriptCreationInputsValid() )
+				{
+					BeginScriptCreation();
+				}
+			}
+		}
+
+		private void ChapterNumberTextBox_TextChanged(object sender, EventArgs e)
+		{
+			BeginScriptCreationButton.Enabled = AreScriptCreationInputsValid();
+		}
+
+		private void BeginScriptCreationButton_MouseClick(object sender, MouseEventArgs e) => BeginScriptCreation();
+
+		private bool AreScriptCreationInputsValid()
+		{
+			if ( !VerifyRawsLocation(RawsLocationTextBox) )
+			{
 				return false;
 			}
 
-			string chapterFolderPath = pathToCheck.Substring(0, index);
-			string chapterFolderName = chapterFolderPath.Substring(chapterFolderPath.LastIndexOf('\\') + 1);
-
-			Match result = Regex.Match(chapterFolderName, @"Chapter [0-9]{1,4}([.,][0-9]{1,2})?$", RegexOptions.IgnoreCase);
-
-			if ( !result.Success )
+			if ( !VerifyOutputLocation() )
 			{
-				ShowError(ScriptCreationErrorLabel, "Folder containing Raws must be named 'Chapter X'\nwhere X is any number/decimal to 2 digits.");
 				return false;
 			}
 
-			if ( !Directory.Exists(RawsLocationTextBox.Text) )
+			if ( !VerifyTranslatorName() )
 			{
-				ShowError(ScriptCreationErrorLabel, "The selected directory does not exist.");
 				return false;
 			}
 
-			DirectoryInfo rawsDirectory = new DirectoryInfo(RawsLocationTextBox.Text);
+			if ( !VerifyChapterNumber() )
+			{
+				return false;
+			}
+
+			ScriptCreationErrorLabel.Visible = false;
+
+			return true;
+		}
+
+		private bool VerifyRawsLocation(TextBox rawsLocationTextBox)
+		{
+			// The Raws location must be in a valid directory with at least one image that is either .png or .jpg/.jpeg
+			string pathToCheck = rawsLocationTextBox.Text;
+
+			if ( !Directory.Exists(pathToCheck) )
+			{
+				ShowError(ScriptCreationErrorLabel, "The selected Raws Directory does not exist.");
+				return false;
+			}
+
+			DirectoryInfo rawsDirectory = new DirectoryInfo(pathToCheck);
 
 			var files = rawsDirectory.EnumerateFiles("*.*", SearchOption.TopDirectoryOnly)
 				.Where(s => s.Name.EndsWith(".png", StringComparison.OrdinalIgnoreCase) || s.Name.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase)
@@ -87,11 +212,80 @@ namespace TranslationScriptMaker
 				return false;
 			}
 
-			RawsLocationFullPath = RawsLocationTextBox.Text;
-			SelectedChapterNumber = chapterFolderName.Substring(chapterFolderName.LastIndexOf(' ') + 1);
+			int index = pathToCheck.LastIndexOf('\\');
+			string chapterFolderPath = pathToCheck.Substring(0, index);
+			string chapterFolderName = chapterFolderPath.Substring(chapterFolderPath.LastIndexOf('\\') + 1);
+
+			Match result = Regex.Match(chapterFolderName, @"[Ch]{2}[a-z _-]*([0-9]*([.,][0-9]*)?$)", RegexOptions.IgnoreCase);
+
+			// Check to see if it matches the folder hierarchy that I use
+			if ( result.Success )
+			{
+				OutputLocationTextBox.Text = chapterFolderPath;
+				ChapterNumberTextBox.Text = result.Groups[1].Value;
+			}
+			else // Default to placing in the same directory as raws
+			{
+				OutputLocationTextBox.Text = pathToCheck;
+			}
+
 			RawsFiles = files;
 
-			ScriptCreationErrorLabel.Visible = false;
+			return true;
+		}
+
+		private bool VerifyChapterNumber()
+		{
+			// Chapter Number cannot be empty and these characters cannot be present: / \ | : * ? < >
+			if ( string.IsNullOrWhiteSpace(ChapterNumberTextBox.Text) )
+			{
+				ShowError(ScriptCreationErrorLabel, "Chapter Number cannot be empty or just spaces,\nand must contain at least one character.");
+				return false;
+			}
+
+			if ( ChapterNumberTextBox.Text.IndexOfAny(Path.GetInvalidFileNameChars()) != -1 )
+			{
+				ShowError(ScriptCreationErrorLabel, "Chapter number cannot contain any of the following\ncharacters: / \\ | : * ? < >");
+				return false;
+			}
+
+			SelectedChapterNumber = ChapterNumberTextBox.Text;
+
+			return true;
+		}
+
+		private bool VerifyOutputLocation()
+		{
+			// Output Location must be a valid directory which can be accessed and written to
+			string pathToCheck = OutputLocationTextBox.Text;
+
+			if ( !Directory.Exists(pathToCheck) )
+			{
+				ShowError(ScriptCreationErrorLabel, "The selected Output Directory does not exist.");
+				return false;
+			}
+
+			try
+			{
+				System.Security.AccessControl.DirectorySecurity ds = Directory.GetAccessControl(pathToCheck);
+			}
+			catch ( UnauthorizedAccessException )
+			{
+				ShowError(ScriptCreationErrorLabel, "You do not have access (Read/Write permissions)\nto the selected Output Directory.");
+				return false;
+			}
+
+			string chapterFolderName = pathToCheck.Substring(pathToCheck.LastIndexOf('\\') + 1);
+
+			Match result = Regex.Match(chapterFolderName, @"[Ch]{2}[a-z _-]*([0-9]*([.,][0-9]*)?$)", RegexOptions.IgnoreCase);
+
+			// Check to see if it matches the folder hierarchy that I use
+			if ( result.Success )
+			{
+				ChapterNumberTextBox.Text = result.Groups[1].Value;
+			}
+
+			OutputLocationFullPath = pathToCheck;
 
 			return true;
 		}
@@ -111,55 +305,16 @@ namespace TranslationScriptMaker
 				return false;
 			}
 
-			TranslatorsName = TranslatorNameTextBox.Text;
+			TranslatorName = TranslatorNameTextBox.Text;
 
 			return true;
-		}
-
-		private bool AreScriptCreationInputsValid()
-		{
-			if ( !VerifyRawsLocation() )
-			{
-				return false;
-			}
-
-			if ( !VerifyTranslatorName() )
-			{
-				return false;
-			}
-
-			return true;
-		}
-
-		private void RawsLocationTextBox_TextChanged(object sender, System.EventArgs e)
-		{
-			BeginScriptCreationButton.Enabled = AreScriptCreationInputsValid();
-		}
-
-		private void TranslatorNameTextBox_TextChanged(object sender, System.EventArgs e)
-		{
-			BeginScriptCreationButton.Enabled = AreScriptCreationInputsValid();
-		}
-
-		private void BeginScriptCreationButton_MouseClick(object sender, MouseEventArgs e)
-		{
-			BeginScriptCreation();
-		}
-
-		private void TranslatorNameTextBox_KeyDown(object sender, KeyEventArgs e)
-		{
-			if ( e.KeyCode == Keys.Enter )
-			{
-				if ( AreScriptCreationInputsValid() )
-				{
-					BeginScriptCreation();
-				}
-			}
 		}
 
 		private void BeginScriptCreation()
 		{
-			RawsViewerForm rawsViewerForm = new RawsViewerForm(RawsLocationFullPath, ScriptLocationFullPath, SelectedChapterNumber, RawsFiles, TranslatorsName, true);
+			UpdateConfigEntryInFile(CFG_TRANSLATOR_NAME, TranslatorName);
+
+			RawsViewerForm rawsViewerForm = new RawsViewerForm(OutputLocationFullPath, ScriptLocationFullPath, SelectedChapterNumber, RawsFiles, TranslatorName, true);
 			this.Hide();
 			rawsViewerForm.ShowDialog();
 			this.Show();
@@ -171,7 +326,7 @@ namespace TranslationScriptMaker
         {
             OpenFileDialog scriptLocationDialog = new OpenFileDialog();
 
-            if (scriptLocationDialog.ShowDialog() == DialogResult.OK)
+            if ( scriptLocationDialog.ShowDialog() == DialogResult.OK )
             {
                 if ( !scriptLocationDialog.CheckPathExists )
                 {
@@ -185,11 +340,6 @@ namespace TranslationScriptMaker
 
                 ScriptLocationTextBox.Text = scriptLocationDialog.FileName;
             }
-
-			if ( AreScriptEditingInputsValid() )
-			{
-				BeginScriptEditing();
-			}
         }
 
         private void ScriptLocationTextBox_TextChanged(object sender, EventArgs e)
@@ -197,66 +347,96 @@ namespace TranslationScriptMaker
             BeginScriptEditingButton.Enabled = AreScriptEditingInputsValid();
         }
 
-        private bool AreScriptEditingInputsValid()
+		private void ScriptEditingRawsLocationButton_MouseClick(object sender, MouseEventArgs e)
+		{
+			CommonOpenFileDialog rawsLocationDialog = new CommonOpenFileDialog
+			{
+				IsFolderPicker = true
+			};
+
+			if ( rawsLocationDialog.ShowDialog() == CommonFileDialogResult.Ok )
+			{
+				ScriptEditingRawsLocationTextBox.Text = rawsLocationDialog.FileName;
+			}
+		}
+
+		private void ScriptEditingRawsLocationTextBox_TextChanged(object sender, EventArgs e)
+		{
+			BeginScriptEditingButton.Enabled = AreScriptEditingInputsValid();
+		}
+
+		private void BeginScriptEditingButton_MouseClick(object sender, MouseEventArgs e) => BeginScriptEditing();
+
+		private bool AreScriptEditingInputsValid()
+		{
+			if ( !VerifyScriptLocation() )
+			{
+				return false;
+			}
+
+			if ( !VerifyRawsLocation(ScriptEditingRawsLocationTextBox) )
+			{
+				return false;
+			}
+
+			ScriptEditingErrorLabel.Visible = false;
+
+			return true;
+		}
+
+		private bool VerifyScriptLocation()
+		{
+			// The Script location must be a valid .txt file, with permissions, and optionally have the images next to it, or in a folder called Raws below it
+			string pathToCheck = ScriptLocationTextBox.Text;
+
+			if ( !File.Exists(pathToCheck) )
+			{
+				ShowError(ScriptCreationErrorLabel, "The selected Script Location does not exist.");
+				return false;
+			}
+
+			try
+			{
+				System.Security.AccessControl.DirectorySecurity ds = Directory.GetAccessControl(pathToCheck);
+			}
+			catch ( UnauthorizedAccessException )
+			{
+				ShowError(ScriptCreationErrorLabel, "You do not have access (Read/Write permissions)\nto the selected Script Location.");
+				return false;
+			}
+
+			string chapterFolderPath = pathToCheck.Substring(0, pathToCheck.LastIndexOf('\\'));
+			string chapterFolderName = chapterFolderPath.Substring(chapterFolderPath.LastIndexOf('\\') + 1);
+
+			Match result = Regex.Match(chapterFolderName, @"[Ch]{2}[a-z _-]*([0-9]*([.,][0-9]*)?$)", RegexOptions.IgnoreCase);
+
+			if ( result.Success )
+			{
+				string rawsFolderPath = chapterFolderPath + "\\Raws\\";
+
+				// Check to see if it matches the folder hierarchy that I use
+				if ( Directory.Exists(rawsFolderPath) )
+				{
+					ScriptEditingRawsLocationTextBox.Text = rawsFolderPath;
+				}
+				else // Otherwise, default assume that raws are next to script
+				{
+					ScriptEditingRawsLocationTextBox.Text = chapterFolderPath;
+				}
+			}
+
+			ScriptLocationFullPath = pathToCheck;
+
+			return true;
+		}
+
+		private void BeginScriptEditing()
         {
-            return VerifyScriptLocation();
-        }
-
-        private bool VerifyScriptLocation()
-        {
-            // Must be in a folder marked "Chapter X" (where X is any numerical value) in a subfolder called "Raws" and must contain at least one image in style of XXX.{ext}
-            string pathToCheck = ScriptLocationTextBox.Text;
-            int index = pathToCheck.LastIndexOf('\\');
-
-            pathToCheck = pathToCheck.Substring(0, index + 1) + "Raws";
-
-            string chapterFolderPath = pathToCheck.Substring(0, index);
-            string chapterFolderName = chapterFolderPath.Substring(chapterFolderPath.LastIndexOf('\\') + 1);
-
-            Match result = Regex.Match(chapterFolderName, @"Chapter [0-9]{1,4}([.,][0-9]{1,2})?$", RegexOptions.IgnoreCase);
-
-            if (!result.Success)
-            {
-                ShowError(ScriptEditingErrorLabel, "Folder containing Script must be named 'Chapter X'\nwhere X is any number/decimal to 2 digits.");
-                return false;
-            }
-
-            if (!Directory.Exists(pathToCheck))
-            {
-                ShowError(ScriptEditingErrorLabel, "The directory containing the script does not have a folder called 'Raws' in it.");
-                return false;
-            }
-
-            DirectoryInfo rawsDirectory = new DirectoryInfo(pathToCheck);
-
-            var files = rawsDirectory.EnumerateFiles("*.*", SearchOption.TopDirectoryOnly)
-                .Where(s => s.Name.EndsWith(".png", StringComparison.OrdinalIgnoreCase) || s.Name.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase));
-
-            if (files.Count() == 0)
-            {
-                ShowError(ScriptEditingErrorLabel, "The Raws folder does not contain any images.");
-                return false;
-            }
-
-            RawsLocationFullPath = pathToCheck;
-            ScriptLocationFullPath = ScriptLocationTextBox.Text;
-            SelectedChapterNumber = chapterFolderName.Substring(chapterFolderName.LastIndexOf(' ') + 1);
-            RawsFiles = files;
-
-            ScriptEditingErrorLabel.Visible = false;
-
-            return true;
-        }
-
-        private void BeginScriptEditingButton_MouseClick(object sender, MouseEventArgs e) => BeginScriptEditing();
-
-        private void BeginScriptEditing()
-        {
-            RawsViewerForm rawsViewerForm = new RawsViewerForm(RawsLocationFullPath, ScriptLocationFullPath, SelectedChapterNumber, RawsFiles, TranslatorsName, false);
+            RawsViewerForm rawsViewerForm = new RawsViewerForm(OutputLocationFullPath, ScriptLocationFullPath, SelectedChapterNumber, RawsFiles, TranslatorName, false);
             this.Hide();
             rawsViewerForm.ShowDialog();
             this.Show();
         }
-        #endregion
-    }
+		#endregion
+	}
 }
