@@ -44,14 +44,14 @@ namespace TranslationScriptMaker
 			this.OutputLocationTextBox = new System.Windows.Forms.TextBox();
 			this.OutputLocationButton = new System.Windows.Forms.Button();
 			this.ScriptEditorTabPage = new System.Windows.Forms.TabPage();
+			this.ScriptEditingRawsLocationLabel = new System.Windows.Forms.Label();
+			this.ScriptEditingRawsLocationTextBox = new System.Windows.Forms.TextBox();
+			this.ScriptEditingRawsLocationButton = new System.Windows.Forms.Button();
 			this.BeginScriptEditingButton = new System.Windows.Forms.Button();
 			this.ScriptLocationLabel = new System.Windows.Forms.Label();
 			this.ScriptEditingErrorLabel = new System.Windows.Forms.Label();
 			this.ScriptLocationTextBox = new System.Windows.Forms.TextBox();
 			this.ScriptLocationButton = new System.Windows.Forms.Button();
-			this.ScriptEditingRawsLocationButton = new System.Windows.Forms.Button();
-			this.ScriptEditingRawsLocationTextBox = new System.Windows.Forms.TextBox();
-			this.ScriptEditingRawsLocationLabel = new System.Windows.Forms.Label();
 			this.MainTabControl.SuspendLayout();
 			this.ScriptCreatorTabPage.SuspendLayout();
 			this.ScriptEditorTabPage.SuspendLayout();
@@ -175,6 +175,25 @@ namespace TranslationScriptMaker
 			resources.ApplyResources(this.ScriptEditorTabPage, "ScriptEditorTabPage");
 			this.ScriptEditorTabPage.Name = "ScriptEditorTabPage";
 			// 
+			// ScriptEditingRawsLocationLabel
+			// 
+			resources.ApplyResources(this.ScriptEditingRawsLocationLabel, "ScriptEditingRawsLocationLabel");
+			this.ScriptEditingRawsLocationLabel.Name = "ScriptEditingRawsLocationLabel";
+			// 
+			// ScriptEditingRawsLocationTextBox
+			// 
+			resources.ApplyResources(this.ScriptEditingRawsLocationTextBox, "ScriptEditingRawsLocationTextBox");
+			this.ScriptEditingRawsLocationTextBox.Name = "ScriptEditingRawsLocationTextBox";
+			this.ScriptEditingRawsLocationTextBox.TextChanged += new System.EventHandler(this.ScriptEditingRawsLocationTextBox_TextChanged);
+			// 
+			// ScriptEditingRawsLocationButton
+			// 
+			resources.ApplyResources(this.ScriptEditingRawsLocationButton, "ScriptEditingRawsLocationButton");
+			this.ScriptEditingRawsLocationButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+			this.ScriptEditingRawsLocationButton.Name = "ScriptEditingRawsLocationButton";
+			this.ScriptEditingRawsLocationButton.UseVisualStyleBackColor = true;
+			this.ScriptEditingRawsLocationButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ScriptEditingRawsLocationButton_MouseClick);
+			// 
 			// BeginScriptEditingButton
 			// 
 			this.BeginScriptEditingButton.BackColor = System.Drawing.SystemColors.Control;
@@ -207,25 +226,6 @@ namespace TranslationScriptMaker
 			this.ScriptLocationButton.Name = "ScriptLocationButton";
 			this.ScriptLocationButton.UseVisualStyleBackColor = true;
 			this.ScriptLocationButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ScriptLocationButton_MouseClick);
-			// 
-			// ScriptEditingRawsLocationButton
-			// 
-			resources.ApplyResources(this.ScriptEditingRawsLocationButton, "ScriptEditingRawsLocationButton");
-			this.ScriptEditingRawsLocationButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-			this.ScriptEditingRawsLocationButton.Name = "ScriptEditingRawsLocationButton";
-			this.ScriptEditingRawsLocationButton.UseVisualStyleBackColor = true;
-			this.ScriptEditingRawsLocationButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ScriptEditingRawsLocationButton_MouseClick);
-			// 
-			// ScriptEditingRawsLocationTextBox
-			// 
-			resources.ApplyResources(this.ScriptEditingRawsLocationTextBox, "ScriptEditingRawsLocationTextBox");
-			this.ScriptEditingRawsLocationTextBox.Name = "ScriptEditingRawsLocationTextBox";
-			this.ScriptEditingRawsLocationTextBox.TextChanged += new System.EventHandler(this.ScriptEditingRawsLocationTextBox_TextChanged);
-			// 
-			// ScriptEditingRawsLocationLabel
-			// 
-			resources.ApplyResources(this.ScriptEditingRawsLocationLabel, "ScriptEditingRawsLocationLabel");
-			this.ScriptEditingRawsLocationLabel.Name = "ScriptEditingRawsLocationLabel";
 			// 
 			// MainForm
 			// 

@@ -424,13 +424,16 @@
 			// 
 			this.ScriptViewerRichTextBox.BackColor = System.Drawing.SystemColors.WindowFrame;
 			this.ScriptViewerRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ScriptViewerRichTextBox.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.ScriptViewerRichTextBox.ForeColor = System.Drawing.SystemColors.Control;
 			this.ScriptViewerRichTextBox.Location = new System.Drawing.Point(3, 16);
 			this.ScriptViewerRichTextBox.Name = "ScriptViewerRichTextBox";
 			this.ScriptViewerRichTextBox.Size = new System.Drawing.Size(221, 391);
 			this.ScriptViewerRichTextBox.TabIndex = 0;
 			this.ScriptViewerRichTextBox.Text = "";
+			this.ScriptViewerRichTextBox.WordWrap = false;
 			this.ScriptViewerRichTextBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ScriptViewerRichTextBox_MouseClick);
+			this.ScriptViewerRichTextBox.TextChanged += new System.EventHandler(this.ScriptViewerRichTextBox_TextChanged);
 			this.ScriptViewerRichTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ScriptViewerRichTextBox_KeyUp);
 			// 
 			// MainPanel

@@ -52,6 +52,29 @@ namespace TranslationScriptMaker
 
 		private bool HasUserPromptedZoomChanged { get; set; } = false;
 		private bool HasUserScrolledIn { get; set; } = false;
+		private bool _AreThereUnsavedChanges;
+		private bool AreThereUnsavedChanges
+		{
+			get => _AreThereUnsavedChanges;
+			set
+			{
+				if ( value == _AreThereUnsavedChanges )
+				{
+					return; // No need to modify the Title bar further
+				}
+
+				if ( value )
+				{
+					this.Text = "Translation Script Maker*";
+				}
+				else
+				{
+					this.Text = "Translation Script Maker";
+				}
+
+				_AreThereUnsavedChanges = value;
+			}
+		}
 
 
 		public RawsViewerForm(string outputLocationFullPath, string scriptLocationFullPath, string chapterNumber, IEnumerable<FileInfo> rawsFiles, string translatorsName, bool isCreatingScript)
@@ -66,6 +89,7 @@ namespace TranslationScriptMaker
 			IsCreatingScript = isCreatingScript;
 			PreviousPageIndex = 0;
 			CurrentPageIndex = 0;
+			AreThereUnsavedChanges = false;
 
 			ScriptViewerRichTextBox.ReadOnly = isCreatingScript;
 
@@ -239,6 +263,7 @@ namespace TranslationScriptMaker
 		{
 			RawsImageBox.BeginUpdate();
 			RawsViewerGroupBox.Text = "Raws Viewer - Page: " + (CurrentPageIndex + 1).ToString() + " / " + RawsFiles.Count().ToString();
+			ScriptViewerGroupBox.Text = "Script Viewer - Page : " + (CurrentPageIndex + 1).ToString() + " / " + RawsFiles.Count().ToString();
 			RawsImageBox.Image = Image.FromFile(RawsFiles.ElementAt(CurrentPageIndex).FullName);
 			RawsImageBox.ZoomToFit();
 			RawsImageBox.EndUpdate();
@@ -374,6 +399,8 @@ namespace TranslationScriptMaker
 			fileContents += "\n";
 
 			OutputScript(fileContents, false);
+
+			AreThereUnsavedChanges = false;
 		}
 
 		private void SaveCurrentProgress()
@@ -754,6 +781,28 @@ namespace TranslationScriptMaker
 			}
 
 			return false;
+		}
+
+		private void ScriptViewerRichTextBox_TextChanged(object sender, EventArgs e)
+		{
+			if ( IsCreatingScript )
+			{
+				return;
+			}
+
+			if ( sender is RichTextBox scriptViewer )
+			{
+				if ( scriptViewer.Text == string.Join("", PageInformations.ElementAt(CurrentPageIndex).pageScriptContents) )
+				{
+					AreThereUnsavedChanges = false;
+					return; // The text is the same as the unsaved version
+				}
+			}
+
+			if ( !AreThereUnsavedChanges )
+			{
+				AreThereUnsavedChanges = true; // After the fact, in the very unlikely case that the sender can't be casted
+			}
 		}
 	}
 
