@@ -785,7 +785,7 @@ namespace TranslationScriptMaker
 
 		private void ScriptViewerRichTextBox_TextChanged(object sender, EventArgs e)
 		{
-			if ( IsCreatingScript )
+			if ( IsCreatingScript || CurrentPageIndex >= PageInformations.Count() )
 			{
 				return;
 			}
