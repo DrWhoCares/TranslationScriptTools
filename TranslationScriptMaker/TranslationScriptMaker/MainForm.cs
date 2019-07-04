@@ -129,15 +129,16 @@ namespace TranslationScriptMaker
 
 		private void OutputLocationButton_MouseClick(object sender, MouseEventArgs e)
 		{
-			CommonOpenFileDialog outputLocationDialog = new CommonOpenFileDialog
+			using ( CommonOpenFileDialog outputLocationDialog = new CommonOpenFileDialog
 			{
 				IsFolderPicker = true
-			};
-
-			if ( outputLocationDialog.ShowDialog() == CommonFileDialogResult.Ok )
+			} )
 			{
-				OutputLocationTextBox.Text = outputLocationDialog.FileName;
-				WasOutputLocationVerified = VerifyOutputLocation();
+				if ( outputLocationDialog.ShowDialog() == CommonFileDialogResult.Ok )
+				{
+					OutputLocationTextBox.Text = outputLocationDialog.FileName;
+					WasOutputLocationVerified = VerifyOutputLocation();
+				}
 			}
 		}
 
@@ -348,32 +349,36 @@ namespace TranslationScriptMaker
 		{
 			UpdateConfigEntryInFile(CFG_TRANSLATOR_NAME, TranslatorName);
 
-			RawsViewerForm rawsViewerForm = new RawsViewerForm(OutputLocationFullPath, ScriptLocationFullPath, SelectedChapterNumber, RawsFiles, TranslatorName, true);
-			this.Hide();
-			rawsViewerForm.ShowDialog();
-			this.Show();
+			using ( RawsViewerForm rawsViewerForm = new RawsViewerForm(OutputLocationFullPath, ScriptLocationFullPath, SelectedChapterNumber, RawsFiles, TranslatorName, true) )
+			{
+				this.Hide();
+				rawsViewerForm.ShowDialog();
+				this.Show();
+			}
 		}
         #endregion
 
         #region ScriptEditing
         private void ScriptLocationButton_MouseClick(object sender, MouseEventArgs e)
         {
-            OpenFileDialog scriptLocationDialog = new OpenFileDialog();
+			using ( OpenFileDialog scriptLocationDialog = new OpenFileDialog() )
+			{
 
-            if ( scriptLocationDialog.ShowDialog() == DialogResult.OK )
-            {
-                if ( !scriptLocationDialog.CheckPathExists )
-                {
-                    ShowError(ScriptEditingErrorLabel, "The selected path does not exist.");
-                }
+				if ( scriptLocationDialog.ShowDialog() == DialogResult.OK )
+				{
+					if ( !scriptLocationDialog.CheckPathExists )
+					{
+						ShowError(ScriptEditingErrorLabel, "The selected path does not exist.");
+					}
 
-                if ( !scriptLocationDialog.CheckFileExists )
-                {
-                    ShowError(ScriptEditingErrorLabel, "The selected file does not exist.");
-                }
+					if ( !scriptLocationDialog.CheckFileExists )
+					{
+						ShowError(ScriptEditingErrorLabel, "The selected file does not exist.");
+					}
 
-                ScriptLocationTextBox.Text = scriptLocationDialog.FileName;
-				WasScriptLocationVerified = VerifyScriptLocation();
+					ScriptLocationTextBox.Text = scriptLocationDialog.FileName;
+					WasScriptLocationVerified = VerifyScriptLocation();
+				}
 			}
         }
 
@@ -498,15 +503,13 @@ namespace TranslationScriptMaker
 
 		private void BeginScriptEditing()
         {
-            RawsViewerForm rawsViewerForm = new RawsViewerForm(OutputLocationFullPath, ScriptLocationFullPath, SelectedChapterNumber, RawsFiles, TranslatorName, false);
-            this.Hide();
-            rawsViewerForm.ShowDialog();
-            this.Show();
+			using ( RawsViewerForm rawsViewerForm = new RawsViewerForm(OutputLocationFullPath, ScriptLocationFullPath, SelectedChapterNumber, RawsFiles, TranslatorName, false) )
+			{
+				this.Hide();
+				rawsViewerForm.ShowDialog();
+				this.Show();
+			}
         }
 		#endregion
-
-		
-
-		
 	}
 }
