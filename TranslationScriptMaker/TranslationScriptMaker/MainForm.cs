@@ -13,6 +13,13 @@ namespace TranslationScriptMaker
 		private const string CONFIG_FILENAME = "TSMConfig.txt";
 		private const char CFG_DELIMITER = '=';
 		private const string CFG_TRANSLATOR_NAME = "Translator=";
+
+		private bool WasRawsLocationVerified { get; set; }
+		private bool WasOutputLocationVerified { get; set; }
+		private bool WasTranslatorNameVerified { get; set; }
+		private bool WasChapterNameVerified { get; set; }
+		private bool WasScriptLocationVerified { get; set; }
+		private bool WasEditingRawsLocationVerified { get; set; }
 		private string OutputLocationFullPath { get; set; }
 		private string TranslatorName { get; set; }
 		private string ScriptLocationFullPath { get; set; }
@@ -100,13 +107,24 @@ namespace TranslationScriptMaker
 				if ( rawsLocationDialog.ShowDialog() == CommonFileDialogResult.Ok )
 				{
 					RawsLocationTextBox.Text = rawsLocationDialog.FileName;
+					WasRawsLocationVerified = VerifyRawsLocation(RawsLocationTextBox);
 				}
 			}
 		}
 
-		private void RawsLocationTextBox_TextChanged(object sender, System.EventArgs e)
+		private void RawsLocationTextBox_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			BeginScriptCreationButton.Enabled = AreScriptCreationInputsValid();
+			e.Cancel = !VerifyRawsLocation(RawsLocationTextBox);
+
+			if ( e.Cancel )
+			{
+				WasRawsLocationVerified = false;
+			}
+		}
+
+		private void RawsLocationTextBox_Validated(object sender, EventArgs e)
+		{
+			WasRawsLocationVerified = true;
 		}
 
 		private void OutputLocationButton_MouseClick(object sender, MouseEventArgs e)
@@ -119,66 +137,83 @@ namespace TranslationScriptMaker
 			if ( outputLocationDialog.ShowDialog() == CommonFileDialogResult.Ok )
 			{
 				OutputLocationTextBox.Text = outputLocationDialog.FileName;
+				WasOutputLocationVerified = VerifyOutputLocation();
 			}
 		}
 
-		private void OutputLocationTextBox_TextChanged(object sender, EventArgs e)
+		private void OutputLocationTextBox_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			BeginScriptCreationButton.Enabled = AreScriptCreationInputsValid();
-		}
+			e.Cancel = !VerifyOutputLocation();
 
-		private void TranslatorNameTextBox_KeyDown(object sender, KeyEventArgs e)
-		{
-			if ( e.KeyCode == Keys.Enter )
+			if ( e.Cancel )
 			{
-				if ( AreScriptCreationInputsValid() )
-				{
-					BeginScriptCreation();
-				}
+				WasOutputLocationVerified = false;
 			}
 		}
 
-		private void TranslatorNameTextBox_TextChanged(object sender, EventArgs e)
+		private void OutputLocationTextBox_Validated(object sender, EventArgs e)
 		{
-			BeginScriptCreationButton.Enabled = AreScriptCreationInputsValid();
+			WasOutputLocationVerified = true;
 		}
 
-		private void ChapterNumberTextBox_KeyDown(object sender, KeyEventArgs e)
+		private void TranslatorNameTextBox_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			if ( e.KeyCode == Keys.Enter )
+			e.Cancel = !VerifyTranslatorName();
+
+			if ( e.Cancel )
 			{
-				if ( AreScriptCreationInputsValid() )
-				{
-					BeginScriptCreation();
-				}
+				WasTranslatorNameVerified = false;
 			}
 		}
 
-		private void ChapterNumberTextBox_TextChanged(object sender, EventArgs e)
+		private void TranslatorNameTextBox_Validated(object sender, EventArgs e)
 		{
-			BeginScriptCreationButton.Enabled = AreScriptCreationInputsValid();
+			WasTranslatorNameVerified = true;
 		}
 
-		private void BeginScriptCreationButton_MouseClick(object sender, MouseEventArgs e) => BeginScriptCreation();
+		private void ChapterNumberTextBox_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			e.Cancel = !VerifyChapterNumber();
+
+			if ( e.Cancel )
+			{
+				WasChapterNameVerified = false;
+			}
+		}
+
+		private void ChapterNumberTextBox_Validated(object sender, EventArgs e)
+		{
+			WasChapterNameVerified = true;
+		}
+
+		private void BeginScriptCreationButton_MouseClick(object sender, MouseEventArgs e)
+		{
+			this.ValidateChildren();
+
+			if ( AreScriptCreationInputsValid() )
+			{
+				BeginScriptCreation();
+			}
+		}
 
 		private bool AreScriptCreationInputsValid()
 		{
-			if ( !VerifyRawsLocation(RawsLocationTextBox) )
+			if ( !WasRawsLocationVerified )
 			{
 				return false;
 			}
 
-			if ( !VerifyOutputLocation() )
+			if ( !WasOutputLocationVerified )
 			{
 				return false;
 			}
 
-			if ( !VerifyTranslatorName() )
+			if ( !WasTranslatorNameVerified )
 			{
 				return false;
 			}
 
-			if ( !VerifyChapterNumber() )
+			if ( !WasChapterNameVerified )
 			{
 				return false;
 			}
@@ -338,13 +373,24 @@ namespace TranslationScriptMaker
                 }
 
                 ScriptLocationTextBox.Text = scriptLocationDialog.FileName;
-            }
+				WasScriptLocationVerified = VerifyScriptLocation();
+			}
         }
 
-        private void ScriptLocationTextBox_TextChanged(object sender, EventArgs e)
-        {
-            BeginScriptEditingButton.Enabled = AreScriptEditingInputsValid();
-        }
+		private void ScriptLocationTextBox_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			e.Cancel = !VerifyScriptLocation();
+
+			if ( e.Cancel )
+			{
+				WasScriptLocationVerified = false;
+			}
+		}
+
+		private void ScriptLocationTextBox_Validated(object sender, EventArgs e)
+		{
+			WasScriptLocationVerified = true;
+		}
 
 		private void ScriptEditingRawsLocationButton_MouseClick(object sender, MouseEventArgs e)
 		{
@@ -357,25 +403,44 @@ namespace TranslationScriptMaker
 				if ( rawsLocationDialog.ShowDialog() == CommonFileDialogResult.Ok )
 				{
 					ScriptEditingRawsLocationTextBox.Text = rawsLocationDialog.FileName;
+					WasEditingRawsLocationVerified = VerifyRawsLocation(ScriptEditingRawsLocationTextBox);
 				}
 			}
 		}
 
-		private void ScriptEditingRawsLocationTextBox_TextChanged(object sender, EventArgs e)
+		private void ScriptEditingRawsLocationTextBox_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			BeginScriptEditingButton.Enabled = AreScriptEditingInputsValid();
+			e.Cancel = !VerifyRawsLocation(ScriptEditingRawsLocationTextBox);
+
+			if ( e.Cancel )
+			{
+				WasEditingRawsLocationVerified = false;
+			}
 		}
 
-		private void BeginScriptEditingButton_MouseClick(object sender, MouseEventArgs e) => BeginScriptEditing();
+		private void ScriptEditingRawsLocationTextBox_Validated(object sender, EventArgs e)
+		{
+			WasEditingRawsLocationVerified = true;
+		}
+
+		private void BeginScriptEditingButton_MouseClick(object sender, MouseEventArgs e)
+		{
+			this.ValidateChildren();
+
+			if ( AreScriptEditingInputsValid() )
+			{
+				BeginScriptEditing();
+			}
+		}
 
 		private bool AreScriptEditingInputsValid()
 		{
-			if ( !VerifyScriptLocation() )
+			if ( !WasScriptLocationVerified )
 			{
 				return false;
 			}
 
-			if ( !VerifyRawsLocation(ScriptEditingRawsLocationTextBox) )
+			if ( !WasEditingRawsLocationVerified )
 			{
 				return false;
 			}
@@ -439,5 +504,9 @@ namespace TranslationScriptMaker
             this.Show();
         }
 		#endregion
+
+		
+
+		
 	}
 }

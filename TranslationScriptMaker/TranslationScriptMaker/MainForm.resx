@@ -282,9 +282,6 @@
   <data name="&gt;&gt;ScriptCreationErrorLabel.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="BeginScriptCreationButton.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="BeginScriptCreationButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 163</value>
   </data>
@@ -309,15 +306,6 @@
   <data name="&gt;&gt;BeginScriptCreationButton.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="ChapterNumberTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>154, 127</value>
-  </data>
-  <data name="ChapterNumberTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 20</value>
-  </data>
-  <data name="ChapterNumberTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
   <data name="&gt;&gt;ChapterNumberTextBox.Name" xml:space="preserve">
     <value>ChapterNumberTextBox</value>
   </data>
@@ -329,27 +317,6 @@
   </data>
   <data name="&gt;&gt;ChapterNumberTextBox.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="ChapterNumberLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ChapterNumberLabel.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 12pt, style=Bold</value>
-  </data>
-  <data name="ChapterNumberLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="ChapterNumberLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 127</value>
-  </data>
-  <data name="ChapterNumberLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>145, 20</value>
-  </data>
-  <data name="ChapterNumberLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="ChapterNumberLabel.Text" xml:space="preserve">
-    <value>Chapter Number:</value>
   </data>
   <data name="&gt;&gt;ChapterNumberLabel.Name" xml:space="preserve">
     <value>ChapterNumberLabel</value>
@@ -363,27 +330,6 @@
   <data name="&gt;&gt;ChapterNumberLabel.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="OutputLocationLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="OutputLocationLabel.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 12pt, style=Bold</value>
-  </data>
-  <data name="OutputLocationLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="OutputLocationLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 49</value>
-  </data>
-  <data name="OutputLocationLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>143, 20</value>
-  </data>
-  <data name="OutputLocationLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="OutputLocationLabel.Text" xml:space="preserve">
-    <value>Output Location:</value>
-  </data>
   <data name="&gt;&gt;OutputLocationLabel.Name" xml:space="preserve">
     <value>OutputLocationLabel</value>
   </data>
@@ -396,15 +342,6 @@
   <data name="&gt;&gt;OutputLocationLabel.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="OutputLocationTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>45, 73</value>
-  </data>
-  <data name="OutputLocationTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>303, 20</value>
-  </data>
-  <data name="OutputLocationTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
   <data name="&gt;&gt;OutputLocationTextBox.Name" xml:space="preserve">
     <value>OutputLocationTextBox</value>
   </data>
@@ -416,24 +353,6 @@
   </data>
   <data name="&gt;&gt;OutputLocationTextBox.ZOrder" xml:space="preserve">
     <value>3</value>
-  </data>
-  <data name="OutputLocationButton.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 9.75pt</value>
-  </data>
-  <data name="OutputLocationButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="OutputLocationButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 71</value>
-  </data>
-  <data name="OutputLocationButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>33, 23</value>
-  </data>
-  <data name="OutputLocationButton.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="OutputLocationButton.Text" xml:space="preserve">
-    <value>...</value>
   </data>
   <data name="&gt;&gt;OutputLocationButton.Name" xml:space="preserve">
     <value>OutputLocationButton</value>
@@ -557,9 +476,6 @@
   </data>
   <data name="&gt;&gt;ScriptEditingRawsLocationButton.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="BeginScriptEditingButton.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
   </data>
   <data name="BeginScriptEditingButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -755,6 +671,144 @@
   </data>
   <data name="&gt;&gt;MainTabControl.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="ChapterNumberTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>154, 127</value>
+  </data>
+  <data name="ChapterNumberTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 20</value>
+  </data>
+  <data name="ChapterNumberTextBox.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;ChapterNumberTextBox.Name" xml:space="preserve">
+    <value>ChapterNumberTextBox</value>
+  </data>
+  <data name="&gt;&gt;ChapterNumberTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ChapterNumberTextBox.Parent" xml:space="preserve">
+    <value>ScriptCreatorTabPage</value>
+  </data>
+  <data name="&gt;&gt;ChapterNumberTextBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="ChapterNumberLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ChapterNumberLabel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 12pt, style=Bold</value>
+  </data>
+  <data name="ChapterNumberLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="ChapterNumberLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 127</value>
+  </data>
+  <data name="ChapterNumberLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>145, 20</value>
+  </data>
+  <data name="ChapterNumberLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="ChapterNumberLabel.Text" xml:space="preserve">
+    <value>Chapter Number:</value>
+  </data>
+  <data name="&gt;&gt;ChapterNumberLabel.Name" xml:space="preserve">
+    <value>ChapterNumberLabel</value>
+  </data>
+  <data name="&gt;&gt;ChapterNumberLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ChapterNumberLabel.Parent" xml:space="preserve">
+    <value>ScriptCreatorTabPage</value>
+  </data>
+  <data name="&gt;&gt;ChapterNumberLabel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="OutputLocationLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="OutputLocationLabel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 12pt, style=Bold</value>
+  </data>
+  <data name="OutputLocationLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="OutputLocationLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 49</value>
+  </data>
+  <data name="OutputLocationLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>143, 20</value>
+  </data>
+  <data name="OutputLocationLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="OutputLocationLabel.Text" xml:space="preserve">
+    <value>Output Location:</value>
+  </data>
+  <data name="&gt;&gt;OutputLocationLabel.Name" xml:space="preserve">
+    <value>OutputLocationLabel</value>
+  </data>
+  <data name="&gt;&gt;OutputLocationLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;OutputLocationLabel.Parent" xml:space="preserve">
+    <value>ScriptCreatorTabPage</value>
+  </data>
+  <data name="&gt;&gt;OutputLocationLabel.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="OutputLocationTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>45, 73</value>
+  </data>
+  <data name="OutputLocationTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>303, 20</value>
+  </data>
+  <data name="OutputLocationTextBox.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;OutputLocationTextBox.Name" xml:space="preserve">
+    <value>OutputLocationTextBox</value>
+  </data>
+  <data name="&gt;&gt;OutputLocationTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;OutputLocationTextBox.Parent" xml:space="preserve">
+    <value>ScriptCreatorTabPage</value>
+  </data>
+  <data name="&gt;&gt;OutputLocationTextBox.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="OutputLocationButton.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9.75pt</value>
+  </data>
+  <data name="OutputLocationButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="OutputLocationButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 71</value>
+  </data>
+  <data name="OutputLocationButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>33, 23</value>
+  </data>
+  <data name="OutputLocationButton.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="OutputLocationButton.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="&gt;&gt;OutputLocationButton.Name" xml:space="preserve">
+    <value>OutputLocationButton</value>
+  </data>
+  <data name="&gt;&gt;OutputLocationButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;OutputLocationButton.Parent" xml:space="preserve">
+    <value>ScriptCreatorTabPage</value>
+  </data>
+  <data name="&gt;&gt;OutputLocationButton.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

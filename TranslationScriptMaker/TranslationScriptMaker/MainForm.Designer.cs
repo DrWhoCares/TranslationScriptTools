@@ -66,7 +66,8 @@ namespace TranslationScriptMaker
 			// 
 			resources.ApplyResources(this.RawsLocationTextBox, "RawsLocationTextBox");
 			this.RawsLocationTextBox.Name = "RawsLocationTextBox";
-			this.RawsLocationTextBox.TextChanged += new System.EventHandler(this.RawsLocationTextBox_TextChanged);
+			this.RawsLocationTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.RawsLocationTextBox_Validating);
+			this.RawsLocationTextBox.Validated += new System.EventHandler(this.RawsLocationTextBox_Validated);
 			// 
 			// RawsLocationButton
 			// 
@@ -85,8 +86,8 @@ namespace TranslationScriptMaker
 			// 
 			resources.ApplyResources(this.TranslatorNameTextBox, "TranslatorNameTextBox");
 			this.TranslatorNameTextBox.Name = "TranslatorNameTextBox";
-			this.TranslatorNameTextBox.TextChanged += new System.EventHandler(this.TranslatorNameTextBox_TextChanged);
-			this.TranslatorNameTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TranslatorNameTextBox_KeyDown);
+			this.TranslatorNameTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.TranslatorNameTextBox_Validating);
+			this.TranslatorNameTextBox.Validated += new System.EventHandler(this.TranslatorNameTextBox_Validated);
 			// 
 			// ScriptCreationErrorLabel
 			// 
@@ -96,8 +97,8 @@ namespace TranslationScriptMaker
 			// BeginScriptCreationButton
 			// 
 			this.BeginScriptCreationButton.BackColor = System.Drawing.SystemColors.Control;
-			resources.ApplyResources(this.BeginScriptCreationButton, "BeginScriptCreationButton");
 			this.BeginScriptCreationButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+			resources.ApplyResources(this.BeginScriptCreationButton, "BeginScriptCreationButton");
 			this.BeginScriptCreationButton.Name = "BeginScriptCreationButton";
 			this.BeginScriptCreationButton.UseVisualStyleBackColor = false;
 			this.BeginScriptCreationButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BeginScriptCreationButton_MouseClick);
@@ -133,8 +134,8 @@ namespace TranslationScriptMaker
 			// 
 			resources.ApplyResources(this.ChapterNumberTextBox, "ChapterNumberTextBox");
 			this.ChapterNumberTextBox.Name = "ChapterNumberTextBox";
-			this.ChapterNumberTextBox.TextChanged += new System.EventHandler(this.ChapterNumberTextBox_TextChanged);
-			this.ChapterNumberTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ChapterNumberTextBox_KeyDown);
+			this.ChapterNumberTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.ChapterNumberTextBox_Validating);
+			this.ChapterNumberTextBox.Validated += new System.EventHandler(this.ChapterNumberTextBox_Validated);
 			// 
 			// ChapterNumberLabel
 			// 
@@ -150,7 +151,8 @@ namespace TranslationScriptMaker
 			// 
 			resources.ApplyResources(this.OutputLocationTextBox, "OutputLocationTextBox");
 			this.OutputLocationTextBox.Name = "OutputLocationTextBox";
-			this.OutputLocationTextBox.TextChanged += new System.EventHandler(this.OutputLocationTextBox_TextChanged);
+			this.OutputLocationTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.OutputLocationTextBox_Validating);
+			this.OutputLocationTextBox.Validated += new System.EventHandler(this.OutputLocationTextBox_Validated);
 			// 
 			// OutputLocationButton
 			// 
@@ -184,7 +186,8 @@ namespace TranslationScriptMaker
 			// 
 			resources.ApplyResources(this.ScriptEditingRawsLocationTextBox, "ScriptEditingRawsLocationTextBox");
 			this.ScriptEditingRawsLocationTextBox.Name = "ScriptEditingRawsLocationTextBox";
-			this.ScriptEditingRawsLocationTextBox.TextChanged += new System.EventHandler(this.ScriptEditingRawsLocationTextBox_TextChanged);
+			this.ScriptEditingRawsLocationTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.ScriptEditingRawsLocationTextBox_Validating);
+			this.ScriptEditingRawsLocationTextBox.Validated += new System.EventHandler(this.ScriptEditingRawsLocationTextBox_Validated);
 			// 
 			// ScriptEditingRawsLocationButton
 			// 
@@ -197,8 +200,8 @@ namespace TranslationScriptMaker
 			// BeginScriptEditingButton
 			// 
 			this.BeginScriptEditingButton.BackColor = System.Drawing.SystemColors.Control;
-			resources.ApplyResources(this.BeginScriptEditingButton, "BeginScriptEditingButton");
 			this.BeginScriptEditingButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+			resources.ApplyResources(this.BeginScriptEditingButton, "BeginScriptEditingButton");
 			this.BeginScriptEditingButton.Name = "BeginScriptEditingButton";
 			this.BeginScriptEditingButton.UseVisualStyleBackColor = false;
 			this.BeginScriptEditingButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BeginScriptEditingButton_MouseClick);
@@ -217,7 +220,8 @@ namespace TranslationScriptMaker
 			// 
 			resources.ApplyResources(this.ScriptLocationTextBox, "ScriptLocationTextBox");
 			this.ScriptLocationTextBox.Name = "ScriptLocationTextBox";
-			this.ScriptLocationTextBox.TextChanged += new System.EventHandler(this.ScriptLocationTextBox_TextChanged);
+			this.ScriptLocationTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.ScriptLocationTextBox_Validating);
+			this.ScriptLocationTextBox.Validated += new System.EventHandler(this.ScriptLocationTextBox_Validated);
 			// 
 			// ScriptLocationButton
 			// 
