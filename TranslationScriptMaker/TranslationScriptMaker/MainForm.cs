@@ -94,14 +94,15 @@ namespace TranslationScriptMaker
 		#region ScriptCreation
 		private void RawsLocationButton_MouseClick(object sender, MouseEventArgs e)
 		{
-			CommonOpenFileDialog rawsLocationDialog = new CommonOpenFileDialog
+			using ( CommonOpenFileDialog rawsLocationDialog = new CommonOpenFileDialog
 			{
 				IsFolderPicker = true
-			};
-
-			if ( rawsLocationDialog.ShowDialog() == CommonFileDialogResult.Ok )
+			} )
 			{
-				RawsLocationTextBox.Text = rawsLocationDialog.FileName;
+				if ( rawsLocationDialog.ShowDialog() == CommonFileDialogResult.Ok )
+				{
+					RawsLocationTextBox.Text = rawsLocationDialog.FileName;
+				}
 			}
 		}
 
@@ -349,14 +350,16 @@ namespace TranslationScriptMaker
 
 		private void ScriptEditingRawsLocationButton_MouseClick(object sender, MouseEventArgs e)
 		{
-			CommonOpenFileDialog rawsLocationDialog = new CommonOpenFileDialog
+			using ( CommonOpenFileDialog rawsLocationDialog = new CommonOpenFileDialog
 			{
 				IsFolderPicker = true
-			};
-
-			if ( rawsLocationDialog.ShowDialog() == CommonFileDialogResult.Ok )
+			} )
 			{
-				ScriptEditingRawsLocationTextBox.Text = rawsLocationDialog.FileName;
+
+				if ( rawsLocationDialog.ShowDialog() == CommonFileDialogResult.Ok )
+				{
+					ScriptEditingRawsLocationTextBox.Text = rawsLocationDialog.FileName;
+				}
 			}
 		}
 
