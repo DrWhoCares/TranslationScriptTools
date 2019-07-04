@@ -252,13 +252,17 @@ namespace TranslationScriptMaker
 			{
 				OutputLocationTextBox.Text = chapterFolderPath;
 				ChapterNumberTextBox.Text = result.Groups[1].Value;
+				MainFormErrorProvider.SetError(OutputLocationTextBox, null);
+				MainFormErrorProvider.SetError(ChapterNumberTextBox, null);
 			}
 			else // Default to placing in the same directory as raws
 			{
 				OutputLocationTextBox.Text = pathToCheck;
+				MainFormErrorProvider.SetError(OutputLocationTextBox, null);
 			}
 
 			RawsFiles = files;
+			MainFormErrorProvider.SetError(rawsLocationTextBox, null);
 
 			return true;
 		}
@@ -292,9 +296,11 @@ namespace TranslationScriptMaker
 			if ( result.Success )
 			{
 				ChapterNumberTextBox.Text = result.Groups[1].Value;
+				MainFormErrorProvider.SetError(ChapterNumberTextBox, null);
 			}
 
 			OutputLocationFullPath = pathToCheck;
+			MainFormErrorProvider.SetError(OutputLocationTextBox, null);
 
 			return true;
 		}
@@ -487,9 +493,12 @@ namespace TranslationScriptMaker
 				{
 					ScriptEditingRawsLocationTextBox.Text = chapterFolderPath;
 				}
+
+				MainFormErrorProvider.SetError(ScriptEditingRawsLocationTextBox, null);
 			}
 
 			ScriptLocationFullPath = pathToCheck;
+			MainFormErrorProvider.SetError(ScriptLocationTextBox, null);
 
 			return true;
 		}
