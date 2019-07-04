@@ -28,13 +28,13 @@ namespace TranslationScriptMaker
         /// </summary>
         private void InitializeComponent()
         {
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.RawsLocationLabel = new System.Windows.Forms.Label();
 			this.RawsLocationTextBox = new System.Windows.Forms.TextBox();
 			this.RawsLocationButton = new System.Windows.Forms.Button();
 			this.TranslatorNameLabel = new System.Windows.Forms.Label();
 			this.TranslatorNameTextBox = new System.Windows.Forms.TextBox();
-			this.ScriptCreationErrorLabel = new System.Windows.Forms.Label();
 			this.BeginScriptCreationButton = new System.Windows.Forms.Button();
 			this.MainTabControl = new System.Windows.Forms.TabControl();
 			this.ScriptCreatorTabPage = new System.Windows.Forms.TabPage();
@@ -49,12 +49,13 @@ namespace TranslationScriptMaker
 			this.ScriptEditingRawsLocationButton = new System.Windows.Forms.Button();
 			this.BeginScriptEditingButton = new System.Windows.Forms.Button();
 			this.ScriptLocationLabel = new System.Windows.Forms.Label();
-			this.ScriptEditingErrorLabel = new System.Windows.Forms.Label();
 			this.ScriptLocationTextBox = new System.Windows.Forms.TextBox();
 			this.ScriptLocationButton = new System.Windows.Forms.Button();
+			this.MainFormErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
 			this.MainTabControl.SuspendLayout();
 			this.ScriptCreatorTabPage.SuspendLayout();
 			this.ScriptEditorTabPage.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.MainFormErrorProvider)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// RawsLocationLabel
@@ -89,11 +90,6 @@ namespace TranslationScriptMaker
 			this.TranslatorNameTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.TranslatorNameTextBox_Validating);
 			this.TranslatorNameTextBox.Validated += new System.EventHandler(this.TranslatorNameTextBox_Validated);
 			// 
-			// ScriptCreationErrorLabel
-			// 
-			resources.ApplyResources(this.ScriptCreationErrorLabel, "ScriptCreationErrorLabel");
-			this.ScriptCreationErrorLabel.Name = "ScriptCreationErrorLabel";
-			// 
 			// BeginScriptCreationButton
 			// 
 			this.BeginScriptCreationButton.BackColor = System.Drawing.SystemColors.Control;
@@ -121,7 +117,6 @@ namespace TranslationScriptMaker
 			this.ScriptCreatorTabPage.Controls.Add(this.OutputLocationButton);
 			this.ScriptCreatorTabPage.Controls.Add(this.BeginScriptCreationButton);
 			this.ScriptCreatorTabPage.Controls.Add(this.RawsLocationLabel);
-			this.ScriptCreatorTabPage.Controls.Add(this.ScriptCreationErrorLabel);
 			this.ScriptCreatorTabPage.Controls.Add(this.RawsLocationTextBox);
 			this.ScriptCreatorTabPage.Controls.Add(this.TranslatorNameTextBox);
 			this.ScriptCreatorTabPage.Controls.Add(this.RawsLocationButton);
@@ -170,7 +165,6 @@ namespace TranslationScriptMaker
 			this.ScriptEditorTabPage.Controls.Add(this.ScriptEditingRawsLocationButton);
 			this.ScriptEditorTabPage.Controls.Add(this.BeginScriptEditingButton);
 			this.ScriptEditorTabPage.Controls.Add(this.ScriptLocationLabel);
-			this.ScriptEditorTabPage.Controls.Add(this.ScriptEditingErrorLabel);
 			this.ScriptEditorTabPage.Controls.Add(this.ScriptLocationTextBox);
 			this.ScriptEditorTabPage.Controls.Add(this.ScriptLocationButton);
 			this.ScriptEditorTabPage.ForeColor = System.Drawing.SystemColors.Control;
@@ -211,11 +205,6 @@ namespace TranslationScriptMaker
 			resources.ApplyResources(this.ScriptLocationLabel, "ScriptLocationLabel");
 			this.ScriptLocationLabel.Name = "ScriptLocationLabel";
 			// 
-			// ScriptEditingErrorLabel
-			// 
-			resources.ApplyResources(this.ScriptEditingErrorLabel, "ScriptEditingErrorLabel");
-			this.ScriptEditingErrorLabel.Name = "ScriptEditingErrorLabel";
-			// 
 			// ScriptLocationTextBox
 			// 
 			resources.ApplyResources(this.ScriptLocationTextBox, "ScriptLocationTextBox");
@@ -230,6 +219,11 @@ namespace TranslationScriptMaker
 			this.ScriptLocationButton.Name = "ScriptLocationButton";
 			this.ScriptLocationButton.UseVisualStyleBackColor = true;
 			this.ScriptLocationButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ScriptLocationButton_MouseClick);
+			// 
+			// MainFormErrorProvider
+			// 
+			this.MainFormErrorProvider.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+			this.MainFormErrorProvider.ContainerControl = this;
 			// 
 			// MainForm
 			// 
@@ -246,6 +240,7 @@ namespace TranslationScriptMaker
 			this.ScriptCreatorTabPage.PerformLayout();
 			this.ScriptEditorTabPage.ResumeLayout(false);
 			this.ScriptEditorTabPage.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.MainFormErrorProvider)).EndInit();
 			this.ResumeLayout(false);
 
         }
@@ -257,14 +252,12 @@ namespace TranslationScriptMaker
         private System.Windows.Forms.Button RawsLocationButton;
         private System.Windows.Forms.Label TranslatorNameLabel;
         private System.Windows.Forms.TextBox TranslatorNameTextBox;
-		private System.Windows.Forms.Label ScriptCreationErrorLabel;
 		private System.Windows.Forms.Button BeginScriptCreationButton;
         private System.Windows.Forms.TabControl MainTabControl;
         private System.Windows.Forms.TabPage ScriptCreatorTabPage;
         private System.Windows.Forms.TabPage ScriptEditorTabPage;
         private System.Windows.Forms.Button BeginScriptEditingButton;
         private System.Windows.Forms.Label ScriptLocationLabel;
-        private System.Windows.Forms.Label ScriptEditingErrorLabel;
         private System.Windows.Forms.TextBox ScriptLocationTextBox;
         private System.Windows.Forms.Button ScriptLocationButton;
 		private System.Windows.Forms.Label OutputLocationLabel;
@@ -275,6 +268,7 @@ namespace TranslationScriptMaker
 		private System.Windows.Forms.Label ScriptEditingRawsLocationLabel;
 		private System.Windows.Forms.TextBox ScriptEditingRawsLocationTextBox;
 		private System.Windows.Forms.Button ScriptEditingRawsLocationButton;
+		private System.Windows.Forms.ErrorProvider MainFormErrorProvider;
 	}
 }
 

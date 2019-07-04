@@ -31,14 +31,6 @@ namespace TranslationScriptMaker
 		{
 			InitializeComponent();
 			ReadTSMConfigFile();
-
-			ScriptCreationErrorLabel.Visible = false;
-		}
-
-		private static void ShowError(Label errorLabel, string errorMessage)
-		{
-			errorLabel.Text = errorMessage;
-			errorLabel.Visible = true;
 		}
 
 		#region ConfigReading
@@ -125,6 +117,7 @@ namespace TranslationScriptMaker
 		private void RawsLocationTextBox_Validated(object sender, EventArgs e)
 		{
 			WasRawsLocationVerified = true;
+			MainFormErrorProvider.SetError(RawsLocationTextBox, null);
 		}
 
 		private void OutputLocationButton_MouseClick(object sender, MouseEventArgs e)
@@ -155,6 +148,7 @@ namespace TranslationScriptMaker
 		private void OutputLocationTextBox_Validated(object sender, EventArgs e)
 		{
 			WasOutputLocationVerified = true;
+			MainFormErrorProvider.SetError(OutputLocationTextBox, null);
 		}
 
 		private void TranslatorNameTextBox_Validating(object sender, System.ComponentModel.CancelEventArgs e)
@@ -170,6 +164,7 @@ namespace TranslationScriptMaker
 		private void TranslatorNameTextBox_Validated(object sender, EventArgs e)
 		{
 			WasTranslatorNameVerified = true;
+			MainFormErrorProvider.SetError(TranslatorNameTextBox, null);
 		}
 
 		private void ChapterNumberTextBox_Validating(object sender, System.ComponentModel.CancelEventArgs e)
@@ -185,6 +180,7 @@ namespace TranslationScriptMaker
 		private void ChapterNumberTextBox_Validated(object sender, EventArgs e)
 		{
 			WasChapterNameVerified = true;
+			MainFormErrorProvider.SetError(ChapterNumberTextBox, null);
 		}
 
 		private void BeginScriptCreationButton_MouseClick(object sender, MouseEventArgs e)
@@ -219,8 +215,6 @@ namespace TranslationScriptMaker
 				return false;
 			}
 
-			ScriptCreationErrorLabel.Visible = false;
-
 			return true;
 		}
 
@@ -231,7 +225,7 @@ namespace TranslationScriptMaker
 
 			if ( !Directory.Exists(pathToCheck) )
 			{
-				ShowError(ScriptCreationErrorLabel, "The selected Raws Directory does not exist.");
+				MainFormErrorProvider.SetError(rawsLocationTextBox, "The selected Raws Directory does not exist.");
 				return false;
 			}
 
@@ -243,7 +237,7 @@ namespace TranslationScriptMaker
 
 			if ( files.Count() == 0 )
 			{
-				ShowError(ScriptCreationErrorLabel, "The Raws folder does not contain any supported image types.\nSupported types: .png, .jpg, .jpeg");
+				MainFormErrorProvider.SetError(rawsLocationTextBox, "The Raws folder does not contain any supported image types.\nSupported types: .png, .jpg, .jpeg");
 				return false;
 			}
 
@@ -269,26 +263,6 @@ namespace TranslationScriptMaker
 			return true;
 		}
 
-		private bool VerifyChapterNumber()
-		{
-			// Chapter Number cannot be empty and these characters cannot be present: / \ | : * ? < >
-			if ( string.IsNullOrWhiteSpace(ChapterNumberTextBox.Text) )
-			{
-				ShowError(ScriptCreationErrorLabel, "Chapter Number cannot be empty or just spaces,\nand must contain at least one character.");
-				return false;
-			}
-
-			if ( ChapterNumberTextBox.Text.IndexOfAny(Path.GetInvalidFileNameChars()) != -1 )
-			{
-				ShowError(ScriptCreationErrorLabel, "Chapter number cannot contain any of the following\ncharacters: / \\ | : * ? < >");
-				return false;
-			}
-
-			SelectedChapterNumber = ChapterNumberTextBox.Text;
-
-			return true;
-		}
-
 		private bool VerifyOutputLocation()
 		{
 			// Output Location must be a valid directory which can be accessed and written to
@@ -296,7 +270,7 @@ namespace TranslationScriptMaker
 
 			if ( !Directory.Exists(pathToCheck) )
 			{
-				ShowError(ScriptCreationErrorLabel, "The selected Output Directory does not exist.");
+				MainFormErrorProvider.SetError(OutputLocationTextBox, "The selected Output Directory does not exist.");
 				return false;
 			}
 
@@ -306,7 +280,7 @@ namespace TranslationScriptMaker
 			}
 			catch ( UnauthorizedAccessException )
 			{
-				ShowError(ScriptCreationErrorLabel, "You do not have access (Read/Write permissions)\nto the selected Output Directory.");
+				MainFormErrorProvider.SetError(OutputLocationTextBox, "You do not have access (Read/Write permissions)\nto the selected Output Directory.");
 				return false;
 			}
 
@@ -330,17 +304,37 @@ namespace TranslationScriptMaker
 			// Name cannot be empty and these characters cannot be present: / \ | : * ? < >
 			if ( string.IsNullOrWhiteSpace(TranslatorNameTextBox.Text) )
 			{
-				ShowError(ScriptCreationErrorLabel, "Translator name cannot be empty or just spaces,\nand must contain at least one letter.");
+				MainFormErrorProvider.SetError(TranslatorNameTextBox, "Translator name cannot be empty or just spaces,\nand must contain at least one letter.");
 				return false;
 			}
 
 			if ( TranslatorNameTextBox.Text.IndexOfAny(Path.GetInvalidFileNameChars()) != -1 )
 			{
-				ShowError(ScriptCreationErrorLabel, "Translator name cannot contain any of the following\ncharacters: / \\ | : * ? < >");
+				MainFormErrorProvider.SetError(TranslatorNameTextBox, "Translator name cannot contain any of the following\ncharacters: / \\ | : * ? < >");
 				return false;
 			}
 
 			TranslatorName = TranslatorNameTextBox.Text;
+
+			return true;
+		}
+
+		private bool VerifyChapterNumber()
+		{
+			// Chapter Number cannot be empty and these characters cannot be present: / \ | : * ? < >
+			if ( string.IsNullOrWhiteSpace(ChapterNumberTextBox.Text) )
+			{
+				MainFormErrorProvider.SetError(ChapterNumberTextBox, "Chapter Number cannot be empty or just spaces,\nand must contain at least one character.");
+				return false;
+			}
+
+			if ( ChapterNumberTextBox.Text.IndexOfAny(Path.GetInvalidFileNameChars()) != -1 )
+			{
+				MainFormErrorProvider.SetError(ChapterNumberTextBox, "Chapter number cannot contain any of the following\ncharacters: / \\ | : * ? < >");
+				return false;
+			}
+
+			SelectedChapterNumber = ChapterNumberTextBox.Text;
 
 			return true;
 		}
@@ -368,12 +362,12 @@ namespace TranslationScriptMaker
 				{
 					if ( !scriptLocationDialog.CheckPathExists )
 					{
-						ShowError(ScriptEditingErrorLabel, "The selected path does not exist.");
+						MainFormErrorProvider.SetError(ScriptEditingRawsLocationTextBox, "The selected path does not exist.");
 					}
 
 					if ( !scriptLocationDialog.CheckFileExists )
 					{
-						ShowError(ScriptEditingErrorLabel, "The selected file does not exist.");
+						MainFormErrorProvider.SetError(ScriptEditingRawsLocationTextBox, "The selected file does not exist.");
 					}
 
 					ScriptLocationTextBox.Text = scriptLocationDialog.FileName;
@@ -395,6 +389,7 @@ namespace TranslationScriptMaker
 		private void ScriptLocationTextBox_Validated(object sender, EventArgs e)
 		{
 			WasScriptLocationVerified = true;
+			MainFormErrorProvider.SetError(ScriptLocationTextBox, null);
 		}
 
 		private void ScriptEditingRawsLocationButton_MouseClick(object sender, MouseEventArgs e)
@@ -404,7 +399,6 @@ namespace TranslationScriptMaker
 				IsFolderPicker = true
 			} )
 			{
-
 				if ( rawsLocationDialog.ShowDialog() == CommonFileDialogResult.Ok )
 				{
 					ScriptEditingRawsLocationTextBox.Text = rawsLocationDialog.FileName;
@@ -426,6 +420,7 @@ namespace TranslationScriptMaker
 		private void ScriptEditingRawsLocationTextBox_Validated(object sender, EventArgs e)
 		{
 			WasEditingRawsLocationVerified = true;
+			MainFormErrorProvider.SetError(ScriptEditingRawsLocationTextBox, null);
 		}
 
 		private void BeginScriptEditingButton_MouseClick(object sender, MouseEventArgs e)
@@ -450,8 +445,6 @@ namespace TranslationScriptMaker
 				return false;
 			}
 
-			ScriptEditingErrorLabel.Visible = false;
-
 			return true;
 		}
 
@@ -462,7 +455,7 @@ namespace TranslationScriptMaker
 
 			if ( !File.Exists(pathToCheck) )
 			{
-				ShowError(ScriptCreationErrorLabel, "The selected Script Location does not exist.");
+				MainFormErrorProvider.SetError(ScriptLocationTextBox, "The selected Script Location does not exist.");
 				return false;
 			}
 
@@ -472,7 +465,7 @@ namespace TranslationScriptMaker
 			}
 			catch ( UnauthorizedAccessException )
 			{
-				ShowError(ScriptCreationErrorLabel, "You do not have access (Read/Write permissions)\nto the selected Script Location.");
+				MainFormErrorProvider.SetError(ScriptLocationTextBox, "You do not have access (Read/Write permissions)\nto the selected Script Location.");
 				return false;
 			}
 
