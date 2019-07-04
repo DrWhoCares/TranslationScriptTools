@@ -189,6 +189,11 @@ namespace TranslationScriptMaker
 				PreviousImageButton.Enabled = false;
 			}
 
+			if ( NextImageButton.Text == "Finish" )
+			{
+				NextImageButton.Text = "Next";
+			}
+
 			ChangePage();
 		}
 
