@@ -39,9 +39,8 @@ namespace TranslationScriptMaker
 		{
 			if ( !File.Exists(CONFIG_FILENAME) )
 			{
-				StreamWriter configFile = File.CreateText(CONFIG_FILENAME);
-				configFile.WriteLine(CFG_TRANSLATOR_NAME + Environment.UserName);
-				configFile.Close();
+				File.AppendAllText(CONFIG_FILENAME, CFG_TRANSLATOR_NAME + Environment.UserName);
+
 				TranslatorNameTextBox.Text = Environment.UserName;
 				TranslatorName = Environment.UserName;
 				return;
@@ -61,9 +60,8 @@ namespace TranslationScriptMaker
 
 			if ( string.IsNullOrWhiteSpace(TranslatorName) )
 			{
-				StreamWriter configFile = File.AppendText(CONFIG_FILENAME);
-				configFile.WriteLine(CFG_TRANSLATOR_NAME + Environment.UserName);
-				configFile.Close();
+				File.AppendAllText(CONFIG_FILENAME, CFG_TRANSLATOR_NAME + Environment.UserName);
+
 				TranslatorNameTextBox.Text = Environment.UserName;
 				TranslatorName = Environment.UserName;
 			}
