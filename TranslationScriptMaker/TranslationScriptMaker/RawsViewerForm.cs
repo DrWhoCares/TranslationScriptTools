@@ -114,7 +114,11 @@ namespace TranslationScriptMaker
 					panelsWithSFX = new List<bool>(),
 					pageScriptContents = new List<string>()
 				});
+
+				CurrentPageComboBox.Items.Add(PageInformations.Last().filename + (IsCreatingScript ? "*" : ""));
 			}
+
+			CurrentPageComboBox.SelectedIndex = 0;
 
 			if ( IsCreatingScript )
 			{
@@ -174,11 +178,48 @@ namespace TranslationScriptMaker
 			SwitchToNextPage();
 		}
 
+		private void CurrentPageComboBox_SelectionChangeCommitted(object sender, EventArgs e)
+		{
+			if ( IsCreatingScript )
+			{
+				CurrentPageComboBox.Items[CurrentPageIndex] = PageInformations.ElementAt(CurrentPageIndex).filename + (string.IsNullOrWhiteSpace(TotalPanelsTextBox.Text) ? "*" : "");
+			}
+
+			PreviousPageIndex = CurrentPageIndex;
+			SavePageInformation();
+			CurrentPageIndex = CurrentPageComboBox.SelectedIndex;
+
+			PreviousImageButton.Enabled = CurrentPageIndex != 0;
+
+			if ( CurrentPageIndex >= RawsFiles.Count() - 1 )
+			{
+				NextImageButton.Text = "Finish";
+			}
+			else if ( NextImageButton.Text == "Finish" )
+			{
+				NextImageButton.Text = "Next";
+			}
+
+			LoadImage();
+			LoadPageInformation();
+			TotalPanelsTextBox.Select();
+
+			if ( !IsCreatingScript )
+			{
+				SaveCurrentScript();
+			}
+		}
+
 		private void SwitchToPreviousPage()
 		{
 			if ( CurrentPageIndex == 0 )
 			{
 				return;
+			}
+
+			if ( IsCreatingScript )
+			{
+				CurrentPageComboBox.Items[CurrentPageIndex] = PageInformations.ElementAt(CurrentPageIndex).filename + (string.IsNullOrWhiteSpace(TotalPanelsTextBox.Text) ? "*" : "");
 			}
 
 			PreviousPageIndex = CurrentPageIndex;
@@ -199,6 +240,11 @@ namespace TranslationScriptMaker
 
 		private void SwitchToNextPage()
 		{
+			if ( IsCreatingScript )
+			{
+				CurrentPageComboBox.Items[CurrentPageIndex] = PageInformations.ElementAt(CurrentPageIndex).filename + (string.IsNullOrWhiteSpace(TotalPanelsTextBox.Text) ? "*" : "");
+			}
+
 			PreviousPageIndex = CurrentPageIndex;
 			++CurrentPageIndex;
 
@@ -230,6 +276,12 @@ namespace TranslationScriptMaker
 			LoadImage();
 			LoadPageInformation();
 			TotalPanelsTextBox.Select();
+			CurrentPageComboBox.SelectedIndex = CurrentPageIndex;
+
+			if ( !IsCreatingScript )
+			{
+				SaveCurrentScript();
+			}
 		}
 
 		private void SavePageInformation()
@@ -447,14 +499,22 @@ namespace TranslationScriptMaker
 
 		private bool AreAllPagesFilledIn()
 		{
-			foreach ( PageInformation pageInfo in PageInformations )
+			bool areAllPagesFilledIn = true;
+
+			for ( int pageInfoIndex = 0; pageInfoIndex < PageInformations.Count(); ++pageInfoIndex )
 			{
-				if ( pageInfo.totalPanels == 0 )
+				if ( PageInformations.ElementAt(pageInfoIndex).totalPanels == 0 )
 				{
-					MessageBox.Show(this, "Page " + (pageInfo.pageNumber).ToString() + " does not have a value for total panels. All pages must have at least 1 panel to continue.",
-						"Error generating script.", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-					return false;
+					areAllPagesFilledIn = false;
 				}
+			}
+
+			if ( !areAllPagesFilledIn )
+			{
+				MessageBox.Show(this, "One or more pages do not have a value for total panels.\nAll pages must have at least 1 panel to continue.\nPages with errors are marked with a '*' in the dropdown list.",
+					"Error generating script.", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+
+				return false;
 			}
 
 			return true;
@@ -807,6 +867,30 @@ namespace TranslationScriptMaker
 			if ( !AreThereUnsavedChanges )
 			{
 				AreThereUnsavedChanges = true; // After the fact, in the very unlikely case that the sender can't be casted
+			}
+		}
+
+		private void CurrentPageComboBox_DrawItem(object sender, DrawItemEventArgs e)
+		{
+			if ( e.Index < 0 )
+			{
+				return;
+			}
+
+			ComboBox comboBox = sender as ComboBox;
+
+			using ( SolidBrush brush = new SolidBrush(e.ForeColor) )
+			{
+				Font font = e.Font;
+
+				if ( comboBox.Items[e.Index].ToString().Last() == '*' )
+				{
+					font = new Font(font, FontStyle.Bold);
+				}
+
+				e.DrawBackground();
+				e.Graphics.DrawString(comboBox.Items[e.Index].ToString(), font, brush, e.Bounds);
+				e.DrawFocusRectangle();
 			}
 		}
 	}

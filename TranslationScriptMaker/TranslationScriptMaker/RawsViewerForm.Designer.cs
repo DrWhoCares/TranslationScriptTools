@@ -56,6 +56,7 @@
 			this.ScriptViewerGroupBox = new System.Windows.Forms.GroupBox();
 			this.ScriptViewerRichTextBox = new System.Windows.Forms.RichTextBox();
 			this.MainPanel = new System.Windows.Forms.Panel();
+			this.CurrentPageComboBox = new System.Windows.Forms.ComboBox();
 			this.InputGroupBox.SuspendLayout();
 			this.PanelsWithSFXGroupBox.SuspendLayout();
 			this.InputPanel.SuspendLayout();
@@ -71,6 +72,7 @@
 			// 
 			// InputGroupBox
 			// 
+			this.InputGroupBox.Controls.Add(this.CurrentPageComboBox);
 			this.InputGroupBox.Controls.Add(this.IsPageASpreadCheckBox);
 			this.InputGroupBox.Controls.Add(this.PanelsWithSFXGroupBox);
 			this.InputGroupBox.Controls.Add(this.TotalPanelsLabel);
@@ -81,7 +83,7 @@
 			this.InputGroupBox.ForeColor = System.Drawing.SystemColors.ButtonFace;
 			this.InputGroupBox.Location = new System.Drawing.Point(0, 0);
 			this.InputGroupBox.Name = "InputGroupBox";
-			this.InputGroupBox.Size = new System.Drawing.Size(884, 51);
+			this.InputGroupBox.Size = new System.Drawing.Size(1137, 51);
 			this.InputGroupBox.TabIndex = 2;
 			this.InputGroupBox.TabStop = false;
 			this.InputGroupBox.Text = "Input Controls";
@@ -89,7 +91,7 @@
 			// IsPageASpreadCheckBox
 			// 
 			this.IsPageASpreadCheckBox.AutoSize = true;
-			this.IsPageASpreadCheckBox.Location = new System.Drawing.Point(776, 28);
+			this.IsPageASpreadCheckBox.Location = new System.Drawing.Point(869, 28);
 			this.IsPageASpreadCheckBox.Name = "IsPageASpreadCheckBox";
 			this.IsPageASpreadCheckBox.Size = new System.Drawing.Size(86, 17);
 			this.IsPageASpreadCheckBox.TabIndex = 6;
@@ -111,7 +113,7 @@
 			this.PanelsWithSFXGroupBox.Controls.Add(this.Panel11CheckBox);
 			this.PanelsWithSFXGroupBox.Controls.Add(this.Panel12CheckBox);
 			this.PanelsWithSFXGroupBox.ForeColor = System.Drawing.SystemColors.ButtonFace;
-			this.PanelsWithSFXGroupBox.Location = new System.Drawing.Point(298, 12);
+			this.PanelsWithSFXGroupBox.Location = new System.Drawing.Point(391, 12);
 			this.PanelsWithSFXGroupBox.Name = "PanelsWithSFXGroupBox";
 			this.PanelsWithSFXGroupBox.Size = new System.Drawing.Size(471, 39);
 			this.PanelsWithSFXGroupBox.TabIndex = 5;
@@ -303,7 +305,7 @@
 			// TotalPanelsLabel
 			// 
 			this.TotalPanelsLabel.AutoSize = true;
-			this.TotalPanelsLabel.Location = new System.Drawing.Point(175, 25);
+			this.TotalPanelsLabel.Location = new System.Drawing.Point(268, 25);
 			this.TotalPanelsLabel.Name = "TotalPanelsLabel";
 			this.TotalPanelsLabel.Size = new System.Drawing.Size(69, 13);
 			this.TotalPanelsLabel.TabIndex = 4;
@@ -311,7 +313,7 @@
 			// 
 			// TotalPanelsTextBox
 			// 
-			this.TotalPanelsTextBox.Location = new System.Drawing.Point(250, 22);
+			this.TotalPanelsTextBox.Location = new System.Drawing.Point(343, 22);
 			this.TotalPanelsTextBox.MaxLength = 2;
 			this.TotalPanelsTextBox.Name = "TotalPanelsTextBox";
 			this.TotalPanelsTextBox.Size = new System.Drawing.Size(42, 20);
@@ -323,7 +325,7 @@
 			// 
 			this.NextImageButton.BackColor = System.Drawing.SystemColors.Control;
 			this.NextImageButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-			this.NextImageButton.Location = new System.Drawing.Point(94, 20);
+			this.NextImageButton.Location = new System.Drawing.Point(187, 20);
 			this.NextImageButton.Name = "NextImageButton";
 			this.NextImageButton.Size = new System.Drawing.Size(75, 23);
 			this.NextImageButton.TabIndex = 2;
@@ -336,7 +338,7 @@
 			this.PreviousImageButton.BackColor = System.Drawing.SystemColors.Control;
 			this.PreviousImageButton.Enabled = false;
 			this.PreviousImageButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-			this.PreviousImageButton.Location = new System.Drawing.Point(13, 20);
+			this.PreviousImageButton.Location = new System.Drawing.Point(106, 20);
 			this.PreviousImageButton.Name = "PreviousImageButton";
 			this.PreviousImageButton.Size = new System.Drawing.Size(75, 23);
 			this.PreviousImageButton.TabIndex = 1;
@@ -350,7 +352,7 @@
 			this.InputPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this.InputPanel.Location = new System.Drawing.Point(0, 0);
 			this.InputPanel.Name = "InputPanel";
-			this.InputPanel.Size = new System.Drawing.Size(884, 51);
+			this.InputPanel.Size = new System.Drawing.Size(1137, 51);
 			this.InputPanel.TabIndex = 1;
 			// 
 			// RawsViewerPanel
@@ -359,7 +361,7 @@
 			this.RawsViewerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.RawsViewerPanel.Location = new System.Drawing.Point(0, 51);
 			this.RawsViewerPanel.Name = "RawsViewerPanel";
-			this.RawsViewerPanel.Size = new System.Drawing.Size(884, 410);
+			this.RawsViewerPanel.Size = new System.Drawing.Size(1137, 423);
 			this.RawsViewerPanel.TabIndex = 2;
 			// 
 			// ViewersSplitContainer
@@ -375,8 +377,8 @@
 			// ViewersSplitContainer.Panel2
 			// 
 			this.ViewersSplitContainer.Panel2.Controls.Add(this.ScriptViewerGroupBox);
-			this.ViewersSplitContainer.Size = new System.Drawing.Size(884, 410);
-			this.ViewersSplitContainer.SplitterDistance = 653;
+			this.ViewersSplitContainer.Size = new System.Drawing.Size(1137, 423);
+			this.ViewersSplitContainer.SplitterDistance = 731;
 			this.ViewersSplitContainer.TabIndex = 3;
 			// 
 			// RawsViewerGroupBox
@@ -388,7 +390,7 @@
 			this.RawsViewerGroupBox.ForeColor = System.Drawing.SystemColors.ButtonFace;
 			this.RawsViewerGroupBox.Location = new System.Drawing.Point(0, 0);
 			this.RawsViewerGroupBox.Name = "RawsViewerGroupBox";
-			this.RawsViewerGroupBox.Size = new System.Drawing.Size(653, 410);
+			this.RawsViewerGroupBox.Size = new System.Drawing.Size(731, 423);
 			this.RawsViewerGroupBox.TabIndex = 1;
 			this.RawsViewerGroupBox.TabStop = false;
 			this.RawsViewerGroupBox.Text = "Raws Viewer - Page: XXX / XXX";
@@ -403,7 +405,7 @@
 			this.RawsImageBox.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 			this.RawsImageBox.Location = new System.Drawing.Point(3, 16);
 			this.RawsImageBox.Name = "RawsImageBox";
-			this.RawsImageBox.Size = new System.Drawing.Size(647, 391);
+			this.RawsImageBox.Size = new System.Drawing.Size(725, 404);
 			this.RawsImageBox.TabIndex = 0;
 			this.RawsImageBox.ZoomChanged += new System.EventHandler(this.RawsImageBox_ZoomChanged);
 			this.RawsImageBox.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.RawsImageBox_MouseWheel);
@@ -415,7 +417,7 @@
 			this.ScriptViewerGroupBox.ForeColor = System.Drawing.SystemColors.ButtonFace;
 			this.ScriptViewerGroupBox.Location = new System.Drawing.Point(0, 0);
 			this.ScriptViewerGroupBox.Name = "ScriptViewerGroupBox";
-			this.ScriptViewerGroupBox.Size = new System.Drawing.Size(227, 410);
+			this.ScriptViewerGroupBox.Size = new System.Drawing.Size(402, 423);
 			this.ScriptViewerGroupBox.TabIndex = 2;
 			this.ScriptViewerGroupBox.TabStop = false;
 			this.ScriptViewerGroupBox.Text = "Script Viewer - Page: XXX / XXX";
@@ -428,7 +430,7 @@
 			this.ScriptViewerRichTextBox.ForeColor = System.Drawing.SystemColors.Control;
 			this.ScriptViewerRichTextBox.Location = new System.Drawing.Point(3, 16);
 			this.ScriptViewerRichTextBox.Name = "ScriptViewerRichTextBox";
-			this.ScriptViewerRichTextBox.Size = new System.Drawing.Size(221, 391);
+			this.ScriptViewerRichTextBox.Size = new System.Drawing.Size(396, 404);
 			this.ScriptViewerRichTextBox.TabIndex = 0;
 			this.ScriptViewerRichTextBox.Text = "";
 			this.ScriptViewerRichTextBox.WordWrap = false;
@@ -443,15 +445,27 @@
 			this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.MainPanel.Location = new System.Drawing.Point(0, 0);
 			this.MainPanel.Name = "MainPanel";
-			this.MainPanel.Size = new System.Drawing.Size(884, 461);
+			this.MainPanel.Size = new System.Drawing.Size(1137, 474);
 			this.MainPanel.TabIndex = 3;
+			// 
+			// CurrentPageComboBox
+			// 
+			this.CurrentPageComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+			this.CurrentPageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.CurrentPageComboBox.FormattingEnabled = true;
+			this.CurrentPageComboBox.Location = new System.Drawing.Point(12, 21);
+			this.CurrentPageComboBox.Name = "CurrentPageComboBox";
+			this.CurrentPageComboBox.Size = new System.Drawing.Size(88, 21);
+			this.CurrentPageComboBox.TabIndex = 7;
+			this.CurrentPageComboBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.CurrentPageComboBox_DrawItem);
+			this.CurrentPageComboBox.SelectionChangeCommitted += new System.EventHandler(this.CurrentPageComboBox_SelectionChangeCommitted);
 			// 
 			// RawsViewerForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.ClientSize = new System.Drawing.Size(884, 461);
+			this.ClientSize = new System.Drawing.Size(1137, 474);
 			this.Controls.Add(this.MainPanel);
 			this.ForeColor = System.Drawing.SystemColors.Control;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -504,5 +518,6 @@
         private System.Windows.Forms.SplitContainer ViewersSplitContainer;
         private System.Windows.Forms.RichTextBox ScriptViewerRichTextBox;
 		private Cyotek.Windows.Forms.ImageBox RawsImageBox;
+		private System.Windows.Forms.ComboBox CurrentPageComboBox;
 	}
 }
