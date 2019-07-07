@@ -10,14 +10,20 @@ namespace TranslationScriptMaker
 {
 	public partial class MainForm : Form
 	{
-		private const string CONFIG_FILENAME = "TSMConfig.txt";
-		private const char CFG_DELIMITER = '=';
-		private const string CFG_TRANSLATOR_NAME = "Translator=";
+		private static readonly Regex VolumeRegex = new Regex(@"Vol(ume)?.? *([0-9]+$)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex ChapterRegex = new Regex(@"Ch(apter)?.? *([0-9]+([.,][0-9]+)?$)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex RawsRegex = new Regex(@"Raw(s)?", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex ImageRegex = new Regex(@".*\.(png|jpg|jpeg)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
+		private static TLSMConfig Config = TLSMConfig.LoadConfig();
 
 		private bool WasRawsLocationVerified { get; set; }
 		private bool WasOutputLocationVerified { get; set; }
 		private bool WasTranslatorNameVerified { get; set; }
-		private bool WasChapterNameVerified { get; set; }
+		private bool WasSeriesLocationVerified { get; set; }
+
+
+		private bool WasChapterLocationVerified { get; set; }
 		private bool WasScriptLocationVerified { get; set; }
 		private bool WasEditingRawsLocationVerified { get; set; }
 		private string OutputLocationFullPath { get; set; }
@@ -30,61 +36,204 @@ namespace TranslationScriptMaker
 		public MainForm()
 		{
 			InitializeComponent();
-			ReadTSMConfigFile();
+			InitializeWithConfigValues();
 		}
 
-		#region ConfigReading
-		private void ReadTSMConfigFile()
+		#region Initialization
+		private void InitializeWithConfigValues()
 		{
-			if ( !File.Exists(CONFIG_FILENAME) )
-			{
-				File.AppendAllText(CONFIG_FILENAME, CFG_TRANSLATOR_NAME + Environment.UserName);
+			RawsLocationTextBox.Text = !string.IsNullOrWhiteSpace(Config.RawsLocation) ? Config.RawsLocation : "";
+			OutputLocationTextBox.Text = !string.IsNullOrWhiteSpace(Config.ScriptOutputLocation) ? Config.ScriptOutputLocation : "";
+			TranslatorNameTextBox.Text = !string.IsNullOrWhiteSpace(Config.TranslatorName) ? Config.TranslatorName : "";
 
-				TranslatorNameTextBox.Text = Environment.UserName;
-				TranslatorName = Environment.UserName;
+			switch ( Config.ScriptOutputToChoice )
+			{
+				case OutputToChoice.ChapterFolder:
+					OutputToChapterFolderRadioButton.Checked = true;
+					break;
+				case OutputToChoice.WithRaws:
+					OutputWithRawsRadioButton.Checked = true;
+					break;
+				case OutputToChoice.CustomLocation:
+					OutputToCustomLocationRadioButton.Checked = true;
+					break;
+
+				default:
+					Config.ScriptOutputToChoice = OutputToChoice.ChapterFolder;
+					OutputToChapterFolderRadioButton.Checked = true;
+					break;
+			}
+
+			OutputLocationButton.Enabled = OutputToCustomLocationRadioButton.Checked;
+			OutputLocationTextBox.Enabled = OutputToCustomLocationRadioButton.Checked;
+
+			if ( !string.IsNullOrWhiteSpace(RawsLocationTextBox.Text) )
+			{
+				ParseRawsDirectoryForSeries(RawsLocationTextBox.Text);
+
+				if ( !string.IsNullOrWhiteSpace(Config.LastSelectedSeries) )
+				{
+					int selectedSeriesIndex = SeriesSelectionComboBox.Items.IndexOf(Config.LastSelectedSeries);
+
+					if ( selectedSeriesIndex > -1 )
+					{
+						SeriesSelectionComboBox.SelectedItem = SeriesSelectionComboBox.Items[selectedSeriesIndex];
+					}
+					else
+					{
+						Config.LastSelectedSeries = ""; // Since it can no longer find the last selected series, reset the setting
+					}
+				}
+
+				if ( SeriesSelectionComboBox.SelectedItem != null )
+				{
+					ParseSeriesDirectoryForChapters(RawsLocationTextBox.Text + "\\" + SeriesSelectionComboBox.SelectedItem.ToString());
+
+					if ( !string.IsNullOrWhiteSpace(Config.LastSelectedChapter) )
+					{
+						int selectedChapterIndex = ChapterSelectionComboBox.Items.IndexOf(Config.LastSelectedChapter);
+
+						if ( selectedChapterIndex > -1 )
+						{
+							ChapterSelectionComboBox.SelectedItem = ChapterSelectionComboBox.Items[selectedChapterIndex];
+						}
+						else
+						{
+							Config.LastSelectedChapter = ""; // Since it can no longer find the last selected chapter, reset the setting
+						}
+					}
+				}
+			}
+
+			UpdateOutputLocation();
+		}
+
+		private void ParseRawsDirectoryForSeries(string rawsDirectoryPath)
+		{
+			if ( string.IsNullOrWhiteSpace(rawsDirectoryPath) )
+			{
 				return;
 			}
 
-			string[] configEntries = File.ReadAllLines(CONFIG_FILENAME);
+			SeriesSelectionComboBox.Items.Clear();
+			SeriesSelectionComboBox.DropDownHeight = 106;
 
-			foreach ( string configEntry in configEntries )
+			DirectoryInfo[] seriesDirectories = new DirectoryInfo(rawsDirectoryPath).GetDirectories();
+
+			foreach ( DirectoryInfo seriesDirInfo in DirectoryOrderer.OrderByAlphaNumeric(seriesDirectories, DirectoryOrderer.GetDirectoryName) )
 			{
-				if ( configEntry.Contains(CFG_TRANSLATOR_NAME) )
+				if ( DoesSeriesDirectoryContainChapters(seriesDirInfo.FullName) )
 				{
-					string translatorName = GetConfigEntryValue(configEntry);
-					TranslatorNameTextBox.Text = translatorName;
-					TranslatorName = translatorName;
+					SeriesSelectionComboBox.Items.Add(seriesDirInfo.Name);
 				}
 			}
 
-			if ( string.IsNullOrWhiteSpace(TranslatorName) )
+			if ( SeriesSelectionComboBox.Items.Count == 0 )
 			{
-				File.AppendAllText(CONFIG_FILENAME, CFG_TRANSLATOR_NAME + Environment.UserName);
-
-				TranslatorNameTextBox.Text = Environment.UserName;
-				TranslatorName = Environment.UserName;
+				WasRawsLocationVerified = false;
+				MainFormErrorProvider.SetError(RawsLocationTextBox, "The Raws Location doesn't contain any Chapter folders in any of its subfolders.");
+			}
+			else
+			{
+				WasRawsLocationVerified = true;
+				MainFormErrorProvider.SetError(RawsLocationTextBox, null);
 			}
 		}
 
-		private static string GetConfigEntryValue(string configEntry)
+		private static bool DoesSeriesDirectoryContainChapters(string seriesDirectoryPath)
 		{
-			return configEntry.Substring(configEntry.IndexOf(CFG_DELIMITER) + 1); // Offset by one to remove the delimiter
+			return new DirectoryInfo(seriesDirectoryPath).GetDirectories("*", SearchOption.TopDirectoryOnly)
+				.Where((subdirectory) => ChapterRegex.IsMatch(subdirectory.Name) || IsSeriesSubdirectoryAVolume(subdirectory)).Count() > 0;
 		}
 
-		private void UpdateConfigEntryInFile(string configKeyString, string newValue)
+		private static bool IsSeriesSubdirectoryAVolume(DirectoryInfo subdirectoryInfo)
 		{
-			string[] configEntries = File.ReadAllLines(CONFIG_FILENAME);
+			return VolumeRegex.IsMatch(subdirectoryInfo.Name) && subdirectoryInfo.GetDirectories("*", SearchOption.TopDirectoryOnly)
+				.Where((subsubDirectory) => ChapterRegex.IsMatch(subsubDirectory.Name)).Count() > 0;
+		}
 
-			for ( int configIndex = 0; configIndex < configEntries.Length; ++configIndex )
+		private void ParseSeriesDirectoryForChapters(string seriesDirectoryPath)
+		{
+			if ( string.IsNullOrWhiteSpace(seriesDirectoryPath) )
 			{
-				if ( configEntries[configIndex].Contains(configKeyString) )
+				return;
+			}
+
+			ChapterSelectionComboBox.Items.Clear();
+			ChapterSelectionComboBox.DropDownHeight = 106;
+
+			DirectoryInfo seriesDirectoryInfo = new DirectoryInfo(seriesDirectoryPath);
+			IEnumerable<DirectoryInfo> chapterDirectories = seriesDirectoryInfo.GetDirectories("*", SearchOption.AllDirectories).Where((directory) => ChapterRegex.IsMatch(directory.Name));
+
+			foreach ( DirectoryInfo chapterDirInfo in DirectoryOrderer.OrderByAlphaNumeric(chapterDirectories, DirectoryOrderer.GetDirectoryName) )
+			{
+				if ( DoesChapterDirectoryContainRaws(chapterDirInfo.FullName) || DoesChapterDirectoryContainRawsFolder(chapterDirInfo.FullName) )
 				{
-					configEntries[configIndex] = configEntries[configIndex].Substring(0, configEntries[configIndex].IndexOf(CFG_DELIMITER) + 1);
-					configEntries[configIndex] += newValue;
+					if ( chapterDirInfo.Parent.Name == seriesDirectoryInfo.Name )
+					{
+						ChapterSelectionComboBox.Items.Add(chapterDirInfo.Name);
+					}
+					else
+					{
+						ChapterSelectionComboBox.Items.Add(chapterDirInfo.Parent.Name + "\\" + chapterDirInfo.Name);
+					}
 				}
 			}
 
-			File.WriteAllLines(CONFIG_FILENAME, configEntries);
+			if ( ChapterSelectionComboBox.Items.Count == 0 )
+			{
+				WasSeriesLocationVerified = false;
+				MainFormErrorProvider.SetError(SeriesSelectionComboBox, "The Raws Location doesn't contain any Chapter folders in any of its subfolders.");
+			}
+			else
+			{
+				WasSeriesLocationVerified = true;
+				MainFormErrorProvider.SetError(SeriesSelectionComboBox, null);
+			}
+		}
+
+		private static bool DoesChapterDirectoryContainRaws(string chapterDirectoryPath)
+		{
+			return new DirectoryInfo(chapterDirectoryPath).GetFiles("*", SearchOption.TopDirectoryOnly).Where((file) => ImageRegex.IsMatch(file.Name)).Count() > 0;
+		}
+
+		private static bool DoesChapterDirectoryContainRawsFolder(string chapterDirectoryPath)
+		{
+			return new DirectoryInfo(chapterDirectoryPath).GetDirectories("*", SearchOption.TopDirectoryOnly)
+				.Where((subdirectory) => RawsRegex.IsMatch(subdirectory.Name)
+					&& subdirectory.GetFiles("*", SearchOption.TopDirectoryOnly)
+						.Where((file) => ImageRegex.IsMatch(file.Name)).Count() > 0).Count() > 0;
+		}
+
+		private void UpdateOutputLocation()
+		{
+			if ( Config.ScriptOutputToChoice == OutputToChoice.CustomLocation || SeriesSelectionComboBox.SelectedItem == null || ChapterSelectionComboBox.SelectedItem == null )
+			{
+				return;
+			}
+
+			string selectedSeriesPath = RawsLocationTextBox.Text + "\\" + SeriesSelectionComboBox.SelectedItem.ToString() + "\\";
+			string selectedChapter = ChapterSelectionComboBox.SelectedItem.ToString();
+			string rawsSuffix = string.Empty;
+
+			string outputLocationFullPath = selectedSeriesPath + selectedChapter;
+
+			if ( Config.ScriptOutputToChoice == OutputToChoice.WithRaws && DoesChapterDirectoryContainRawsFolder(outputLocationFullPath) )
+			{
+				var subdirectories = new DirectoryInfo(outputLocationFullPath).GetDirectories("*", SearchOption.TopDirectoryOnly).Where((subdirectory) => RawsRegex.IsMatch(subdirectory.Name));
+				
+				foreach ( DirectoryInfo dirInfo in subdirectories )
+				{
+					// Just take the first match that actually has files
+					if ( dirInfo.GetFiles("*", SearchOption.TopDirectoryOnly).Where((file) => ImageRegex.IsMatch(file.Name)).Count() > 0 )
+					{
+						rawsSuffix = dirInfo.Name;
+						break;
+					}
+				}
+			}
+
+			OutputLocationTextBox.Text = outputLocationFullPath + rawsSuffix;
 		}
 		#endregion
 
@@ -99,25 +248,15 @@ namespace TranslationScriptMaker
 				if ( rawsLocationDialog.ShowDialog() == CommonFileDialogResult.Ok )
 				{
 					RawsLocationTextBox.Text = rawsLocationDialog.FileName;
-					WasRawsLocationVerified = VerifyRawsLocation(RawsLocationTextBox);
+					Config.RawsLocation = rawsLocationDialog.FileName;
+					ParseRawsDirectoryForSeries(RawsLocationTextBox.Text);
 				}
 			}
 		}
 
 		private void RawsLocationTextBox_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			e.Cancel = !VerifyRawsLocation(RawsLocationTextBox);
-
-			if ( e.Cancel )
-			{
-				WasRawsLocationVerified = false;
-			}
-		}
-
-		private void RawsLocationTextBox_Validated(object sender, EventArgs e)
-		{
-			WasRawsLocationVerified = true;
-			MainFormErrorProvider.SetError(RawsLocationTextBox, null);
+			ParseRawsDirectoryForSeries(RawsLocationTextBox.Text);
 		}
 
 		private void OutputLocationButton_MouseClick(object sender, MouseEventArgs e)
@@ -130,25 +269,10 @@ namespace TranslationScriptMaker
 				if ( outputLocationDialog.ShowDialog() == CommonFileDialogResult.Ok )
 				{
 					OutputLocationTextBox.Text = outputLocationDialog.FileName;
+					Config.ScriptOutputLocation = outputLocationDialog.FileName;
 					WasOutputLocationVerified = VerifyOutputLocation();
 				}
 			}
-		}
-
-		private void OutputLocationTextBox_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			e.Cancel = !VerifyOutputLocation();
-
-			if ( e.Cancel )
-			{
-				WasOutputLocationVerified = false;
-			}
-		}
-
-		private void OutputLocationTextBox_Validated(object sender, EventArgs e)
-		{
-			WasOutputLocationVerified = true;
-			MainFormErrorProvider.SetError(OutputLocationTextBox, null);
 		}
 
 		private void TranslatorNameTextBox_Validating(object sender, System.ComponentModel.CancelEventArgs e)
@@ -167,20 +291,59 @@ namespace TranslationScriptMaker
 			MainFormErrorProvider.SetError(TranslatorNameTextBox, null);
 		}
 
-		private void ChapterNumberTextBox_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		private void SeriesSelectionComboBox_SelectionChangeCommitted(object sender, EventArgs e)
 		{
-			e.Cancel = !VerifyChapterNumber();
-
-			if ( e.Cancel )
+			if ( SeriesSelectionComboBox.SelectedItem == null )
 			{
-				WasChapterNameVerified = false;
+				return;
+			}
+
+			Config.LastSelectedSeries = SeriesSelectionComboBox.SelectedItem.ToString();
+
+			if ( !string.IsNullOrWhiteSpace(RawsLocationTextBox.Text) )
+			{
+				ParseSeriesDirectoryForChapters(RawsLocationTextBox.Text + "\\" + SeriesSelectionComboBox.SelectedItem.ToString());
+				UpdateOutputLocation();
 			}
 		}
 
-		private void ChapterNumberTextBox_Validated(object sender, EventArgs e)
+		private void ChapterSelectionComboBox_SelectionChangeCommitted(object sender, EventArgs e)
 		{
-			WasChapterNameVerified = true;
-			MainFormErrorProvider.SetError(ChapterNumberTextBox, null);
+			if ( ChapterSelectionComboBox.SelectedItem == null )
+			{
+				return;
+			}
+
+			Config.LastSelectedChapter = ChapterSelectionComboBox.SelectedItem.ToString();
+			UpdateOutputLocation();
+		}
+
+		private void OutputToChapterFolderRadioButton_MouseClick(object sender, MouseEventArgs e)
+		{
+			Config.ScriptOutputToChoice = OutputToChoice.ChapterFolder;
+			UpdateOutputLocation();
+		}
+
+		private void OutputWithRawsRadioButton_MouseClick(object sender, MouseEventArgs e)
+		{
+			Config.ScriptOutputToChoice = OutputToChoice.WithRaws;
+			UpdateOutputLocation();
+		}
+
+		private void OutputToCustomLocationRadioButton_MouseClick(object sender, MouseEventArgs e)
+		{
+			Config.ScriptOutputToChoice = OutputToChoice.CustomLocation;
+		}
+
+		private void OutputToCustomLocationRadioButton_CheckedChanged(object sender, EventArgs e)
+		{
+			OutputLocationButton.Enabled = OutputToCustomLocationRadioButton.Checked;
+			OutputLocationTextBox.Enabled = OutputToCustomLocationRadioButton.Checked;
+
+			if ( OutputToCustomLocationRadioButton.Checked )
+			{
+				OutputLocationTextBox.Text = string.Empty;
+			}
 		}
 
 		private void BeginScriptCreationButton_MouseClick(object sender, MouseEventArgs e)
@@ -210,7 +373,7 @@ namespace TranslationScriptMaker
 				return false;
 			}
 
-			if ( !WasChapterNameVerified )
+			if ( !WasSeriesLocationVerified )
 			{
 				return false;
 			}
@@ -251,9 +414,9 @@ namespace TranslationScriptMaker
 			if ( result.Success )
 			{
 				OutputLocationTextBox.Text = chapterFolderPath;
-				ChapterNumberTextBox.Text = result.Groups[1].Value;
+				//ChapterNumberTextBox.Text = result.Groups[1].Value;
 				MainFormErrorProvider.SetError(OutputLocationTextBox, null);
-				MainFormErrorProvider.SetError(ChapterNumberTextBox, null);
+				//MainFormErrorProvider.SetError(ChapterNumberTextBox, null);
 			}
 			else // Default to placing in the same directory as raws
 			{
@@ -288,17 +451,6 @@ namespace TranslationScriptMaker
 				return false;
 			}
 
-			string chapterFolderName = pathToCheck.Substring(pathToCheck.LastIndexOf('\\') + 1);
-
-			Match result = Regex.Match(chapterFolderName, @"[Ch]{2}[a-z _-]*([0-9]*([.,][0-9]*)?$)", RegexOptions.IgnoreCase);
-
-			// Check to see if it matches the folder hierarchy that I use
-			if ( result.Success )
-			{
-				ChapterNumberTextBox.Text = result.Groups[1].Value;
-				MainFormErrorProvider.SetError(ChapterNumberTextBox, null);
-			}
-
 			OutputLocationFullPath = pathToCheck;
 			MainFormErrorProvider.SetError(OutputLocationTextBox, null);
 
@@ -325,29 +477,9 @@ namespace TranslationScriptMaker
 			return true;
 		}
 
-		private bool VerifyChapterNumber()
-		{
-			// Chapter Number cannot be empty and these characters cannot be present: / \ | : * ? < >
-			if ( string.IsNullOrWhiteSpace(ChapterNumberTextBox.Text) )
-			{
-				MainFormErrorProvider.SetError(ChapterNumberTextBox, "Chapter Number cannot be empty or just spaces,\nand must contain at least one character.");
-				return false;
-			}
-
-			if ( ChapterNumberTextBox.Text.IndexOfAny(Path.GetInvalidFileNameChars()) != -1 )
-			{
-				MainFormErrorProvider.SetError(ChapterNumberTextBox, "Chapter number cannot contain any of the following\ncharacters: / \\ | : * ? < >");
-				return false;
-			}
-
-			SelectedChapterNumber = ChapterNumberTextBox.Text;
-
-			return true;
-		}
-
 		private void BeginScriptCreation()
 		{
-			UpdateConfigEntryInFile(CFG_TRANSLATOR_NAME, TranslatorName);
+			Config.SaveConfig();
 
 			using ( RawsViewerForm rawsViewerForm = new RawsViewerForm(OutputLocationFullPath, ScriptLocationFullPath, SelectedChapterNumber, RawsFiles, TranslatorName, true) )
 			{
@@ -513,5 +645,22 @@ namespace TranslationScriptMaker
 			}
         }
 		#endregion
+
+		private void OutputLocationTextBox_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			e.Cancel = VerifyOutputLocation();
+			WasOutputLocationVerified = e.Cancel;
+		}
+	}
+
+	internal static class DirectoryOrderer
+	{
+		public static string GetDirectoryName(DirectoryInfo dirInfo) => dirInfo.Name;
+
+		public static IOrderedEnumerable<T> OrderByAlphaNumeric<T>(this IEnumerable<T> source, Func<T, string> selector)
+		{
+			int max = source.SelectMany(i => Regex.Matches(selector(i), @"\d+").Cast<Match>().Select(m => m.Value.Length)).DefaultIfEmpty().Max();
+			return source.OrderBy(i => Regex.Replace(selector(i), @"\d+", m => m.Value.PadLeft(max, '0')));
+		}
 	}
 }

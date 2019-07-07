@@ -147,13 +147,13 @@
     <value>ScriptCreatorTabPage</value>
   </data>
   <data name="&gt;&gt;RawsLocationLabel.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>9</value>
   </data>
   <data name="RawsLocationTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>45, 24</value>
   </data>
   <data name="RawsLocationTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>303, 20</value>
+    <value>448, 20</value>
   </data>
   <data name="RawsLocationTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -168,7 +168,7 @@
     <value>ScriptCreatorTabPage</value>
   </data>
   <data name="&gt;&gt;RawsLocationTextBox.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>10</value>
   </data>
   <data name="RawsLocationButton.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 9.75pt</value>
@@ -195,7 +195,7 @@
     <value>ScriptCreatorTabPage</value>
   </data>
   <data name="&gt;&gt;RawsLocationButton.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>12</value>
   </data>
   <data name="TranslatorNameLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -229,7 +229,7 @@
     <value>ScriptCreatorTabPage</value>
   </data>
   <data name="&gt;&gt;TranslatorNameLabel.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>13</value>
   </data>
   <data name="TranslatorNameTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>154, 100</value>
@@ -250,10 +250,10 @@
     <value>ScriptCreatorTabPage</value>
   </data>
   <data name="&gt;&gt;TranslatorNameTextBox.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>11</value>
   </data>
   <data name="BeginScriptCreationButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 163</value>
+    <value>6, 181</value>
   </data>
   <data name="BeginScriptCreationButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -274,196 +274,226 @@
     <value>ScriptCreatorTabPage</value>
   </data>
   <data name="&gt;&gt;BeginScriptCreationButton.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>8</value>
   </data>
-  <data name="&gt;&gt;ScriptCreatorTabPage.Name" xml:space="preserve">
-    <value>ScriptCreatorTabPage</value>
-  </data>
-  <data name="&gt;&gt;ScriptCreatorTabPage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ScriptCreatorTabPage.Parent" xml:space="preserve">
-    <value>MainTabControl</value>
-  </data>
-  <data name="&gt;&gt;ScriptCreatorTabPage.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditorTabPage.Name" xml:space="preserve">
-    <value>ScriptEditorTabPage</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditorTabPage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditorTabPage.Parent" xml:space="preserve">
-    <value>MainTabControl</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditorTabPage.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="MainTabControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="MainTabControl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="MainTabControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>371, 218</value>
-  </data>
-  <data name="MainTabControl.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;MainTabControl.Name" xml:space="preserve">
-    <value>MainTabControl</value>
-  </data>
-  <data name="&gt;&gt;MainTabControl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;MainTabControl.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;MainTabControl.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;ChapterNumberTextBox.Name" xml:space="preserve">
-    <value>ChapterNumberTextBox</value>
-  </data>
-  <data name="&gt;&gt;ChapterNumberTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ChapterNumberTextBox.Parent" xml:space="preserve">
-    <value>ScriptCreatorTabPage</value>
-  </data>
-  <data name="&gt;&gt;ChapterNumberTextBox.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;ChapterNumberLabel.Name" xml:space="preserve">
-    <value>ChapterNumberLabel</value>
-  </data>
-  <data name="&gt;&gt;ChapterNumberLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ChapterNumberLabel.Parent" xml:space="preserve">
-    <value>ScriptCreatorTabPage</value>
-  </data>
-  <data name="&gt;&gt;ChapterNumberLabel.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;OutputLocationLabel.Name" xml:space="preserve">
-    <value>OutputLocationLabel</value>
-  </data>
-  <data name="&gt;&gt;OutputLocationLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;OutputLocationLabel.Parent" xml:space="preserve">
-    <value>ScriptCreatorTabPage</value>
-  </data>
-  <data name="&gt;&gt;OutputLocationLabel.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;OutputLocationTextBox.Name" xml:space="preserve">
-    <value>OutputLocationTextBox</value>
-  </data>
-  <data name="&gt;&gt;OutputLocationTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;OutputLocationTextBox.Parent" xml:space="preserve">
-    <value>ScriptCreatorTabPage</value>
-  </data>
-  <data name="&gt;&gt;OutputLocationTextBox.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;OutputLocationButton.Name" xml:space="preserve">
-    <value>OutputLocationButton</value>
-  </data>
-  <data name="&gt;&gt;OutputLocationButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;OutputLocationButton.Parent" xml:space="preserve">
-    <value>ScriptCreatorTabPage</value>
-  </data>
-  <data name="&gt;&gt;OutputLocationButton.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="ScriptCreatorTabPage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="ScriptCreatorTabPage.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="ScriptCreatorTabPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>363, 192</value>
-  </data>
-  <data name="ScriptCreatorTabPage.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="ScriptCreatorTabPage.Text" xml:space="preserve">
-    <value>Script Creator</value>
-  </data>
-  <data name="&gt;&gt;ScriptCreatorTabPage.Name" xml:space="preserve">
-    <value>ScriptCreatorTabPage</value>
-  </data>
-  <data name="&gt;&gt;ScriptCreatorTabPage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ScriptCreatorTabPage.Parent" xml:space="preserve">
-    <value>MainTabControl</value>
-  </data>
-  <data name="&gt;&gt;ScriptCreatorTabPage.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="ChapterNumberTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>154, 127</value>
-  </data>
-  <data name="ChapterNumberTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 20</value>
-  </data>
-  <data name="ChapterNumberTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;ChapterNumberTextBox.Name" xml:space="preserve">
-    <value>ChapterNumberTextBox</value>
-  </data>
-  <data name="&gt;&gt;ChapterNumberTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ChapterNumberTextBox.Parent" xml:space="preserve">
-    <value>ScriptCreatorTabPage</value>
-  </data>
-  <data name="&gt;&gt;ChapterNumberTextBox.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="ChapterNumberLabel.AutoSize" type="System.Boolean, mscorlib">
+  <data name="OutputToCustomLocationRadioButton.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="ChapterNumberLabel.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 12pt, style=Bold</value>
-  </data>
-  <data name="ChapterNumberLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="OutputToCustomLocationRadioButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="ChapterNumberLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 127</value>
+  <data name="OutputToCustomLocationRadioButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 51</value>
   </data>
-  <data name="ChapterNumberLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>145, 20</value>
+  <data name="OutputToCustomLocationRadioButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>104, 17</value>
   </data>
-  <data name="ChapterNumberLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+  <data name="OutputToCustomLocationRadioButton.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="ChapterNumberLabel.Text" xml:space="preserve">
-    <value>Chapter Number:</value>
+  <data name="OutputToCustomLocationRadioButton.Text" xml:space="preserve">
+    <value>Custom Location</value>
   </data>
-  <data name="&gt;&gt;ChapterNumberLabel.Name" xml:space="preserve">
-    <value>ChapterNumberLabel</value>
+  <data name="&gt;&gt;OutputToCustomLocationRadioButton.Name" xml:space="preserve">
+    <value>OutputToCustomLocationRadioButton</value>
   </data>
-  <data name="&gt;&gt;ChapterNumberLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;OutputToCustomLocationRadioButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;ChapterNumberLabel.Parent" xml:space="preserve">
+  <data name="&gt;&gt;OutputToCustomLocationRadioButton.Parent" xml:space="preserve">
+    <value>OutputToGroupBox</value>
+  </data>
+  <data name="&gt;&gt;OutputToCustomLocationRadioButton.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="OutputWithRawsRadioButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="OutputWithRawsRadioButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="OutputWithRawsRadioButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 33</value>
+  </data>
+  <data name="OutputWithRawsRadioButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 17</value>
+  </data>
+  <data name="OutputWithRawsRadioButton.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="OutputWithRawsRadioButton.Text" xml:space="preserve">
+    <value>With Raws</value>
+  </data>
+  <data name="&gt;&gt;OutputWithRawsRadioButton.Name" xml:space="preserve">
+    <value>OutputWithRawsRadioButton</value>
+  </data>
+  <data name="&gt;&gt;OutputWithRawsRadioButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;OutputWithRawsRadioButton.Parent" xml:space="preserve">
+    <value>OutputToGroupBox</value>
+  </data>
+  <data name="&gt;&gt;OutputWithRawsRadioButton.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="OutputToChapterFolderRadioButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="OutputToChapterFolderRadioButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 15</value>
+  </data>
+  <data name="OutputToChapterFolderRadioButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>94, 17</value>
+  </data>
+  <data name="OutputToChapterFolderRadioButton.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="OutputToChapterFolderRadioButton.Text" xml:space="preserve">
+    <value>Chapter Folder</value>
+  </data>
+  <data name="&gt;&gt;OutputToChapterFolderRadioButton.Name" xml:space="preserve">
+    <value>OutputToChapterFolderRadioButton</value>
+  </data>
+  <data name="&gt;&gt;OutputToChapterFolderRadioButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;OutputToChapterFolderRadioButton.Parent" xml:space="preserve">
+    <value>OutputToGroupBox</value>
+  </data>
+  <data name="&gt;&gt;OutputToChapterFolderRadioButton.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="OutputToGroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>354, 100</value>
+  </data>
+  <data name="OutputToGroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>139, 74</value>
+  </data>
+  <data name="OutputToGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="OutputToGroupBox.Text" xml:space="preserve">
+    <value>OutputTo</value>
+  </data>
+  <data name="&gt;&gt;OutputToGroupBox.Name" xml:space="preserve">
+    <value>OutputToGroupBox</value>
+  </data>
+  <data name="&gt;&gt;OutputToGroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;OutputToGroupBox.Parent" xml:space="preserve">
     <value>ScriptCreatorTabPage</value>
   </data>
-  <data name="&gt;&gt;ChapterNumberLabel.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;OutputToGroupBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="ChapterSelectionComboBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>86, 153</value>
+  </data>
+  <data name="ChapterSelectionComboBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>262, 21</value>
+  </data>
+  <data name="ChapterSelectionComboBox.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="&gt;&gt;ChapterSelectionComboBox.Name" xml:space="preserve">
+    <value>ChapterSelectionComboBox</value>
+  </data>
+  <data name="&gt;&gt;ChapterSelectionComboBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ChapterSelectionComboBox.Parent" xml:space="preserve">
+    <value>ScriptCreatorTabPage</value>
+  </data>
+  <data name="&gt;&gt;ChapterSelectionComboBox.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="SeriesSelectionComboBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>73, 127</value>
+  </data>
+  <data name="SeriesSelectionComboBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>275, 21</value>
+  </data>
+  <data name="SeriesSelectionComboBox.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;SeriesSelectionComboBox.Name" xml:space="preserve">
+    <value>SeriesSelectionComboBox</value>
+  </data>
+  <data name="&gt;&gt;SeriesSelectionComboBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;SeriesSelectionComboBox.Parent" xml:space="preserve">
+    <value>ScriptCreatorTabPage</value>
+  </data>
+  <data name="&gt;&gt;SeriesSelectionComboBox.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="ChapterSelectionLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ChapterSelectionLabel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 12pt, style=Bold</value>
+  </data>
+  <data name="ChapterSelectionLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="ChapterSelectionLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 154</value>
+  </data>
+  <data name="ChapterSelectionLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>78, 20</value>
+  </data>
+  <data name="ChapterSelectionLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="ChapterSelectionLabel.Text" xml:space="preserve">
+    <value>Chapter:</value>
+  </data>
+  <data name="&gt;&gt;ChapterSelectionLabel.Name" xml:space="preserve">
+    <value>ChapterSelectionLabel</value>
+  </data>
+  <data name="&gt;&gt;ChapterSelectionLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ChapterSelectionLabel.Parent" xml:space="preserve">
+    <value>ScriptCreatorTabPage</value>
+  </data>
+  <data name="&gt;&gt;ChapterSelectionLabel.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="SeriesSelectionLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="SeriesSelectionLabel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 12pt, style=Bold</value>
+  </data>
+  <data name="SeriesSelectionLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="SeriesSelectionLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 127</value>
+  </data>
+  <data name="SeriesSelectionLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 20</value>
+  </data>
+  <data name="SeriesSelectionLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="SeriesSelectionLabel.Text" xml:space="preserve">
+    <value>Series:</value>
+  </data>
+  <data name="&gt;&gt;SeriesSelectionLabel.Name" xml:space="preserve">
+    <value>SeriesSelectionLabel</value>
+  </data>
+  <data name="&gt;&gt;SeriesSelectionLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;SeriesSelectionLabel.Parent" xml:space="preserve">
+    <value>ScriptCreatorTabPage</value>
+  </data>
+  <data name="&gt;&gt;SeriesSelectionLabel.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="OutputLocationLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -496,13 +526,13 @@
     <value>ScriptCreatorTabPage</value>
   </data>
   <data name="&gt;&gt;OutputLocationLabel.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>5</value>
   </data>
   <data name="OutputLocationTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>45, 73</value>
   </data>
   <data name="OutputLocationTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>303, 20</value>
+    <value>448, 20</value>
   </data>
   <data name="OutputLocationTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -517,7 +547,7 @@
     <value>ScriptCreatorTabPage</value>
   </data>
   <data name="&gt;&gt;OutputLocationTextBox.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="OutputLocationButton.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 9.75pt</value>
@@ -547,118 +577,34 @@
     <value>ScriptCreatorTabPage</value>
   </data>
   <data name="&gt;&gt;OutputLocationButton.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>7</value>
   </data>
-  <data name="&gt;&gt;ScriptEditingRawsLocationLabel.Name" xml:space="preserve">
-    <value>ScriptEditingRawsLocationLabel</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditingRawsLocationLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditingRawsLocationLabel.Parent" xml:space="preserve">
-    <value>ScriptEditorTabPage</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditingRawsLocationLabel.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditingRawsLocationTextBox.Name" xml:space="preserve">
-    <value>ScriptEditingRawsLocationTextBox</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditingRawsLocationTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditingRawsLocationTextBox.Parent" xml:space="preserve">
-    <value>ScriptEditorTabPage</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditingRawsLocationTextBox.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditingRawsLocationButton.Name" xml:space="preserve">
-    <value>ScriptEditingRawsLocationButton</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditingRawsLocationButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditingRawsLocationButton.Parent" xml:space="preserve">
-    <value>ScriptEditorTabPage</value>
-  </data>
-  <data name="&gt;&gt;ScriptEditingRawsLocationButton.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;BeginScriptEditingButton.Name" xml:space="preserve">
-    <value>BeginScriptEditingButton</value>
-  </data>
-  <data name="&gt;&gt;BeginScriptEditingButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;BeginScriptEditingButton.Parent" xml:space="preserve">
-    <value>ScriptEditorTabPage</value>
-  </data>
-  <data name="&gt;&gt;BeginScriptEditingButton.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationLabel.Name" xml:space="preserve">
-    <value>ScriptLocationLabel</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationLabel.Parent" xml:space="preserve">
-    <value>ScriptEditorTabPage</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationLabel.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationTextBox.Name" xml:space="preserve">
-    <value>ScriptLocationTextBox</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationTextBox.Parent" xml:space="preserve">
-    <value>ScriptEditorTabPage</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationTextBox.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationButton.Name" xml:space="preserve">
-    <value>ScriptLocationButton</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationButton.Parent" xml:space="preserve">
-    <value>ScriptEditorTabPage</value>
-  </data>
-  <data name="&gt;&gt;ScriptLocationButton.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="ScriptEditorTabPage.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="ScriptCreatorTabPage.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="ScriptEditorTabPage.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="ScriptCreatorTabPage.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
-  <data name="ScriptEditorTabPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>363, 192</value>
+  <data name="ScriptCreatorTabPage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>513, 211</value>
   </data>
-  <data name="ScriptEditorTabPage.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="ScriptCreatorTabPage.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="ScriptEditorTabPage.Text" xml:space="preserve">
-    <value>Script Editor</value>
+  <data name="ScriptCreatorTabPage.Text" xml:space="preserve">
+    <value>Script Creator</value>
   </data>
-  <data name="&gt;&gt;ScriptEditorTabPage.Name" xml:space="preserve">
-    <value>ScriptEditorTabPage</value>
+  <data name="&gt;&gt;ScriptCreatorTabPage.Name" xml:space="preserve">
+    <value>ScriptCreatorTabPage</value>
   </data>
-  <data name="&gt;&gt;ScriptEditorTabPage.Type" xml:space="preserve">
+  <data name="&gt;&gt;ScriptCreatorTabPage.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;ScriptEditorTabPage.Parent" xml:space="preserve">
+  <data name="&gt;&gt;ScriptCreatorTabPage.Parent" xml:space="preserve">
     <value>MainTabControl</value>
   </data>
-  <data name="&gt;&gt;ScriptEditorTabPage.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;ScriptCreatorTabPage.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="ScriptEditingRawsLocationLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -855,6 +801,57 @@
   <data name="&gt;&gt;ScriptLocationButton.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
+  <data name="ScriptEditorTabPage.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="ScriptEditorTabPage.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="ScriptEditorTabPage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>513, 211</value>
+  </data>
+  <data name="ScriptEditorTabPage.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ScriptEditorTabPage.Text" xml:space="preserve">
+    <value>Script Editor</value>
+  </data>
+  <data name="&gt;&gt;ScriptEditorTabPage.Name" xml:space="preserve">
+    <value>ScriptEditorTabPage</value>
+  </data>
+  <data name="&gt;&gt;ScriptEditorTabPage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ScriptEditorTabPage.Parent" xml:space="preserve">
+    <value>MainTabControl</value>
+  </data>
+  <data name="&gt;&gt;ScriptEditorTabPage.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="MainTabControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="MainTabControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="MainTabControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>521, 237</value>
+  </data>
+  <data name="MainTabControl.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;MainTabControl.Name" xml:space="preserve">
+    <value>MainTabControl</value>
+  </data>
+  <data name="&gt;&gt;MainTabControl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;MainTabControl.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;MainTabControl.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <metadata name="MainFormErrorProvider.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
@@ -865,7 +862,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>371, 218</value>
+    <value>521, 237</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

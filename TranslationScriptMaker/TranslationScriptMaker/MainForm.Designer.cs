@@ -38,8 +38,14 @@ namespace TranslationScriptMaker
 			this.BeginScriptCreationButton = new System.Windows.Forms.Button();
 			this.MainTabControl = new System.Windows.Forms.TabControl();
 			this.ScriptCreatorTabPage = new System.Windows.Forms.TabPage();
-			this.ChapterNumberTextBox = new System.Windows.Forms.TextBox();
-			this.ChapterNumberLabel = new System.Windows.Forms.Label();
+			this.OutputToGroupBox = new System.Windows.Forms.GroupBox();
+			this.OutputToCustomLocationRadioButton = new System.Windows.Forms.RadioButton();
+			this.OutputWithRawsRadioButton = new System.Windows.Forms.RadioButton();
+			this.OutputToChapterFolderRadioButton = new System.Windows.Forms.RadioButton();
+			this.ChapterSelectionComboBox = new System.Windows.Forms.ComboBox();
+			this.SeriesSelectionComboBox = new System.Windows.Forms.ComboBox();
+			this.ChapterSelectionLabel = new System.Windows.Forms.Label();
+			this.SeriesSelectionLabel = new System.Windows.Forms.Label();
 			this.OutputLocationLabel = new System.Windows.Forms.Label();
 			this.OutputLocationTextBox = new System.Windows.Forms.TextBox();
 			this.OutputLocationButton = new System.Windows.Forms.Button();
@@ -54,6 +60,7 @@ namespace TranslationScriptMaker
 			this.MainFormErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
 			this.MainTabControl.SuspendLayout();
 			this.ScriptCreatorTabPage.SuspendLayout();
+			this.OutputToGroupBox.SuspendLayout();
 			this.ScriptEditorTabPage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.MainFormErrorProvider)).BeginInit();
 			this.SuspendLayout();
@@ -68,7 +75,6 @@ namespace TranslationScriptMaker
 			resources.ApplyResources(this.RawsLocationTextBox, "RawsLocationTextBox");
 			this.RawsLocationTextBox.Name = "RawsLocationTextBox";
 			this.RawsLocationTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.RawsLocationTextBox_Validating);
-			this.RawsLocationTextBox.Validated += new System.EventHandler(this.RawsLocationTextBox_Validated);
 			// 
 			// RawsLocationButton
 			// 
@@ -110,8 +116,11 @@ namespace TranslationScriptMaker
 			// ScriptCreatorTabPage
 			// 
 			this.ScriptCreatorTabPage.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.ScriptCreatorTabPage.Controls.Add(this.ChapterNumberTextBox);
-			this.ScriptCreatorTabPage.Controls.Add(this.ChapterNumberLabel);
+			this.ScriptCreatorTabPage.Controls.Add(this.OutputToGroupBox);
+			this.ScriptCreatorTabPage.Controls.Add(this.ChapterSelectionComboBox);
+			this.ScriptCreatorTabPage.Controls.Add(this.SeriesSelectionComboBox);
+			this.ScriptCreatorTabPage.Controls.Add(this.ChapterSelectionLabel);
+			this.ScriptCreatorTabPage.Controls.Add(this.SeriesSelectionLabel);
 			this.ScriptCreatorTabPage.Controls.Add(this.OutputLocationLabel);
 			this.ScriptCreatorTabPage.Controls.Add(this.OutputLocationTextBox);
 			this.ScriptCreatorTabPage.Controls.Add(this.OutputLocationButton);
@@ -125,17 +134,66 @@ namespace TranslationScriptMaker
 			resources.ApplyResources(this.ScriptCreatorTabPage, "ScriptCreatorTabPage");
 			this.ScriptCreatorTabPage.Name = "ScriptCreatorTabPage";
 			// 
-			// ChapterNumberTextBox
+			// OutputToGroupBox
 			// 
-			resources.ApplyResources(this.ChapterNumberTextBox, "ChapterNumberTextBox");
-			this.ChapterNumberTextBox.Name = "ChapterNumberTextBox";
-			this.ChapterNumberTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.ChapterNumberTextBox_Validating);
-			this.ChapterNumberTextBox.Validated += new System.EventHandler(this.ChapterNumberTextBox_Validated);
+			this.OutputToGroupBox.Controls.Add(this.OutputToCustomLocationRadioButton);
+			this.OutputToGroupBox.Controls.Add(this.OutputWithRawsRadioButton);
+			this.OutputToGroupBox.Controls.Add(this.OutputToChapterFolderRadioButton);
+			this.OutputToGroupBox.ForeColor = System.Drawing.SystemColors.Control;
+			resources.ApplyResources(this.OutputToGroupBox, "OutputToGroupBox");
+			this.OutputToGroupBox.Name = "OutputToGroupBox";
+			this.OutputToGroupBox.TabStop = false;
 			// 
-			// ChapterNumberLabel
+			// OutputToCustomLocationRadioButton
 			// 
-			resources.ApplyResources(this.ChapterNumberLabel, "ChapterNumberLabel");
-			this.ChapterNumberLabel.Name = "ChapterNumberLabel";
+			resources.ApplyResources(this.OutputToCustomLocationRadioButton, "OutputToCustomLocationRadioButton");
+			this.OutputToCustomLocationRadioButton.Name = "OutputToCustomLocationRadioButton";
+			this.OutputToCustomLocationRadioButton.TabStop = true;
+			this.OutputToCustomLocationRadioButton.UseVisualStyleBackColor = true;
+			this.OutputToCustomLocationRadioButton.CheckedChanged += new System.EventHandler(this.OutputToCustomLocationRadioButton_CheckedChanged);
+			this.OutputToCustomLocationRadioButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OutputToCustomLocationRadioButton_MouseClick);
+			// 
+			// OutputWithRawsRadioButton
+			// 
+			resources.ApplyResources(this.OutputWithRawsRadioButton, "OutputWithRawsRadioButton");
+			this.OutputWithRawsRadioButton.Name = "OutputWithRawsRadioButton";
+			this.OutputWithRawsRadioButton.TabStop = true;
+			this.OutputWithRawsRadioButton.UseVisualStyleBackColor = true;
+			this.OutputWithRawsRadioButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OutputWithRawsRadioButton_MouseClick);
+			// 
+			// OutputToChapterFolderRadioButton
+			// 
+			resources.ApplyResources(this.OutputToChapterFolderRadioButton, "OutputToChapterFolderRadioButton");
+			this.OutputToChapterFolderRadioButton.Name = "OutputToChapterFolderRadioButton";
+			this.OutputToChapterFolderRadioButton.TabStop = true;
+			this.OutputToChapterFolderRadioButton.UseVisualStyleBackColor = true;
+			this.OutputToChapterFolderRadioButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OutputToChapterFolderRadioButton_MouseClick);
+			// 
+			// ChapterSelectionComboBox
+			// 
+			this.ChapterSelectionComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.ChapterSelectionComboBox.FormattingEnabled = true;
+			resources.ApplyResources(this.ChapterSelectionComboBox, "ChapterSelectionComboBox");
+			this.ChapterSelectionComboBox.Name = "ChapterSelectionComboBox";
+			this.ChapterSelectionComboBox.SelectionChangeCommitted += new System.EventHandler(this.ChapterSelectionComboBox_SelectionChangeCommitted);
+			// 
+			// SeriesSelectionComboBox
+			// 
+			this.SeriesSelectionComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.SeriesSelectionComboBox.FormattingEnabled = true;
+			resources.ApplyResources(this.SeriesSelectionComboBox, "SeriesSelectionComboBox");
+			this.SeriesSelectionComboBox.Name = "SeriesSelectionComboBox";
+			this.SeriesSelectionComboBox.SelectionChangeCommitted += new System.EventHandler(this.SeriesSelectionComboBox_SelectionChangeCommitted);
+			// 
+			// ChapterSelectionLabel
+			// 
+			resources.ApplyResources(this.ChapterSelectionLabel, "ChapterSelectionLabel");
+			this.ChapterSelectionLabel.Name = "ChapterSelectionLabel";
+			// 
+			// SeriesSelectionLabel
+			// 
+			resources.ApplyResources(this.SeriesSelectionLabel, "SeriesSelectionLabel");
+			this.SeriesSelectionLabel.Name = "SeriesSelectionLabel";
 			// 
 			// OutputLocationLabel
 			// 
@@ -147,7 +205,6 @@ namespace TranslationScriptMaker
 			resources.ApplyResources(this.OutputLocationTextBox, "OutputLocationTextBox");
 			this.OutputLocationTextBox.Name = "OutputLocationTextBox";
 			this.OutputLocationTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.OutputLocationTextBox_Validating);
-			this.OutputLocationTextBox.Validated += new System.EventHandler(this.OutputLocationTextBox_Validated);
 			// 
 			// OutputLocationButton
 			// 
@@ -238,6 +295,8 @@ namespace TranslationScriptMaker
 			this.MainTabControl.ResumeLayout(false);
 			this.ScriptCreatorTabPage.ResumeLayout(false);
 			this.ScriptCreatorTabPage.PerformLayout();
+			this.OutputToGroupBox.ResumeLayout(false);
+			this.OutputToGroupBox.PerformLayout();
 			this.ScriptEditorTabPage.ResumeLayout(false);
 			this.ScriptEditorTabPage.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.MainFormErrorProvider)).EndInit();
@@ -263,12 +322,18 @@ namespace TranslationScriptMaker
 		private System.Windows.Forms.Label OutputLocationLabel;
 		private System.Windows.Forms.TextBox OutputLocationTextBox;
 		private System.Windows.Forms.Button OutputLocationButton;
-		private System.Windows.Forms.TextBox ChapterNumberTextBox;
-		private System.Windows.Forms.Label ChapterNumberLabel;
+		private System.Windows.Forms.Label SeriesSelectionLabel;
 		private System.Windows.Forms.Label ScriptEditingRawsLocationLabel;
 		private System.Windows.Forms.TextBox ScriptEditingRawsLocationTextBox;
 		private System.Windows.Forms.Button ScriptEditingRawsLocationButton;
 		private System.Windows.Forms.ErrorProvider MainFormErrorProvider;
+		private System.Windows.Forms.Label ChapterSelectionLabel;
+		private System.Windows.Forms.ComboBox ChapterSelectionComboBox;
+		private System.Windows.Forms.ComboBox SeriesSelectionComboBox;
+		private System.Windows.Forms.GroupBox OutputToGroupBox;
+		private System.Windows.Forms.RadioButton OutputToCustomLocationRadioButton;
+		private System.Windows.Forms.RadioButton OutputWithRawsRadioButton;
+		private System.Windows.Forms.RadioButton OutputToChapterFolderRadioButton;
 	}
 }
 
