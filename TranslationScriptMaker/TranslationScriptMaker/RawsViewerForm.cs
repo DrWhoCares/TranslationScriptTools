@@ -39,7 +39,7 @@ namespace TranslationScriptMaker
 			public List<string> pageScriptContents { get; set; }
 		}
 
-		private IEnumerable<FileInfo> RawsFiles { get; set; }
+		private IEnumerable<FileInfo> RawsFiles { get; }
 		private string OutputLocationFullPath { get; }
 		private bool IsCreatingScript { get; }
 
@@ -73,18 +73,18 @@ namespace TranslationScriptMaker
 			}
 		}
 
-		public RawsViewerForm(IEnumerable<FileInfo> rawsFiles, string outputLocationFullPath, bool isCreatingScript)
+		public RawsViewerForm(IEnumerable<FileInfo> rawsFiles, string outputLocationFullPath)
 		{
 			InitializeComponent();
 
 			OutputLocationFullPath = outputLocationFullPath;
 			RawsFiles = rawsFiles;
-			IsCreatingScript = isCreatingScript;
+			IsCreatingScript = !File.Exists(outputLocationFullPath);
 			PreviousPageIndex = 0;
 			CurrentPageIndex = 0;
 			AreThereUnsavedChanges = false;
 
-			ScriptViewerRichTextBox.ReadOnly = isCreatingScript;
+			ScriptViewerRichTextBox.ReadOnly = IsCreatingScript;
 
 			PageInformations = new List<PageInformation>();
 

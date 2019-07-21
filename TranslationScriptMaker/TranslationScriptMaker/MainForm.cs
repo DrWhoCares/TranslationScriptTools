@@ -461,7 +461,7 @@ namespace TranslationScriptMaker
 				return;
 			}
 
-			using ( RawsViewerForm rawsViewerForm = new RawsViewerForm(rawsFiles, OutputLocationTextBox.Text + "\\" + GetOutputFilename(), true) )
+			using ( RawsViewerForm rawsViewerForm = new RawsViewerForm(rawsFiles, OutputLocationTextBox.Text + "\\" + GetOutputFilename()) )
 			{
 				this.Hide();
 				rawsViewerForm.ShowDialog();
