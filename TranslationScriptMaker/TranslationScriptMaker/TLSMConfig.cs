@@ -115,7 +115,7 @@ namespace TranslationScriptMaker
 
 	enum OutputToChoice
 	{
-		Invalid,
+		Invalid = 0,
 		ChapterFolder,
 		WithRaws,
 		CustomLocation

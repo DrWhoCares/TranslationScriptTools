@@ -39,11 +39,8 @@ namespace TranslationScriptMaker
 			public List<string> pageScriptContents { get; set; }
 		}
 
-		private string OutputLocationFullPath { get; }
-		private string ScriptLocationFullPath { get; }
-		private string SelectedChapterNumber { get; }
 		private IEnumerable<FileInfo> RawsFiles { get; set; }
-		private string TranslatorsName { get; }
+		private string OutputLocationFullPath { get; }
 		private bool IsCreatingScript { get; }
 
 		private int CurrentPageIndex { get; set; }
@@ -76,16 +73,12 @@ namespace TranslationScriptMaker
 			}
 		}
 
-
-		public RawsViewerForm(string outputLocationFullPath, string scriptLocationFullPath, string chapterNumber, IEnumerable<FileInfo> rawsFiles, string translatorsName, bool isCreatingScript)
+		public RawsViewerForm(IEnumerable<FileInfo> rawsFiles, string outputLocationFullPath, bool isCreatingScript)
 		{
 			InitializeComponent();
 
 			OutputLocationFullPath = outputLocationFullPath;
-			ScriptLocationFullPath = scriptLocationFullPath;
-			SelectedChapterNumber = chapterNumber;
 			RawsFiles = rawsFiles;
-			TranslatorsName = translatorsName;
 			IsCreatingScript = isCreatingScript;
 			PreviousPageIndex = 0;
 			CurrentPageIndex = 0;
@@ -135,7 +128,7 @@ namespace TranslationScriptMaker
 
 		private void ParseScriptForPageInformations()
 		{
-			string[] fileContents = File.ReadAllLines(ScriptLocationFullPath);
+			string[] fileContents = File.ReadAllLines(OutputLocationFullPath);
 
 			int currentPageIndex = -1;
 			int currentPanelIndex = -1;
@@ -484,7 +477,7 @@ namespace TranslationScriptMaker
 
 		private void OutputScript(string fileContents, bool shouldClose)
 		{
-			string outputFilepath = IsCreatingScript ? OutputLocationFullPath + "\\Ch " + SelectedChapterNumber + " - TL " + TranslatorsName + ".txt" : ScriptLocationFullPath;
+			string outputFilepath = OutputLocationFullPath;
 
 			File.WriteAllLines(outputFilepath, fileContents.Split('\n'), System.Text.Encoding.UTF8);
 
