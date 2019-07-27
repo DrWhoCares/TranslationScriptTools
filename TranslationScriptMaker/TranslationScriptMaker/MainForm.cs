@@ -380,27 +380,10 @@ namespace TranslationScriptMaker
 
 		private bool AreScriptCreationInputsValid()
 		{
-			if ( !WasRawsLocationVerified )
-			{
-				return false;
-			}
-
-			if ( !WasOutputLocationVerified )
-			{
-				return false;
-			}
-
-			if ( !WasTranslatorNameVerified )
-			{
-				return false;
-			}
-
-			if ( !WasSeriesLocationVerified )
-			{
-				return false;
-			}
-
-			return true;
+			return WasRawsLocationVerified
+				&& WasOutputLocationVerified
+				&& WasTranslatorNameVerified
+				&& WasSeriesLocationVerified;
 		}
 
 		private bool VerifyOutputLocation()
