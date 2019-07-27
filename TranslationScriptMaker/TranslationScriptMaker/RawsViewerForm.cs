@@ -102,7 +102,7 @@ namespace TranslationScriptMaker
 				{
 					isSpread = RawsFiles.ElementAt(pageIndex).Name.Contains('-'),
 					pageNumber = pageIndex + 1,
-					totalPanels = 0,
+					totalPanels = 1,
 					filename = RawsFiles.ElementAt(pageIndex).Name,
 					panelsWithSFX = new List<bool>(),
 					pageScriptContents = new List<string>()
@@ -139,7 +139,10 @@ namespace TranslationScriptMaker
 				}
 
 				int currentPageNumber = pageInfo.pageNumber + pageNumberOffset;
-				pageInfo.pageScriptContents = new List<string>(TextUtils.ParseScriptPageContents(PAGE_HEADER_BEGIN + currentPageNumber.ToString() + (pageInfo.isSpread ? " - " + (currentPageNumber + 1).ToString() : "") + PAGE_HEADER_END + PAGE_FOOTER));
+				pageInfo.pageScriptContents = new List<string>(TextUtils.ParseScriptPageContents(
+					PAGE_HEADER_BEGIN + currentPageNumber.ToString() + (pageInfo.isSpread ? " - " + (currentPageNumber + 1).ToString() : "") + PAGE_HEADER_END
+					+ PANEL_HEADER_BEGIN + "1" + PANEL_HEADER_END
+					+ PAGE_FOOTER));
 			}
 		}
 
@@ -218,7 +221,7 @@ namespace TranslationScriptMaker
 			LoadPageInformation();
 			TotalPanelsTextBox.Select();
 
-			SaveCurrentScript();
+			SaveCurrentScript(false);
 		}
 
 		private void SwitchToPreviousPage()
@@ -275,15 +278,7 @@ namespace TranslationScriptMaker
 
 			if ( CurrentPageIndex >= RawsFiles.Count() )
 			{
-				if ( IsCreatingScript )
-				{
-					FinishScriptCreation();
-				}
-				else
-				{
-					FinishScriptEditing();
-				}
-
+				SaveCurrentScript(true);
 				return;
 			}
 			else if ( CurrentPageIndex >= RawsFiles.Count() - 1 )
@@ -303,7 +298,7 @@ namespace TranslationScriptMaker
 			TotalPanelsTextBox.Select();
 			CurrentPageComboBox.SelectedIndex = CurrentPageIndex;
 
-			SaveCurrentScript();
+			SaveCurrentScript(false);
 		}
 
 		private void SavePageInformation()
@@ -401,51 +396,9 @@ namespace TranslationScriptMaker
 			}
 		}
 
-		private void FinishScriptCreation()
+		private void SaveCurrentScript(bool shouldClose)
 		{
-			SavePageInformation();
-
-			if ( !AreAllPagesFilledIn() )
-			{
-				--CurrentPageIndex;
-				return;
-			}
-
-			string fileContents = string.Empty;
-
-			int pageNumberOffset = 0;
-
-			foreach ( PageInformation pageInfo in PageInformations )
-			{
-				int currentPageNumber = pageInfo.pageNumber + pageNumberOffset;
-				fileContents += PAGE_HEADER_BEGIN + currentPageNumber.ToString() + (pageInfo.isSpread ? " - " + (currentPageNumber + 1).ToString() : "") + PAGE_HEADER_END;
-
-				if ( pageInfo.isSpread )
-				{
-					++pageNumberOffset;
-				}
-
-				for ( int panelIndex = 0; panelIndex < pageInfo.totalPanels; ++panelIndex )
-				{
-					fileContents += PANEL_HEADER_BEGIN + (panelIndex + 1).ToString() + PANEL_HEADER_END;
-
-					if ( pageInfo.panelsWithSFX.ElementAt(panelIndex) )
-					{
-						fileContents += PANEL_SFX_SECTION;
-					}
-
-					fileContents += PANEL_FOOTER;
-				}
-
-				fileContents += PAGE_FOOTER;
-			}
-
-			OutputScript(fileContents, true);
-		}
-
-		private void FinishScriptEditing()
-		{
-			SavePageInformation();
+			SaveCurrentProgress(shouldClose);
 
 			string fileContents = string.Empty;
 
@@ -454,31 +407,18 @@ namespace TranslationScriptMaker
 				fileContents += string.Join("", pageInfo.pageScriptContents);
 			}
 
-			fileContents += "\n";
-
-			OutputScript(fileContents, true);
-		}
-
-		private void SaveCurrentScript()
-		{
-			SaveCurrentProgress();
-
-			string fileContents = string.Empty;
-
-			foreach ( PageInformation pageInfo in PageInformations )
-			{
-				fileContents += string.Join("", pageInfo.pageScriptContents);
-			}
-
-			fileContents += "\n";
-
-			OutputScript(fileContents, false);
+			OutputScript(fileContents, shouldClose);
 
 			AreThereUnsavedChanges = false;
 		}
 
-		private void SaveCurrentProgress()
+		private void SaveCurrentProgress(bool shouldClose)
 		{
+			if ( shouldClose )
+			{
+				--CurrentPageIndex;
+			}
+
 			PageInformation pageInfo = PageInformations.ElementAt(CurrentPageIndex);
 
 			pageInfo.pageScriptContents = new List<string>(TextUtils.ParseScriptPageContents(ScriptViewerRichTextBox.Text));
@@ -522,29 +462,6 @@ namespace TranslationScriptMaker
 
 				this.Close();
 			}
-		}
-
-		private bool AreAllPagesFilledIn()
-		{
-			bool areAllPagesFilledIn = true;
-
-			for ( int pageInfoIndex = 0; pageInfoIndex < PageInformations.Count(); ++pageInfoIndex )
-			{
-				if ( PageInformations.ElementAt(pageInfoIndex).totalPanels == 0 )
-				{
-					areAllPagesFilledIn = false;
-				}
-			}
-
-			if ( !areAllPagesFilledIn )
-			{
-				MessageBox.Show(this, "One or more pages do not have a value for total panels.\nAll pages must have at least 1 panel to continue.\nPages with errors are marked with a '*' in the dropdown list.",
-					"Error generating script.", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-
-				return false;
-			}
-
-			return true;
 		}
 
 		private void TotalPanelsTextBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -826,7 +743,7 @@ namespace TranslationScriptMaker
 		{
 			if ( keyData == (Keys.Control | Keys.S) )
 			{
-				SaveCurrentScript();
+				SaveCurrentScript(false);
 				return true;
 			}
 
