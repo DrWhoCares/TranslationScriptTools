@@ -115,6 +115,7 @@ namespace TranslationScriptMaker
 
 			if ( IsCreatingScript )
 			{
+				InitializePageScriptContents();
 				ResetPageScriptContent();
 			}
 			else
@@ -123,6 +124,22 @@ namespace TranslationScriptMaker
 				TotalPanelsTextBox.Enabled = false;
 				PanelsWithSFXGroupBox.Enabled = false;
 				IsPageASpreadCheckBox.Enabled = false;
+			}
+		}
+
+		private void InitializePageScriptContents()
+		{
+			int pageNumberOffset = 0;
+
+			foreach ( PageInformation pageInfo in PageInformations )
+			{
+				if ( pageInfo.isSpread )
+				{
+					++pageNumberOffset;
+				}
+
+				int currentPageNumber = pageInfo.pageNumber + pageNumberOffset;
+				pageInfo.pageScriptContents = new List<string>(TextUtils.ParseScriptPageContents(PAGE_HEADER_BEGIN + currentPageNumber.ToString() + (pageInfo.isSpread ? " - " + (currentPageNumber + 1).ToString() : "") + PAGE_HEADER_END + PAGE_FOOTER));
 			}
 		}
 
@@ -173,10 +190,14 @@ namespace TranslationScriptMaker
 
 		private void CurrentPageComboBox_SelectionChangeCommitted(object sender, EventArgs e)
 		{
-			if ( IsCreatingScript )
+			string fileNeedsEditingMarker = string.Empty;
+
+			if ( string.IsNullOrWhiteSpace(TotalPanelsTextBox.Text) || int.Parse(TotalPanelsTextBox.Text) == 0 )
 			{
-				CurrentPageComboBox.Items[CurrentPageIndex] = PageInformations.ElementAt(CurrentPageIndex).filename + (string.IsNullOrWhiteSpace(TotalPanelsTextBox.Text) ? "*" : "");
+				fileNeedsEditingMarker = "*";
 			}
+
+			CurrentPageComboBox.Items[CurrentPageIndex] = PageInformations.ElementAt(CurrentPageIndex).filename + fileNeedsEditingMarker;
 
 			PreviousPageIndex = CurrentPageIndex;
 			SavePageInformation();
@@ -197,10 +218,7 @@ namespace TranslationScriptMaker
 			LoadPageInformation();
 			TotalPanelsTextBox.Select();
 
-			if ( !IsCreatingScript )
-			{
-				SaveCurrentScript();
-			}
+			SaveCurrentScript();
 		}
 
 		private void SwitchToPreviousPage()
@@ -212,7 +230,14 @@ namespace TranslationScriptMaker
 
 			if ( IsCreatingScript )
 			{
-				CurrentPageComboBox.Items[CurrentPageIndex] = PageInformations.ElementAt(CurrentPageIndex).filename + (string.IsNullOrWhiteSpace(TotalPanelsTextBox.Text) ? "*" : "");
+				string fileNeedsEditingMarker = string.Empty;
+
+				if ( string.IsNullOrWhiteSpace(TotalPanelsTextBox.Text) || int.Parse(TotalPanelsTextBox.Text) == 0 )
+				{
+					fileNeedsEditingMarker = "*";
+				}
+
+				CurrentPageComboBox.Items[CurrentPageIndex] = PageInformations.ElementAt(CurrentPageIndex).filename + fileNeedsEditingMarker;
 			}
 
 			PreviousPageIndex = CurrentPageIndex;
@@ -235,7 +260,14 @@ namespace TranslationScriptMaker
 		{
 			if ( IsCreatingScript )
 			{
-				CurrentPageComboBox.Items[CurrentPageIndex] = PageInformations.ElementAt(CurrentPageIndex).filename + (string.IsNullOrWhiteSpace(TotalPanelsTextBox.Text) ? "*" : "");
+				string fileNeedsEditingMarker = string.Empty;
+
+				if ( string.IsNullOrWhiteSpace(TotalPanelsTextBox.Text) || int.Parse(TotalPanelsTextBox.Text) == 0 )
+				{
+					fileNeedsEditingMarker = "*";
+				}
+
+				CurrentPageComboBox.Items[CurrentPageIndex] = PageInformations.ElementAt(CurrentPageIndex).filename + fileNeedsEditingMarker;
 			}
 
 			PreviousPageIndex = CurrentPageIndex;
@@ -271,10 +303,7 @@ namespace TranslationScriptMaker
 			TotalPanelsTextBox.Select();
 			CurrentPageComboBox.SelectedIndex = CurrentPageIndex;
 
-			if ( !IsCreatingScript )
-			{
-				SaveCurrentScript();
-			}
+			SaveCurrentScript();
 		}
 
 		private void SavePageInformation()
@@ -345,17 +374,12 @@ namespace TranslationScriptMaker
 				UpdateScriptViewerContents(pageInfo.pageScriptContents);
 			}
 
+			TotalPanelsTextBox.Text = pageInfo.totalPanels.ToString();
+
 			if ( pageInfo.panelsWithSFX.Count == 0 )
 			{
-				if ( IsCreatingScript )
-				{
-					ResetPageScriptContent(); // If switching from a blank page to a blank page 
-				}
-
-				return; // Page has yet to be processed for the first time
+				return;
 			}
-
-			TotalPanelsTextBox.Text = pageInfo.totalPanels.ToString();
 
 			int currentPanelIndex = 0;
 
@@ -459,7 +483,17 @@ namespace TranslationScriptMaker
 
 			pageInfo.pageScriptContents = new List<string>(TextUtils.ParseScriptPageContents(ScriptViewerRichTextBox.Text));
 
-			pageInfo.totalPanels = int.Parse(TotalPanelsTextBox.Text);
+			int totalPanels;
+
+			if ( int.TryParse(TotalPanelsTextBox.Text, out totalPanels) )
+			{
+				pageInfo.totalPanels = totalPanels;
+			}
+			else
+			{
+				pageInfo.totalPanels = 0;
+			}
+
 			pageInfo.panelsWithSFX.Clear();
 
 			foreach ( Control control in PanelsWithSFXGroupBox.Controls )
@@ -790,7 +824,7 @@ namespace TranslationScriptMaker
 
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
-			if ( !IsCreatingScript && keyData == (Keys.Control | Keys.S) )
+			if ( keyData == (Keys.Control | Keys.S) )
 			{
 				SaveCurrentScript();
 				return true;
