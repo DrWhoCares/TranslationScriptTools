@@ -15,7 +15,7 @@ namespace TranslationScriptMaker
 		private const string PAGE_HEADER_END = " #----------{\n";
 		private const string PANEL_HEADER_BEGIN = "\n---# Panel ";
 		private const string PANEL_HEADER_END = " #---{\n";
-		private const string PANEL_SFX_SECTION = "\n[SFX]{\n\n}";
+		private const string PANEL_SFX_SECTION = "[SFX]{\n\n}\n";
 		private const string PANEL_FOOTER = "\n---#####---}\n";
 		private const string PAGE_FOOTER = "\n----------##########----------}\n\n";
 
@@ -42,11 +42,11 @@ namespace TranslationScriptMaker
 		private IEnumerable<FileInfo> RawsFiles { get; }
 		private string OutputLocationFullPath { get; }
 		private bool IsCreatingScript { get; }
-
 		private int CurrentPageIndex { get; set; }
 		private int PreviousPageIndex { get; set; }
 		private List<PageInformation> PageInformations { get; set; }
 
+		private bool IsChangingPage { get; set; } = false; // TEMP, WILL REMOVE AFTER REFACTORING HOW SFX AND SUCH ARE ADDED
 		private bool HasUserPromptedZoomChanged { get; set; } = false;
 		private bool HasUserScrolledIn { get; set; } = false;
 		private bool _AreThereUnsavedChanges;
@@ -102,7 +102,7 @@ namespace TranslationScriptMaker
 				{
 					isSpread = RawsFiles.ElementAt(pageIndex).Name.Contains('-'),
 					pageNumber = pageIndex + 1,
-					totalPanels = 1,
+					totalPanels = 0,
 					filename = RawsFiles.ElementAt(pageIndex).Name,
 					panelsWithSFX = new List<bool>(),
 					pageScriptContents = new List<string>()
@@ -116,7 +116,6 @@ namespace TranslationScriptMaker
 			if ( IsCreatingScript )
 			{
 				InitializePageScriptContents();
-				ResetPageScriptContent();
 			}
 			else
 			{
@@ -138,10 +137,13 @@ namespace TranslationScriptMaker
 					++pageNumberOffset;
 				}
 
+				pageInfo.totalPanels = 1;
+				pageInfo.panelsWithSFX.Add(false);
+
 				int currentPageNumber = pageInfo.pageNumber + pageNumberOffset;
 				pageInfo.pageScriptContents = new List<string>(TextUtils.ParseScriptPageContents(
 					PAGE_HEADER_BEGIN + currentPageNumber.ToString() + (pageInfo.isSpread ? " - " + (currentPageNumber + 1).ToString() : "") + PAGE_HEADER_END
-					+ PANEL_HEADER_BEGIN + "1" + PANEL_HEADER_END
+					+ PANEL_HEADER_BEGIN + "1" + PANEL_HEADER_END + PANEL_FOOTER
 					+ PAGE_FOOTER));
 			}
 		}
@@ -292,6 +294,7 @@ namespace TranslationScriptMaker
 
 		private void ChangePage()
 		{
+			IsChangingPage = true;
 			SavePageInformation();
 			LoadImage();
 			LoadPageInformation();
@@ -299,6 +302,7 @@ namespace TranslationScriptMaker
 			CurrentPageComboBox.SelectedIndex = CurrentPageIndex;
 
 			SaveCurrentScript(false);
+			IsChangingPage = false;
 		}
 
 		private void SavePageInformation()
@@ -364,10 +368,7 @@ namespace TranslationScriptMaker
 
 			IsPageASpreadCheckBox.Checked = pageInfo.isSpread;
 
-			if ( !IsCreatingScript )
-			{
-				UpdateScriptViewerContents(pageInfo.pageScriptContents);
-			}
+			UpdateScriptViewerContents(pageInfo.pageScriptContents);
 
 			TotalPanelsTextBox.Text = pageInfo.totalPanels.ToString();
 
@@ -375,6 +376,8 @@ namespace TranslationScriptMaker
 			{
 				return;
 			}
+
+			DisplaySFXGroupBoxes(pageInfo.totalPanels);
 
 			int currentPanelIndex = 0;
 
@@ -423,9 +426,7 @@ namespace TranslationScriptMaker
 
 			pageInfo.pageScriptContents = new List<string>(TextUtils.ParseScriptPageContents(ScriptViewerRichTextBox.Text));
 
-			int totalPanels;
-
-			if ( int.TryParse(TotalPanelsTextBox.Text, out totalPanels) )
+			if ( int.TryParse(TotalPanelsTextBox.Text, out int totalPanels) )
 			{
 				pageInfo.totalPanels = totalPanels;
 			}
@@ -474,19 +475,18 @@ namespace TranslationScriptMaker
 
 		private void TotalPanelsTextBox_TextChanged(object sender, EventArgs e)
 		{
-			if ( IsCreatingScript )
-			{
-				ResetPageScriptContent();
-			}
-
 			if ( string.IsNullOrWhiteSpace(TotalPanelsTextBox.Text) )
 			{
 				ResetSFXCheckBoxes();
 				return;
 			}
 
-			int currentIndex = 0;
 			int totalPanels = int.Parse(TotalPanelsTextBox.Text);
+
+			if ( totalPanels == PageInformations.ElementAt(CurrentPageIndex).totalPanels )
+			{
+				return;
+			}
 
 			if ( totalPanels > MAX_PANELS )
 			{
@@ -494,38 +494,24 @@ namespace TranslationScriptMaker
 				TotalPanelsTextBox.Text = MAX_PANELS.ToString();
 			}
 
+			PageInformations.ElementAt(CurrentPageIndex).totalPanels = totalPanels;
+
+			DisplaySFXGroupBoxes(totalPanels);
+			AddPanelsToScriptPageContent(totalPanels);
+		}
+
+		private void DisplaySFXGroupBoxes(int totalPanels)
+		{
+			int currentIndex = 0;
+
 			foreach ( Control control in PanelsWithSFXGroupBox.Controls )
 			{
 				if ( control.GetType() == typeof(CheckBox) )
 				{
 					control.Visible = currentIndex < totalPanels;
-
 					++currentIndex;
 				}
 			}
-
-			if ( IsCreatingScript )
-			{
-				AddPanelsToScriptPageContent(totalPanels);
-			}
-		}
-
-		private void ResetPageScriptContent()
-		{
-			PageInformation pageInfo = PageInformations.ElementAt(CurrentPageIndex);
-
-			int pageNumberOffset = 0;
-
-			for ( int pageInfoIndex = 0; pageInfoIndex < CurrentPageIndex; ++pageInfoIndex )
-			{
-				if ( PageInformations.ElementAt(pageInfoIndex).isSpread )
-				{
-					++pageNumberOffset;
-				}
-			}
-
-			int currentPageNumber = pageInfo.pageNumber + pageNumberOffset;
-			ScriptViewerRichTextBox.Text = PAGE_HEADER_BEGIN + currentPageNumber.ToString() + (pageInfo.isSpread ? " - " + (currentPageNumber + 1).ToString() : "") + PAGE_HEADER_END + PAGE_FOOTER;
 		}
 
 		private void ResetSFXCheckBoxes()
@@ -546,22 +532,65 @@ namespace TranslationScriptMaker
 			List<string> pageContents = TextUtils.ParseScriptPageContents(ScriptViewerRichTextBox.Text);
 
 			int index = 0;
+			int totalExistingPanels = 0;
 
 			foreach ( string line in pageContents )
 			{
-				if ( line.Contains("Page") )
+				if ( line.Contains("Panel") )
 				{
-					++index; // Offset by one more due to the newline in the middle
+					++totalExistingPanels;
+				}
+
+				if ( line.Contains("----------##########----------}\n") )
+				{
+					--index; // Offset by one before
 					break;
 				}
 
 				++index;
 			}
 
-			for ( int panelIndex = 0; panelIndex < totalPanels; ++panelIndex )
+			if ( totalExistingPanels < totalPanels )
 			{
-				pageContents.Insert(index, PANEL_HEADER_BEGIN + (panelIndex + 1).ToString() + PANEL_HEADER_END + PANEL_FOOTER);
-				++index;
+				for ( int panelIndex = totalExistingPanels; panelIndex < totalPanels; ++panelIndex )
+				{
+					pageContents.Insert(index, PANEL_HEADER_BEGIN + (panelIndex + 1).ToString() + PANEL_HEADER_END + PANEL_FOOTER);
+					++index;
+				}
+			}
+			else
+			{
+				int linesBetweenPanels = 0;
+				List<Tuple<int, int>> indicesToRemove = new List<Tuple<int, int>>();
+
+				for ( int lineIndex = pageContents.Count() - 1; lineIndex > 0; --lineIndex )
+				{
+					if ( indicesToRemove.Count() == totalExistingPanels - totalPanels )
+					{
+						break;
+					}
+
+					string currentLine = pageContents.ElementAt(lineIndex);
+
+					if ( currentLine.Contains("---#####---}") )
+					{
+						linesBetweenPanels = 3;
+						continue;
+					}
+
+					if ( currentLine.Contains("Panel") )
+					{
+						indicesToRemove.Add(new Tuple<int, int>(lineIndex, linesBetweenPanels));
+						continue;
+					}
+
+					++linesBetweenPanels;
+				}
+
+				foreach ( Tuple<int, int> indexAndCount in indicesToRemove )
+				{
+					pageContents.RemoveRange(indexAndCount.Item1, indexAndCount.Item2);
+				}
 			}
 
 			UpdateScriptViewerContents(pageContents);
@@ -574,45 +603,68 @@ namespace TranslationScriptMaker
 
 		private void PanelCheckBox_CheckedChanged(object sender, EventArgs e)
 		{
-			if ( !IsCreatingScript || !((CheckBox)sender).Visible )
+			CheckBox checkBox = (CheckBox)sender;
+
+			if ( !IsCreatingScript || !checkBox.Visible || IsChangingPage )
 			{
 				return; // Switching pages
 			}
 
-			ResetPageScriptContent();
-			AddPanelsToScriptPageContent(int.Parse(TotalPanelsTextBox.Text));
-
 			List<string> pageContents = TextUtils.ParseScriptPageContents(ScriptViewerRichTextBox.Text);
 
-			foreach ( Control control in PanelsWithSFXGroupBox.Controls )
+			int indexOfPanelToFind = -1;
+			int indexOfPanelToFindFooter = 0;
+			int currentCountingIndex = 0;
+			string panelToFind = "Panel " + int.Parse(checkBox.Text);
+
+			foreach ( string line in pageContents )
 			{
-				if ( control.GetType() != typeof(CheckBox) )
+				if ( line.Contains(panelToFind) )
 				{
+					++currentCountingIndex; // Offset by one more due to the newline in the middle
+					indexOfPanelToFind = currentCountingIndex;
 					continue;
 				}
 
-				CheckBox checkBox = (CheckBox)control;
-
-				if ( !checkBox.Checked )
+				if ( indexOfPanelToFind != -1 && line.Contains("---#####---}") )
 				{
-					continue;
+					indexOfPanelToFindFooter = currentCountingIndex;
+					break;
 				}
 
-				int index = 0;
-				string panelToFind = "Panel " + int.Parse(checkBox.Text);
+				++currentCountingIndex;
+			}
 
-				foreach ( string line in pageContents )
+			if ( checkBox.Checked )
+			{
+				pageContents.Insert(indexOfPanelToFindFooter, PANEL_SFX_SECTION);
+			}
+			else
+			{
+				int indexToRemove = -1;
+				int linesBetweenSFX = 0;
+
+				for ( int lineIndex = indexOfPanelToFind; lineIndex < indexOfPanelToFindFooter; ++lineIndex )
 				{
-					if ( line.Contains(panelToFind) )
+					string currentLine = pageContents.ElementAt(lineIndex);
+
+					if ( currentLine.Contains("SFX") )
 					{
-						++index; // Offset by one more due to the newline in the middle
+						indexToRemove = lineIndex;
+						linesBetweenSFX = 1;
+						continue;
+					}
 
-						pageContents.Insert(index, PANEL_SFX_SECTION);
+					if ( currentLine.Equals("}\n") )
+					{
+						++linesBetweenSFX;
 						break;
 					}
 
-					++index;
+					++linesBetweenSFX;
 				}
+
+				pageContents.RemoveRange(indexToRemove, linesBetweenSFX);
 			}
 
 			UpdateScriptViewerContents(pageContents);
@@ -620,11 +672,6 @@ namespace TranslationScriptMaker
 
 		private void ScriptViewerRichTextBox_MouseClick(object sender, MouseEventArgs e)
 		{
-			if ( IsCreatingScript )
-			{
-				return;
-			}
-
 			ValidateSelectionIsNotSyntax();
 		}
 
@@ -645,7 +692,11 @@ namespace TranslationScriptMaker
 
 			bool isCurrentLineUneditable = false;
 
-			if ( currentLine == "" && currentLineIndex != 0 && currentLineIndex != totalLines - 1 && currentLineIndex != totalLines - 2 )
+			if ( currentLineIndex == 0 || currentLineIndex >= totalLines - 3 )
+			{
+				isCurrentLineUneditable = true;
+			}
+			else if ( currentLine == "" && currentLineIndex != 0 && currentLineIndex != totalLines - 1 && currentLineIndex != totalLines - 2 )
 			{
 				string previousLine = ScriptViewerRichTextBox.Lines[currentLineIndex - 1];
 				string nextLine = ScriptViewerRichTextBox.Lines[currentLineIndex + 1];
@@ -736,6 +787,7 @@ namespace TranslationScriptMaker
 
 		private void RawsViewerForm_Load(object sender, EventArgs e)
 		{
+			DisplaySFXGroupBoxes(PageInformations.ElementAt(CurrentPageIndex).totalPanels);
 			LoadPageInformation();
 		}
 
@@ -794,7 +846,7 @@ namespace TranslationScriptMaker
 
 		private void ScriptViewerRichTextBox_TextChanged(object sender, EventArgs e)
 		{
-			if ( IsCreatingScript || CurrentPageIndex >= PageInformations.Count() )
+			if ( CurrentPageIndex >= PageInformations.Count() )
 			{
 				return;
 			}
