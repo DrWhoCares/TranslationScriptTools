@@ -32,6 +32,9 @@ namespace TranslationScriptMaker
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.MainFormErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
 			this.OutputToGroupBox = new System.Windows.Forms.GroupBox();
+			this.OutputWithRawsRadioButton = new System.Windows.Forms.RadioButton();
+			this.OutputToChapterFolderRadioButton = new System.Windows.Forms.RadioButton();
+			this.OutputToCustomLocationRadioButton = new System.Windows.Forms.RadioButton();
 			this.ChapterSelectionComboBox = new System.Windows.Forms.ComboBox();
 			this.SeriesSelectionComboBox = new System.Windows.Forms.ComboBox();
 			this.ChapterSelectionLabel = new System.Windows.Forms.Label();
@@ -45,9 +48,6 @@ namespace TranslationScriptMaker
 			this.RawsLocationLabel = new System.Windows.Forms.Label();
 			this.RawsLocationButton = new System.Windows.Forms.Button();
 			this.TranslatorNameLabel = new System.Windows.Forms.Label();
-			this.OutputToChapterFolderRadioButton = new System.Windows.Forms.RadioButton();
-			this.OutputWithRawsRadioButton = new System.Windows.Forms.RadioButton();
-			this.OutputToCustomLocationRadioButton = new System.Windows.Forms.RadioButton();
 			((System.ComponentModel.ISupportInitialize)(this.MainFormErrorProvider)).BeginInit();
 			this.OutputToGroupBox.SuspendLayout();
 			this.SuspendLayout();
@@ -66,6 +66,31 @@ namespace TranslationScriptMaker
 			resources.ApplyResources(this.OutputToGroupBox, "OutputToGroupBox");
 			this.OutputToGroupBox.Name = "OutputToGroupBox";
 			this.OutputToGroupBox.TabStop = false;
+			// 
+			// OutputWithRawsRadioButton
+			// 
+			resources.ApplyResources(this.OutputWithRawsRadioButton, "OutputWithRawsRadioButton");
+			this.OutputWithRawsRadioButton.Name = "OutputWithRawsRadioButton";
+			this.OutputWithRawsRadioButton.TabStop = true;
+			this.OutputWithRawsRadioButton.UseVisualStyleBackColor = true;
+			this.OutputWithRawsRadioButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OutputWithRawsRadioButton_MouseClick);
+			// 
+			// OutputToChapterFolderRadioButton
+			// 
+			resources.ApplyResources(this.OutputToChapterFolderRadioButton, "OutputToChapterFolderRadioButton");
+			this.OutputToChapterFolderRadioButton.Name = "OutputToChapterFolderRadioButton";
+			this.OutputToChapterFolderRadioButton.TabStop = true;
+			this.OutputToChapterFolderRadioButton.UseVisualStyleBackColor = true;
+			this.OutputToChapterFolderRadioButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OutputToChapterFolderRadioButton_MouseClick);
+			// 
+			// OutputToCustomLocationRadioButton
+			// 
+			resources.ApplyResources(this.OutputToCustomLocationRadioButton, "OutputToCustomLocationRadioButton");
+			this.OutputToCustomLocationRadioButton.Name = "OutputToCustomLocationRadioButton";
+			this.OutputToCustomLocationRadioButton.TabStop = true;
+			this.OutputToCustomLocationRadioButton.UseVisualStyleBackColor = true;
+			this.OutputToCustomLocationRadioButton.CheckedChanged += new System.EventHandler(this.OutputToCustomLocationRadioButton_CheckedChanged);
+			this.OutputToCustomLocationRadioButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OutputToCustomLocationRadioButton_MouseClick);
 			// 
 			// ChapterSelectionComboBox
 			// 
@@ -151,31 +176,6 @@ namespace TranslationScriptMaker
 			// 
 			resources.ApplyResources(this.TranslatorNameLabel, "TranslatorNameLabel");
 			this.TranslatorNameLabel.Name = "TranslatorNameLabel";
-			// 
-			// OutputToChapterFolderRadioButton
-			// 
-			resources.ApplyResources(this.OutputToChapterFolderRadioButton, "OutputToChapterFolderRadioButton");
-			this.OutputToChapterFolderRadioButton.Name = "OutputToChapterFolderRadioButton";
-			this.OutputToChapterFolderRadioButton.TabStop = true;
-			this.OutputToChapterFolderRadioButton.UseVisualStyleBackColor = true;
-			this.OutputToChapterFolderRadioButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OutputToChapterFolderRadioButton_MouseClick);
-			// 
-			// OutputWithRawsRadioButton
-			// 
-			resources.ApplyResources(this.OutputWithRawsRadioButton, "OutputWithRawsRadioButton");
-			this.OutputWithRawsRadioButton.Name = "OutputWithRawsRadioButton";
-			this.OutputWithRawsRadioButton.TabStop = true;
-			this.OutputWithRawsRadioButton.UseVisualStyleBackColor = true;
-			this.OutputWithRawsRadioButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OutputWithRawsRadioButton_MouseClick);
-			// 
-			// OutputToCustomLocationRadioButton
-			// 
-			resources.ApplyResources(this.OutputToCustomLocationRadioButton, "OutputToCustomLocationRadioButton");
-			this.OutputToCustomLocationRadioButton.Name = "OutputToCustomLocationRadioButton";
-			this.OutputToCustomLocationRadioButton.TabStop = true;
-			this.OutputToCustomLocationRadioButton.UseVisualStyleBackColor = true;
-			this.OutputToCustomLocationRadioButton.CheckedChanged += new System.EventHandler(this.OutputToCustomLocationRadioButton_CheckedChanged);
-			this.OutputToCustomLocationRadioButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OutputToCustomLocationRadioButton_MouseClick);
 			// 
 			// MainForm
 			// 
