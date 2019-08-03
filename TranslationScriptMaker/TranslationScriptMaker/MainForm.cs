@@ -436,7 +436,7 @@ namespace TranslationScriptMaker
 		{
 			SaveInputsToConfig();
 
-			IEnumerable<FileInfo> rawsFiles = GetRawsFiles(GetRawsFilesFullPath());
+			IEnumerable<FileInfo> rawsFiles = DirectoryOrderer.OrderByAlphaNumeric(GetRawsFiles(GetRawsFilesFullPath()), DirectoryOrderer.GetFileName);
 
 			if ( rawsFiles.Count() == 0 )
 			{
@@ -504,6 +504,8 @@ namespace TranslationScriptMaker
 	internal static class DirectoryOrderer
 	{
 		public static string GetDirectoryName(DirectoryInfo dirInfo) => dirInfo.Name;
+
+		public static string GetFileName(FileInfo fileInfo) => fileInfo.Name;
 
 		public static IOrderedEnumerable<T> OrderByAlphaNumeric<T>(this IEnumerable<T> source, Func<T, string> selector)
 		{
