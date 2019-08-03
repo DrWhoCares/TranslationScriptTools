@@ -132,15 +132,16 @@ namespace TranslationScriptMaker
 
 			foreach ( PageInformation pageInfo in PageInformations )
 			{
+				pageInfo.totalPanels = 1;
+				pageInfo.panelsWithSFX.Add(false);
+
+				int currentPageNumber = pageInfo.pageNumber + pageNumberOffset;
+
 				if ( pageInfo.isSpread )
 				{
 					++pageNumberOffset;
 				}
 
-				pageInfo.totalPanels = 1;
-				pageInfo.panelsWithSFX.Add(false);
-
-				int currentPageNumber = pageInfo.pageNumber + pageNumberOffset;
 				pageInfo.pageScriptContents = new List<string>(TextUtils.ParseScriptPageContents(
 					PAGE_HEADER_BEGIN + currentPageNumber.ToString() + (pageInfo.isSpread ? " - " + (currentPageNumber + 1).ToString() : "") + PAGE_HEADER_END
 					+ PANEL_HEADER_BEGIN + "1" + PANEL_HEADER_END + PANEL_FOOTER
@@ -888,6 +889,48 @@ namespace TranslationScriptMaker
 				e.Graphics.DrawString(comboBox.Items[e.Index].ToString(), font, brush, e.Bounds);
 				e.DrawFocusRectangle();
 			}
+		}
+
+		private void IsPageASpreadCheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			CheckBox checkBox = (CheckBox)sender;
+
+			if ( !IsCreatingScript || IsChangingPage )
+			{
+				return; // Switching pages
+			}
+
+			PageInformations.ElementAt(CurrentPageIndex).isSpread = checkBox.Checked;
+
+			int pageNumberOffset = 0;
+
+			foreach ( PageInformation pageInfo in PageInformations )
+			{
+				int currentPageNumber = pageInfo.pageNumber + pageNumberOffset;
+
+				if ( pageInfo.isSpread )
+				{
+					++pageNumberOffset;
+				}
+
+				int indexOfPageLine = pageInfo.pageScriptContents.First().Contains("Page") ? 0 : 1;
+
+				int indexBeforePageNum = pageInfo.pageScriptContents.ElementAt(indexOfPageLine).IndexOf("e") + 2;
+				int indexAfterPageNum = pageInfo.pageScriptContents.ElementAt(indexOfPageLine).LastIndexOf(' ');
+
+				pageInfo.pageScriptContents[indexOfPageLine] = pageInfo.pageScriptContents.ElementAt(indexOfPageLine).Remove(indexBeforePageNum, indexAfterPageNum - indexBeforePageNum);
+
+				if ( pageInfo.isSpread )
+				{
+					pageInfo.pageScriptContents[indexOfPageLine] = pageInfo.pageScriptContents.ElementAt(indexOfPageLine).Insert(indexBeforePageNum, currentPageNumber.ToString() + " - " + (currentPageNumber + 1).ToString());
+				}
+				else
+				{
+					pageInfo.pageScriptContents[indexOfPageLine] = pageInfo.pageScriptContents.ElementAt(indexOfPageLine).Insert(indexBeforePageNum, currentPageNumber.ToString());
+				}
+			}
+
+			UpdateScriptViewerContents(PageInformations.ElementAt(CurrentPageIndex).pageScriptContents);
 		}
 	}
 

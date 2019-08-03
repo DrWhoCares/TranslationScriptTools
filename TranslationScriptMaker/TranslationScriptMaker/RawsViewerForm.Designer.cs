@@ -30,6 +30,7 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RawsViewerForm));
 			this.InputGroupBox = new System.Windows.Forms.GroupBox();
+			this.CurrentPageComboBox = new System.Windows.Forms.ComboBox();
 			this.IsPageASpreadCheckBox = new System.Windows.Forms.CheckBox();
 			this.PanelsWithSFXGroupBox = new System.Windows.Forms.GroupBox();
 			this.Panel1CheckBox = new System.Windows.Forms.CheckBox();
@@ -56,7 +57,6 @@
 			this.ScriptViewerGroupBox = new System.Windows.Forms.GroupBox();
 			this.ScriptViewerRichTextBox = new System.Windows.Forms.RichTextBox();
 			this.MainPanel = new System.Windows.Forms.Panel();
-			this.CurrentPageComboBox = new System.Windows.Forms.ComboBox();
 			this.InputGroupBox.SuspendLayout();
 			this.PanelsWithSFXGroupBox.SuspendLayout();
 			this.InputPanel.SuspendLayout();
@@ -88,6 +88,18 @@
 			this.InputGroupBox.TabStop = false;
 			this.InputGroupBox.Text = "Input Controls";
 			// 
+			// CurrentPageComboBox
+			// 
+			this.CurrentPageComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+			this.CurrentPageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.CurrentPageComboBox.FormattingEnabled = true;
+			this.CurrentPageComboBox.Location = new System.Drawing.Point(12, 21);
+			this.CurrentPageComboBox.Name = "CurrentPageComboBox";
+			this.CurrentPageComboBox.Size = new System.Drawing.Size(88, 21);
+			this.CurrentPageComboBox.TabIndex = 7;
+			this.CurrentPageComboBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.CurrentPageComboBox_DrawItem);
+			this.CurrentPageComboBox.SelectionChangeCommitted += new System.EventHandler(this.CurrentPageComboBox_SelectionChangeCommitted);
+			// 
 			// IsPageASpreadCheckBox
 			// 
 			this.IsPageASpreadCheckBox.AutoSize = true;
@@ -97,6 +109,7 @@
 			this.IsPageASpreadCheckBox.TabIndex = 6;
 			this.IsPageASpreadCheckBox.Text = "Is a Spread?";
 			this.IsPageASpreadCheckBox.UseVisualStyleBackColor = true;
+			this.IsPageASpreadCheckBox.CheckedChanged += new System.EventHandler(this.IsPageASpreadCheckBox_CheckedChanged);
 			// 
 			// PanelsWithSFXGroupBox
 			// 
@@ -447,18 +460,6 @@
 			this.MainPanel.Name = "MainPanel";
 			this.MainPanel.Size = new System.Drawing.Size(1137, 474);
 			this.MainPanel.TabIndex = 3;
-			// 
-			// CurrentPageComboBox
-			// 
-			this.CurrentPageComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-			this.CurrentPageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.CurrentPageComboBox.FormattingEnabled = true;
-			this.CurrentPageComboBox.Location = new System.Drawing.Point(12, 21);
-			this.CurrentPageComboBox.Name = "CurrentPageComboBox";
-			this.CurrentPageComboBox.Size = new System.Drawing.Size(88, 21);
-			this.CurrentPageComboBox.TabIndex = 7;
-			this.CurrentPageComboBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.CurrentPageComboBox_DrawItem);
-			this.CurrentPageComboBox.SelectionChangeCommitted += new System.EventHandler(this.CurrentPageComboBox_SelectionChangeCommitted);
 			// 
 			// RawsViewerForm
 			// 
