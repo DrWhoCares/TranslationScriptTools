@@ -934,6 +934,85 @@ namespace TranslationScriptMaker
 
 			UpdateScriptViewerContents(PageInformations.ElementAt(CurrentPageIndex).pageScriptContents);
 		}
+
+		private void ScriptViewerRichTextBox_MouseUp(object sender, MouseEventArgs e)
+		{
+			if ( e.Button == MouseButtons.Right && string.IsNullOrEmpty(ScriptViewerRichTextBox.SelectedText) )
+			{
+				int newStartPosition = ScriptViewerRichTextBox.GetCharIndexFromPosition(e.Location);
+
+				if ( newStartPosition < ScriptViewerRichTextBox.SelectionStart || newStartPosition > ScriptViewerRichTextBox.SelectionStart + ScriptViewerRichTextBox.SelectionLength )
+				{
+					ScriptViewerRichTextBox.SelectionStart = newStartPosition;
+					ScriptViewerRichTextBox.SelectionLength = 0;
+				}
+			}
+		}
+
+		#region
+		private void CutToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ScriptViewerRichTextBox.Cut();
+		}
+
+		private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Clipboard.SetText(ScriptViewerRichTextBox.SelectedText);
+		}
+
+		private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if ( Clipboard.ContainsText() )
+			{
+				ScriptViewerRichTextBox.SelectedText = Clipboard.GetText(TextDataFormat.UnicodeText).ToString();
+			}
+		}
+
+		private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ScriptViewerRichTextBox.SelectedText = string.Empty;
+		}
+
+		private void SFXToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ScriptViewerRichTextBox.SelectedText = PANEL_SFX_SECTION;
+		}
+
+		private void BubbleToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ScriptViewerRichTextBox.SelectedText = "[B1]\n";
+		}
+
+		private void TranslatorToReaderToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ScriptViewerRichTextBox.SelectedText = "[T/N]: ";
+		}
+
+		private void TranslatorToProofreaderToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ScriptViewerRichTextBox.SelectedText = "(T/P: )";
+		}
+
+		private void TranslatorToTypesetterToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ScriptViewerRichTextBox.SelectedText = "(T/TS: )";
+		}
+
+		private void ProofreaderToReaderToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ScriptViewerRichTextBox.SelectedText = "[PR/N]: ";
+		}
+
+		private void ProofreaderToTranslatorToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ScriptViewerRichTextBox.SelectedText = "(P/T: )";
+		}
+
+		private void ProofreaderToTypesetterToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ScriptViewerRichTextBox.SelectedText = "(P/TS: )";
+		}
+		#endregion
 	}
 
 	public static class TextUtils
