@@ -84,8 +84,6 @@ namespace TranslationScriptMaker
 			CurrentPageIndex = 0;
 			AreThereUnsavedChanges = false;
 
-			ScriptViewerRichTextBox.ReadOnly = IsCreatingScript;
-
 			PageInformations = new List<PageInformation>();
 
 			LoadImage();
@@ -120,9 +118,6 @@ namespace TranslationScriptMaker
 			else
 			{
 				ParseScriptForPageInformations();
-				TotalPanelsTextBox.Enabled = false;
-				PanelsWithSFXGroupBox.Enabled = false;
-				IsPageASpreadCheckBox.Enabled = false;
 			}
 		}
 
@@ -164,6 +159,11 @@ namespace TranslationScriptMaker
 				if ( line.Contains(PAGE_HEADER_BEGIN) )
 				{
 					++currentPageIndex;
+
+					if ( line.Contains(" - ") )
+					{
+						PageInformations.ElementAt(currentPageIndex).isSpread = true;
+					}
 				}
 				else if ( line.Contains("Panel") )
 				{
@@ -606,7 +606,7 @@ namespace TranslationScriptMaker
 		{
 			CheckBox checkBox = (CheckBox)sender;
 
-			if ( !IsCreatingScript || !checkBox.Visible || IsChangingPage )
+			if ( !checkBox.Visible || IsChangingPage )
 			{
 				return; // Switching pages
 			}
@@ -788,8 +788,10 @@ namespace TranslationScriptMaker
 
 		private void RawsViewerForm_Load(object sender, EventArgs e)
 		{
+			IsChangingPage = true;
 			DisplaySFXGroupBoxes(PageInformations.ElementAt(CurrentPageIndex).totalPanels);
 			LoadPageInformation();
+			IsChangingPage = false;
 		}
 
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -895,7 +897,7 @@ namespace TranslationScriptMaker
 		{
 			CheckBox checkBox = (CheckBox)sender;
 
-			if ( !IsCreatingScript || IsChangingPage )
+			if ( IsChangingPage )
 			{
 				return; // Switching pages
 			}
