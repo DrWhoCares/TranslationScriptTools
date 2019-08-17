@@ -196,6 +196,7 @@ namespace TranslationScriptMaker
 
 		private void CurrentPageComboBox_SelectionChangeCommitted(object sender, EventArgs e)
 		{
+			IsChangingPage = true;
 			string fileNeedsEditingMarker = string.Empty;
 
 			if ( string.IsNullOrWhiteSpace(TotalPanelsTextBox.Text) || int.Parse(TotalPanelsTextBox.Text) == 0 )
@@ -225,6 +226,7 @@ namespace TranslationScriptMaker
 			TotalPanelsTextBox.Select();
 
 			SaveCurrentScript(false);
+			IsChangingPage = false;
 		}
 
 		private void SwitchToPreviousPage()
