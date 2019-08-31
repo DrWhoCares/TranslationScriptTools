@@ -76,6 +76,7 @@ namespace TranslationScriptMaker
 		public RawsViewerForm(IEnumerable<FileInfo> rawsFiles, string outputLocationFullPath)
 		{
 			InitializeComponent();
+			this.Text = "Translation Script Maker v" + typeof(MainForm).Assembly.GetName().Version;
 
 			OutputLocationFullPath = outputLocationFullPath;
 			RawsFiles = rawsFiles;
