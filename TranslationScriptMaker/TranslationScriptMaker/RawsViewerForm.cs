@@ -46,9 +46,9 @@ namespace TranslationScriptMaker
 		private int PreviousPageIndex { get; set; }
 		private List<PageInformation> PageInformations { get; set; }
 
-		private bool IsChangingPage { get; set; } = false; // TEMP, WILL REMOVE AFTER REFACTORING HOW SFX AND SUCH ARE ADDED
-		private bool HasUserPromptedZoomChanged { get; set; } = false;
-		private bool HasUserScrolledIn { get; set; } = false;
+		private bool IsChangingPage { get; set; } // TEMP, WILL REMOVE AFTER REFACTORING HOW SFX AND SUCH ARE ADDED
+		private bool HasUserPromptedZoomChanged { get; set; }
+		private bool HasUserScrolledIn { get; set; }
 		private bool _AreThereUnsavedChanges;
 		private bool AreThereUnsavedChanges
 		{
@@ -744,6 +744,19 @@ namespace TranslationScriptMaker
 			return false;
 		}
 
+		private void RawsImageBox_MouseWheel(object sender, MouseEventArgs e)
+		{
+			// This event is raised before ImageBox handles the event, so if we set the SizeMode to Normal here, then zooming will work
+			RawsImageBox.SizeMode = Cyotek.Windows.Forms.ImageBoxSizeMode.Normal;
+			HasUserPromptedZoomChanged = true;
+			HasUserScrolledIn = e.Delta > 0;
+		}
+
+		private void RawsImageBox_ZoomChanged(object sender, EventArgs e)
+		{
+			SetSizeMode();
+		}
+
 		private void SetSizeMode()
 		{
 			if ( RawsImageBox.Image == null || !HasUserPromptedZoomChanged )
@@ -764,6 +777,7 @@ namespace TranslationScriptMaker
 			{
 				RawsImageBox.SizeMode = Cyotek.Windows.Forms.ImageBoxSizeMode.Stretch;
 			}
+
 			if ( (scaledWidth < viewSize.Width && viewSize.Height < scaledHeight) && !HasUserScrolledIn )
 			{
 				// If the Image Width is larger than the Image Height, don't use stretched, use Fit
@@ -773,19 +787,6 @@ namespace TranslationScriptMaker
 			{
 				RawsImageBox.SizeMode = Cyotek.Windows.Forms.ImageBoxSizeMode.Normal;
 			}
-		}
-
-		private void RawsImageBox_MouseWheel(object sender, MouseEventArgs e)
-		{
-			// This event is raised before ImageBox handles the event, so if we set the SizeMode to Normal here, then zooming will work
-			RawsImageBox.SizeMode = Cyotek.Windows.Forms.ImageBoxSizeMode.Normal;
-			HasUserPromptedZoomChanged = true;
-			HasUserScrolledIn = e.Delta > 0;
-		}
-
-		private void RawsImageBox_ZoomChanged(object sender, EventArgs e)
-		{
-			SetSizeMode();
 		}
 
 		private void RawsViewerForm_Load(object sender, EventArgs e)
