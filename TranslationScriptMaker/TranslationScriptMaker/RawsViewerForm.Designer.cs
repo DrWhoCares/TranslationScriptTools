@@ -57,10 +57,11 @@
 			this.RawsImageBox = new Cyotek.Windows.Forms.ImageBox();
 			this.ScriptViewerGroupBox = new System.Windows.Forms.GroupBox();
 			this.ScriptViewerRichTextBox = new System.Windows.Forms.RichTextBox();
-			this.MainPanel = new System.Windows.Forms.Panel();
 			this.ScriptViewerContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.CutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.CopyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.PasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.DeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.InsertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.SFXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.BubbleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,11 +71,10 @@
 			this.TranslatorToProofreaderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.TranslatorToTypesetterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.ProofreadersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.ProofreaderToReaderToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.ProofreaderToTranslatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.ProofreaderToTypesetterToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.ProofreaderToReaderToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.CutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.DeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.MainPanel = new System.Windows.Forms.Panel();
 			this.InputGroupBox.SuspendLayout();
 			this.PanelsWithSFXGroupBox.SuspendLayout();
 			this.InputPanel.SuspendLayout();
@@ -85,8 +85,8 @@
 			this.ViewersSplitContainer.SuspendLayout();
 			this.RawsViewerGroupBox.SuspendLayout();
 			this.ScriptViewerGroupBox.SuspendLayout();
-			this.MainPanel.SuspendLayout();
 			this.ScriptViewerContextMenuStrip.SuspendLayout();
+			this.MainPanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// InputGroupBox
@@ -472,16 +472,6 @@
 			this.ScriptViewerRichTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ScriptViewerRichTextBox_KeyUp);
 			this.ScriptViewerRichTextBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ScriptViewerRichTextBox_MouseUp);
 			// 
-			// MainPanel
-			// 
-			this.MainPanel.Controls.Add(this.RawsViewerPanel);
-			this.MainPanel.Controls.Add(this.InputPanel);
-			this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.MainPanel.Location = new System.Drawing.Point(0, 0);
-			this.MainPanel.Name = "MainPanel";
-			this.MainPanel.Size = new System.Drawing.Size(1137, 474);
-			this.MainPanel.TabIndex = 3;
-			// 
 			// ScriptViewerContextMenuStrip
 			// 
 			this.ScriptViewerContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -491,21 +481,35 @@
             this.DeleteToolStripMenuItem,
             this.InsertToolStripMenuItem});
 			this.ScriptViewerContextMenuStrip.Name = "ScriptViewerContextMenuStrip";
-			this.ScriptViewerContextMenuStrip.Size = new System.Drawing.Size(181, 136);
+			this.ScriptViewerContextMenuStrip.Size = new System.Drawing.Size(113, 114);
+			// 
+			// CutToolStripMenuItem
+			// 
+			this.CutToolStripMenuItem.Name = "CutToolStripMenuItem";
+			this.CutToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+			this.CutToolStripMenuItem.Text = "Cut";
+			this.CutToolStripMenuItem.Click += new System.EventHandler(this.CutToolStripMenuItem_Click);
 			// 
 			// CopyToolStripMenuItem
 			// 
 			this.CopyToolStripMenuItem.Name = "CopyToolStripMenuItem";
-			this.CopyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.CopyToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
 			this.CopyToolStripMenuItem.Text = "Copy";
 			this.CopyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
 			// 
 			// PasteToolStripMenuItem
 			// 
 			this.PasteToolStripMenuItem.Name = "PasteToolStripMenuItem";
-			this.PasteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.PasteToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
 			this.PasteToolStripMenuItem.Text = "Paste";
 			this.PasteToolStripMenuItem.Click += new System.EventHandler(this.PasteToolStripMenuItem_Click);
+			// 
+			// DeleteToolStripMenuItem
+			// 
+			this.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem";
+			this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+			this.DeleteToolStripMenuItem.Text = "Delete";
+			this.DeleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
 			// 
 			// InsertToolStripMenuItem
 			// 
@@ -514,20 +518,20 @@
             this.BubbleToolStripMenuItem,
             this.NotesToolStripMenuItem});
 			this.InsertToolStripMenuItem.Name = "InsertToolStripMenuItem";
-			this.InsertToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.InsertToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
 			this.InsertToolStripMenuItem.Text = "Insert...";
 			// 
 			// SFXToolStripMenuItem
 			// 
 			this.SFXToolStripMenuItem.Name = "SFXToolStripMenuItem";
-			this.SFXToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.SFXToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
 			this.SFXToolStripMenuItem.Text = "SFX";
 			this.SFXToolStripMenuItem.Click += new System.EventHandler(this.SFXToolStripMenuItem_Click);
 			// 
 			// BubbleToolStripMenuItem
 			// 
 			this.BubbleToolStripMenuItem.Name = "BubbleToolStripMenuItem";
-			this.BubbleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.BubbleToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
 			this.BubbleToolStripMenuItem.Text = "Bubble";
 			this.BubbleToolStripMenuItem.Click += new System.EventHandler(this.BubbleToolStripMenuItem_Click);
 			// 
@@ -537,7 +541,7 @@
             this.TranslatorsToolStripMenuItem,
             this.ProofreadersToolStripMenuItem});
 			this.NotesToolStripMenuItem.Name = "NotesToolStripMenuItem";
-			this.NotesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.NotesToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
 			this.NotesToolStripMenuItem.Text = "Notes...";
 			// 
 			// TranslatorsToolStripMenuItem
@@ -547,27 +551,27 @@
             this.TranslatorToProofreaderToolStripMenuItem,
             this.TranslatorToTypesetterToolStripMenuItem});
 			this.TranslatorsToolStripMenuItem.Name = "TranslatorsToolStripMenuItem";
-			this.TranslatorsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.TranslatorsToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
 			this.TranslatorsToolStripMenuItem.Text = "Translator\'s...";
 			// 
 			// TranslatorToReaderToolStripMenuItem
 			// 
 			this.TranslatorToReaderToolStripMenuItem.Name = "TranslatorToReaderToolStripMenuItem";
-			this.TranslatorToReaderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.TranslatorToReaderToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
 			this.TranslatorToReaderToolStripMenuItem.Text = "To Reader";
 			this.TranslatorToReaderToolStripMenuItem.Click += new System.EventHandler(this.TranslatorToReaderToolStripMenuItem_Click);
 			// 
 			// TranslatorToProofreaderToolStripMenuItem
 			// 
 			this.TranslatorToProofreaderToolStripMenuItem.Name = "TranslatorToProofreaderToolStripMenuItem";
-			this.TranslatorToProofreaderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.TranslatorToProofreaderToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
 			this.TranslatorToProofreaderToolStripMenuItem.Text = "To Proofreader";
 			this.TranslatorToProofreaderToolStripMenuItem.Click += new System.EventHandler(this.TranslatorToProofreaderToolStripMenuItem_Click);
 			// 
 			// TranslatorToTypesetterToolStripMenuItem
 			// 
 			this.TranslatorToTypesetterToolStripMenuItem.Name = "TranslatorToTypesetterToolStripMenuItem";
-			this.TranslatorToTypesetterToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.TranslatorToTypesetterToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
 			this.TranslatorToTypesetterToolStripMenuItem.Text = "To Typesetter";
 			this.TranslatorToTypesetterToolStripMenuItem.Click += new System.EventHandler(this.TranslatorToTypesetterToolStripMenuItem_Click);
 			// 
@@ -578,43 +582,39 @@
             this.ProofreaderToTranslatorToolStripMenuItem,
             this.ProofreaderToTypesetterToolStripMenuItem1});
 			this.ProofreadersToolStripMenuItem.Name = "ProofreadersToolStripMenuItem";
-			this.ProofreadersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.ProofreadersToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
 			this.ProofreadersToolStripMenuItem.Text = "Proofreader\'s...";
+			// 
+			// ProofreaderToReaderToolStripMenuItem1
+			// 
+			this.ProofreaderToReaderToolStripMenuItem1.Name = "ProofreaderToReaderToolStripMenuItem1";
+			this.ProofreaderToReaderToolStripMenuItem1.Size = new System.Drawing.Size(142, 22);
+			this.ProofreaderToReaderToolStripMenuItem1.Text = "To Reader";
+			this.ProofreaderToReaderToolStripMenuItem1.Click += new System.EventHandler(this.ProofreaderToReaderToolStripMenuItem_Click);
 			// 
 			// ProofreaderToTranslatorToolStripMenuItem
 			// 
 			this.ProofreaderToTranslatorToolStripMenuItem.Name = "ProofreaderToTranslatorToolStripMenuItem";
-			this.ProofreaderToTranslatorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.ProofreaderToTranslatorToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
 			this.ProofreaderToTranslatorToolStripMenuItem.Text = "To Translator";
 			this.ProofreaderToTranslatorToolStripMenuItem.Click += new System.EventHandler(this.ProofreaderToTranslatorToolStripMenuItem_Click);
 			// 
 			// ProofreaderToTypesetterToolStripMenuItem1
 			// 
 			this.ProofreaderToTypesetterToolStripMenuItem1.Name = "ProofreaderToTypesetterToolStripMenuItem1";
-			this.ProofreaderToTypesetterToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+			this.ProofreaderToTypesetterToolStripMenuItem1.Size = new System.Drawing.Size(142, 22);
 			this.ProofreaderToTypesetterToolStripMenuItem1.Text = "To Typesetter";
 			this.ProofreaderToTypesetterToolStripMenuItem1.Click += new System.EventHandler(this.ProofreaderToTypesetterToolStripMenuItem_Click);
 			// 
-			// ProofreaderToReaderToolStripMenuItem1
+			// MainPanel
 			// 
-			this.ProofreaderToReaderToolStripMenuItem1.Name = "ProofreaderToReaderToolStripMenuItem1";
-			this.ProofreaderToReaderToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
-			this.ProofreaderToReaderToolStripMenuItem1.Text = "To Reader";
-			this.ProofreaderToReaderToolStripMenuItem1.Click += new System.EventHandler(this.ProofreaderToReaderToolStripMenuItem_Click);
-			// 
-			// CutToolStripMenuItem
-			// 
-			this.CutToolStripMenuItem.Name = "CutToolStripMenuItem";
-			this.CutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.CutToolStripMenuItem.Text = "Cut";
-			this.CutToolStripMenuItem.Click += new System.EventHandler(this.CutToolStripMenuItem_Click);
-			// 
-			// DeleteToolStripMenuItem
-			// 
-			this.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem";
-			this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.DeleteToolStripMenuItem.Text = "Delete";
-			this.DeleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
+			this.MainPanel.Controls.Add(this.RawsViewerPanel);
+			this.MainPanel.Controls.Add(this.InputPanel);
+			this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.MainPanel.Location = new System.Drawing.Point(0, 0);
+			this.MainPanel.Name = "MainPanel";
+			this.MainPanel.Size = new System.Drawing.Size(1137, 474);
+			this.MainPanel.TabIndex = 3;
 			// 
 			// RawsViewerForm
 			// 
@@ -641,8 +641,8 @@
 			this.ViewersSplitContainer.ResumeLayout(false);
 			this.RawsViewerGroupBox.ResumeLayout(false);
 			this.ScriptViewerGroupBox.ResumeLayout(false);
-			this.MainPanel.ResumeLayout(false);
 			this.ScriptViewerContextMenuStrip.ResumeLayout(false);
+			this.MainPanel.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}

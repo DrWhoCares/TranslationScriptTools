@@ -791,6 +791,7 @@ namespace TranslationScriptMaker
 		private void RawsViewerForm_Load(object sender, EventArgs e)
 		{
 			IsChangingPage = true;
+			ScriptViewerRichTextBox.AutoWordSelection = false;
 			DisplaySFXGroupBoxes(PageInformations.ElementAt(CurrentPageIndex).totalPanels);
 			LoadPageInformation();
 			IsChangingPage = false;
