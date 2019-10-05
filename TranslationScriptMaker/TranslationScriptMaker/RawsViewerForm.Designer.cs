@@ -410,7 +410,7 @@
 			// 
 			this.ViewersSplitContainer.Panel2.Controls.Add(this.ScriptViewerGroupBox);
 			this.ViewersSplitContainer.Size = new System.Drawing.Size(1137, 423);
-			this.ViewersSplitContainer.SplitterDistance = 731;
+			this.ViewersSplitContainer.SplitterDistance = 512;
 			this.ViewersSplitContainer.TabIndex = 3;
 			// 
 			// RawsViewerGroupBox
@@ -422,7 +422,7 @@
 			this.RawsViewerGroupBox.ForeColor = System.Drawing.SystemColors.ButtonFace;
 			this.RawsViewerGroupBox.Location = new System.Drawing.Point(0, 0);
 			this.RawsViewerGroupBox.Name = "RawsViewerGroupBox";
-			this.RawsViewerGroupBox.Size = new System.Drawing.Size(731, 423);
+			this.RawsViewerGroupBox.Size = new System.Drawing.Size(512, 423);
 			this.RawsViewerGroupBox.TabIndex = 1;
 			this.RawsViewerGroupBox.TabStop = false;
 			this.RawsViewerGroupBox.Text = "Raws Viewer - Page: XXX / XXX";
@@ -437,7 +437,7 @@
 			this.RawsImageBox.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 			this.RawsImageBox.Location = new System.Drawing.Point(3, 16);
 			this.RawsImageBox.Name = "RawsImageBox";
-			this.RawsImageBox.Size = new System.Drawing.Size(725, 404);
+			this.RawsImageBox.Size = new System.Drawing.Size(506, 404);
 			this.RawsImageBox.TabIndex = 0;
 			this.RawsImageBox.ZoomChanged += new System.EventHandler(this.RawsImageBox_ZoomChanged);
 			this.RawsImageBox.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.RawsImageBox_MouseWheel);
@@ -449,7 +449,7 @@
 			this.ScriptViewerGroupBox.ForeColor = System.Drawing.SystemColors.ButtonFace;
 			this.ScriptViewerGroupBox.Location = new System.Drawing.Point(0, 0);
 			this.ScriptViewerGroupBox.Name = "ScriptViewerGroupBox";
-			this.ScriptViewerGroupBox.Size = new System.Drawing.Size(402, 423);
+			this.ScriptViewerGroupBox.Size = new System.Drawing.Size(621, 423);
 			this.ScriptViewerGroupBox.TabIndex = 2;
 			this.ScriptViewerGroupBox.TabStop = false;
 			this.ScriptViewerGroupBox.Text = "Script Viewer - Page: XXX / XXX";
@@ -463,7 +463,7 @@
 			this.ScriptViewerRichTextBox.ForeColor = System.Drawing.SystemColors.Control;
 			this.ScriptViewerRichTextBox.Location = new System.Drawing.Point(3, 16);
 			this.ScriptViewerRichTextBox.Name = "ScriptViewerRichTextBox";
-			this.ScriptViewerRichTextBox.Size = new System.Drawing.Size(396, 404);
+			this.ScriptViewerRichTextBox.Size = new System.Drawing.Size(615, 404);
 			this.ScriptViewerRichTextBox.TabIndex = 0;
 			this.ScriptViewerRichTextBox.Text = "";
 			this.ScriptViewerRichTextBox.WordWrap = false;
