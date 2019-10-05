@@ -309,6 +309,9 @@ namespace TranslationScriptMaker
 
 			SaveCurrentScript(false);
 			IsChangingPage = false;
+
+			ScriptViewerRichTextBox.ZoomFactor = 1.0F; // If you reset the text, it resets the zoom factor
+			ScriptViewerRichTextBox.ZoomFactor = 1.4F; // But you first need to set it to 1.0F, then set it to the value you want for it to work
 		}
 
 		private void SavePageInformation()
@@ -317,7 +320,7 @@ namespace TranslationScriptMaker
 
 			pageInfo.pageScriptContents = new List<string>(TextUtils.ParseScriptPageContents(ScriptViewerRichTextBox.Text));
 
-			ScriptViewerRichTextBox.Text = "";
+			ScriptViewerRichTextBox.Clear();
 
 			bool didSucceed = int.TryParse(TotalPanelsTextBox.Text, out int totalPanelsInput);
 
