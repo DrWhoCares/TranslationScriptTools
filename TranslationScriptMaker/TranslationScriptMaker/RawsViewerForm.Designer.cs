@@ -55,9 +55,9 @@
 			this.ViewersSplitContainer = new System.Windows.Forms.SplitContainer();
 			this.RawsViewerGroupBox = new System.Windows.Forms.GroupBox();
 			this.RawsImageBox = new Cyotek.Windows.Forms.ImageBox();
-			this.ScriptViewerGroupBox = new System.Windows.Forms.GroupBox();
+			this.ScriptEditorGroupBox = new System.Windows.Forms.GroupBox();
 			this.STTB = new ScintillaNET.Scintilla();
-			this.ScriptViewerContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.ScriptEditorContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.CutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.CopyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.PasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,9 +71,9 @@
 			this.TranslatorToProofreaderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.TranslatorToTypesetterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.ProofreadersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.ProofreaderToReaderToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.ProofreaderToReaderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.ProofreaderToTranslatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.ProofreaderToTypesetterToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.ProofreaderToTypesetterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainPanel = new System.Windows.Forms.Panel();
 			this.InputGroupBox.SuspendLayout();
 			this.PanelsWithSFXGroupBox.SuspendLayout();
@@ -84,8 +84,8 @@
 			this.ViewersSplitContainer.Panel2.SuspendLayout();
 			this.ViewersSplitContainer.SuspendLayout();
 			this.RawsViewerGroupBox.SuspendLayout();
-			this.ScriptViewerGroupBox.SuspendLayout();
-			this.ScriptViewerContextMenuStrip.SuspendLayout();
+			this.ScriptEditorGroupBox.SuspendLayout();
+			this.ScriptEditorContextMenuStrip.SuspendLayout();
 			this.MainPanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -99,16 +99,18 @@
 			this.InputGroupBox.Controls.Add(this.NextImageButton);
 			this.InputGroupBox.Controls.Add(this.PreviousImageButton);
 			this.InputGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.InputGroupBox.ForeColor = System.Drawing.SystemColors.ButtonFace;
+			this.InputGroupBox.ForeColor = System.Drawing.SystemColors.ControlLight;
 			this.InputGroupBox.Location = new System.Drawing.Point(0, 0);
 			this.InputGroupBox.Name = "InputGroupBox";
 			this.InputGroupBox.Size = new System.Drawing.Size(1137, 51);
 			this.InputGroupBox.TabIndex = 2;
 			this.InputGroupBox.TabStop = false;
 			this.InputGroupBox.Text = "Input Controls";
+			this.InputGroupBox.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintGroupBoxBorderDarkTheme);
 			// 
 			// CurrentPageComboBox
 			// 
+			this.CurrentPageComboBox.BackColor = System.Drawing.SystemColors.AppWorkspace;
 			this.CurrentPageComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
 			this.CurrentPageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.CurrentPageComboBox.FormattingEnabled = true;
@@ -122,6 +124,7 @@
 			// IsPageASpreadCheckBox
 			// 
 			this.IsPageASpreadCheckBox.AutoSize = true;
+			this.IsPageASpreadCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.IsPageASpreadCheckBox.Location = new System.Drawing.Point(869, 28);
 			this.IsPageASpreadCheckBox.Name = "IsPageASpreadCheckBox";
 			this.IsPageASpreadCheckBox.Size = new System.Drawing.Size(86, 17);
@@ -144,20 +147,19 @@
 			this.PanelsWithSFXGroupBox.Controls.Add(this.Panel10CheckBox);
 			this.PanelsWithSFXGroupBox.Controls.Add(this.Panel11CheckBox);
 			this.PanelsWithSFXGroupBox.Controls.Add(this.Panel12CheckBox);
-			this.PanelsWithSFXGroupBox.ForeColor = System.Drawing.SystemColors.ButtonFace;
+			this.PanelsWithSFXGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.PanelsWithSFXGroupBox.Location = new System.Drawing.Point(391, 12);
 			this.PanelsWithSFXGroupBox.Name = "PanelsWithSFXGroupBox";
 			this.PanelsWithSFXGroupBox.Size = new System.Drawing.Size(471, 39);
 			this.PanelsWithSFXGroupBox.TabIndex = 5;
 			this.PanelsWithSFXGroupBox.TabStop = false;
 			this.PanelsWithSFXGroupBox.Text = "Panels With SFX";
+			this.PanelsWithSFXGroupBox.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintGroupBoxBorderDarkTheme);
 			// 
 			// Panel1CheckBox
 			// 
 			this.Panel1CheckBox.AutoSize = true;
-			this.Panel1CheckBox.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.Panel1CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-			this.Panel1CheckBox.ForeColor = System.Drawing.SystemColors.ButtonFace;
 			this.Panel1CheckBox.Location = new System.Drawing.Point(6, 16);
 			this.Panel1CheckBox.Name = "Panel1CheckBox";
 			this.Panel1CheckBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -337,6 +339,7 @@
 			// TotalPanelsLabel
 			// 
 			this.TotalPanelsLabel.AutoSize = true;
+			this.TotalPanelsLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.TotalPanelsLabel.Location = new System.Drawing.Point(268, 25);
 			this.TotalPanelsLabel.Name = "TotalPanelsLabel";
 			this.TotalPanelsLabel.Size = new System.Drawing.Size(69, 13);
@@ -345,6 +348,8 @@
 			// 
 			// TotalPanelsTextBox
 			// 
+			this.TotalPanelsTextBox.BackColor = System.Drawing.SystemColors.AppWorkspace;
+			this.TotalPanelsTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.TotalPanelsTextBox.Location = new System.Drawing.Point(343, 22);
 			this.TotalPanelsTextBox.MaxLength = 2;
 			this.TotalPanelsTextBox.Name = "TotalPanelsTextBox";
@@ -355,7 +360,7 @@
 			// 
 			// NextImageButton
 			// 
-			this.NextImageButton.BackColor = System.Drawing.SystemColors.Control;
+			this.NextImageButton.BackColor = System.Drawing.SystemColors.ControlLight;
 			this.NextImageButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.NextImageButton.Location = new System.Drawing.Point(187, 20);
 			this.NextImageButton.Name = "NextImageButton";
@@ -367,7 +372,7 @@
 			// 
 			// PreviousImageButton
 			// 
-			this.PreviousImageButton.BackColor = System.Drawing.SystemColors.Control;
+			this.PreviousImageButton.BackColor = System.Drawing.SystemColors.ControlLight;
 			this.PreviousImageButton.Enabled = false;
 			this.PreviousImageButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.PreviousImageButton.Location = new System.Drawing.Point(106, 20);
@@ -408,7 +413,7 @@
 			// 
 			// ViewersSplitContainer.Panel2
 			// 
-			this.ViewersSplitContainer.Panel2.Controls.Add(this.ScriptViewerGroupBox);
+			this.ViewersSplitContainer.Panel2.Controls.Add(this.ScriptEditorGroupBox);
 			this.ViewersSplitContainer.Size = new System.Drawing.Size(1137, 423);
 			this.ViewersSplitContainer.SplitterDistance = 512;
 			this.ViewersSplitContainer.TabIndex = 3;
@@ -419,21 +424,24 @@
 			this.RawsViewerGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.RawsViewerGroupBox.Controls.Add(this.RawsImageBox);
 			this.RawsViewerGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.RawsViewerGroupBox.ForeColor = System.Drawing.SystemColors.ButtonFace;
+			this.RawsViewerGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.RawsViewerGroupBox.Location = new System.Drawing.Point(0, 0);
 			this.RawsViewerGroupBox.Name = "RawsViewerGroupBox";
 			this.RawsViewerGroupBox.Size = new System.Drawing.Size(512, 423);
 			this.RawsViewerGroupBox.TabIndex = 1;
 			this.RawsViewerGroupBox.TabStop = false;
 			this.RawsViewerGroupBox.Text = "Raws Viewer - Page: XXX / XXX";
+			this.RawsViewerGroupBox.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintGroupBoxBorderDarkTheme);
 			// 
 			// RawsImageBox
 			// 
-			this.RawsImageBox.BackColor = System.Drawing.Color.DimGray;
+			this.RawsImageBox.BackColor = System.Drawing.Color.Black;
+			this.RawsImageBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.RawsImageBox.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.RawsImageBox.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.RawsImageBox.GridColor = System.Drawing.Color.Gray;
-			this.RawsImageBox.GridColorAlternate = System.Drawing.Color.DimGray;
+			this.RawsImageBox.ForeColor = System.Drawing.SystemColors.ControlLight;
+			this.RawsImageBox.GridColor = System.Drawing.Color.Black;
+			this.RawsImageBox.GridColorAlternate = System.Drawing.Color.Black;
+			this.RawsImageBox.ImageBorderColor = System.Drawing.Color.Black;
 			this.RawsImageBox.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 			this.RawsImageBox.Location = new System.Drawing.Point(3, 16);
 			this.RawsImageBox.Name = "RawsImageBox";
@@ -442,23 +450,25 @@
 			this.RawsImageBox.ZoomChanged += new System.EventHandler(this.RawsImageBox_ZoomChanged);
 			this.RawsImageBox.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.RawsImageBox_MouseWheel);
 			// 
-			// ScriptViewerGroupBox
+			// ScriptEditorGroupBox
 			// 
-			this.ScriptViewerGroupBox.Controls.Add(this.STTB);
-			this.ScriptViewerGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ScriptViewerGroupBox.ForeColor = System.Drawing.SystemColors.ButtonFace;
-			this.ScriptViewerGroupBox.Location = new System.Drawing.Point(0, 0);
-			this.ScriptViewerGroupBox.Name = "ScriptViewerGroupBox";
-			this.ScriptViewerGroupBox.Size = new System.Drawing.Size(621, 423);
-			this.ScriptViewerGroupBox.TabIndex = 2;
-			this.ScriptViewerGroupBox.TabStop = false;
-			this.ScriptViewerGroupBox.Text = "Script Viewer - Page: XXX / XXX";
+			this.ScriptEditorGroupBox.Controls.Add(this.STTB);
+			this.ScriptEditorGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ScriptEditorGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
+			this.ScriptEditorGroupBox.Location = new System.Drawing.Point(0, 0);
+			this.ScriptEditorGroupBox.Name = "ScriptEditorGroupBox";
+			this.ScriptEditorGroupBox.Size = new System.Drawing.Size(621, 423);
+			this.ScriptEditorGroupBox.TabIndex = 2;
+			this.ScriptEditorGroupBox.TabStop = false;
+			this.ScriptEditorGroupBox.Text = "Script Editor - Page: XXX / XXX";
+			this.ScriptEditorGroupBox.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintGroupBoxBorderDarkTheme);
 			// 
 			// STTB
 			// 
 			this.STTB.AdditionalCaretForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(195)))), ((int)(((byte)(195)))), ((int)(((byte)(195)))));
 			this.STTB.AutomaticFold = ((ScintillaNET.AutomaticFold)(((ScintillaNET.AutomaticFold.Show | ScintillaNET.AutomaticFold.Click) 
             | ScintillaNET.AutomaticFold.Change)));
+			this.STTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.STTB.CaretForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(195)))), ((int)(((byte)(195)))), ((int)(((byte)(195)))));
 			this.STTB.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.STTB.Location = new System.Drawing.Point(3, 16);
@@ -473,57 +483,72 @@
 			this.STTB.MouseClick += new System.Windows.Forms.MouseEventHandler(this.STTB_MouseClick);
 			this.STTB.MouseUp += new System.Windows.Forms.MouseEventHandler(this.STTB_MouseUp);
 			// 
-			// ScriptViewerContextMenuStrip
+			// ScriptEditorContextMenuStrip
 			// 
-			this.ScriptViewerContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.ScriptEditorContextMenuStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+			this.ScriptEditorContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.CutToolStripMenuItem,
             this.CopyToolStripMenuItem,
             this.PasteToolStripMenuItem,
             this.DeleteToolStripMenuItem,
             this.InsertToolStripMenuItem});
-			this.ScriptViewerContextMenuStrip.Name = "ScriptViewerContextMenuStrip";
-			this.ScriptViewerContextMenuStrip.Size = new System.Drawing.Size(113, 114);
+			this.ScriptEditorContextMenuStrip.Name = "ScriptEditorContextMenuStrip";
+			this.ScriptEditorContextMenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+			this.ScriptEditorContextMenuStrip.Size = new System.Drawing.Size(181, 136);
 			// 
 			// CutToolStripMenuItem
 			// 
+			this.CutToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.CutToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.CutToolStripMenuItem.Name = "CutToolStripMenuItem";
-			this.CutToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+			this.CutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.CutToolStripMenuItem.Text = "Cut";
 			this.CutToolStripMenuItem.Click += new System.EventHandler(this.CutToolStripMenuItem_Click);
 			// 
 			// CopyToolStripMenuItem
 			// 
+			this.CopyToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.CopyToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.CopyToolStripMenuItem.Name = "CopyToolStripMenuItem";
-			this.CopyToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+			this.CopyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.CopyToolStripMenuItem.Text = "Copy";
 			this.CopyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
 			// 
 			// PasteToolStripMenuItem
 			// 
+			this.PasteToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.PasteToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.PasteToolStripMenuItem.Name = "PasteToolStripMenuItem";
-			this.PasteToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+			this.PasteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.PasteToolStripMenuItem.Text = "Paste";
 			this.PasteToolStripMenuItem.Click += new System.EventHandler(this.PasteToolStripMenuItem_Click);
 			// 
 			// DeleteToolStripMenuItem
 			// 
+			this.DeleteToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.DeleteToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem";
-			this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+			this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.DeleteToolStripMenuItem.Text = "Delete";
 			this.DeleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
 			// 
 			// InsertToolStripMenuItem
 			// 
+			this.InsertToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.InsertToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.SFXToolStripMenuItem,
             this.BubbleToolStripMenuItem,
             this.NotesToolStripMenuItem});
+			this.InsertToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.InsertToolStripMenuItem.Name = "InsertToolStripMenuItem";
-			this.InsertToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+			this.InsertToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.InsertToolStripMenuItem.Text = "Insert...";
 			// 
 			// SFXToolStripMenuItem
 			// 
+			this.SFXToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+			this.SFXToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.SFXToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.SFXToolStripMenuItem.Name = "SFXToolStripMenuItem";
 			this.SFXToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
 			this.SFXToolStripMenuItem.Text = "SFX";
@@ -531,6 +556,9 @@
 			// 
 			// BubbleToolStripMenuItem
 			// 
+			this.BubbleToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+			this.BubbleToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.BubbleToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.BubbleToolStripMenuItem.Name = "BubbleToolStripMenuItem";
 			this.BubbleToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
 			this.BubbleToolStripMenuItem.Text = "Bubble";
@@ -538,25 +566,34 @@
 			// 
 			// NotesToolStripMenuItem
 			// 
+			this.NotesToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+			this.NotesToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.NotesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.TranslatorsToolStripMenuItem,
             this.ProofreadersToolStripMenuItem});
+			this.NotesToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.NotesToolStripMenuItem.Name = "NotesToolStripMenuItem";
 			this.NotesToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
 			this.NotesToolStripMenuItem.Text = "Notes...";
 			// 
 			// TranslatorsToolStripMenuItem
 			// 
+			this.TranslatorsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+			this.TranslatorsToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.TranslatorsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.TranslatorToReaderToolStripMenuItem,
             this.TranslatorToProofreaderToolStripMenuItem,
             this.TranslatorToTypesetterToolStripMenuItem});
+			this.TranslatorsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.TranslatorsToolStripMenuItem.Name = "TranslatorsToolStripMenuItem";
 			this.TranslatorsToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
 			this.TranslatorsToolStripMenuItem.Text = "Translator\'s...";
 			// 
 			// TranslatorToReaderToolStripMenuItem
 			// 
+			this.TranslatorToReaderToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+			this.TranslatorToReaderToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.TranslatorToReaderToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.TranslatorToReaderToolStripMenuItem.Name = "TranslatorToReaderToolStripMenuItem";
 			this.TranslatorToReaderToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
 			this.TranslatorToReaderToolStripMenuItem.Text = "To Reader";
@@ -564,6 +601,9 @@
 			// 
 			// TranslatorToProofreaderToolStripMenuItem
 			// 
+			this.TranslatorToProofreaderToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+			this.TranslatorToProofreaderToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.TranslatorToProofreaderToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.TranslatorToProofreaderToolStripMenuItem.Name = "TranslatorToProofreaderToolStripMenuItem";
 			this.TranslatorToProofreaderToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
 			this.TranslatorToProofreaderToolStripMenuItem.Text = "To Proofreader";
@@ -571,6 +611,9 @@
 			// 
 			// TranslatorToTypesetterToolStripMenuItem
 			// 
+			this.TranslatorToTypesetterToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+			this.TranslatorToTypesetterToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.TranslatorToTypesetterToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.TranslatorToTypesetterToolStripMenuItem.Name = "TranslatorToTypesetterToolStripMenuItem";
 			this.TranslatorToTypesetterToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
 			this.TranslatorToTypesetterToolStripMenuItem.Text = "To Typesetter";
@@ -578,34 +621,46 @@
 			// 
 			// ProofreadersToolStripMenuItem
 			// 
+			this.ProofreadersToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+			this.ProofreadersToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.ProofreadersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ProofreaderToReaderToolStripMenuItem1,
+            this.ProofreaderToReaderToolStripMenuItem,
             this.ProofreaderToTranslatorToolStripMenuItem,
-            this.ProofreaderToTypesetterToolStripMenuItem1});
+            this.ProofreaderToTypesetterToolStripMenuItem});
+			this.ProofreadersToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.ProofreadersToolStripMenuItem.Name = "ProofreadersToolStripMenuItem";
 			this.ProofreadersToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
 			this.ProofreadersToolStripMenuItem.Text = "Proofreader\'s...";
 			// 
-			// ProofreaderToReaderToolStripMenuItem1
+			// ProofreaderToReaderToolStripMenuItem
 			// 
-			this.ProofreaderToReaderToolStripMenuItem1.Name = "ProofreaderToReaderToolStripMenuItem1";
-			this.ProofreaderToReaderToolStripMenuItem1.Size = new System.Drawing.Size(142, 22);
-			this.ProofreaderToReaderToolStripMenuItem1.Text = "To Reader";
-			this.ProofreaderToReaderToolStripMenuItem1.Click += new System.EventHandler(this.ProofreaderToReaderToolStripMenuItem_Click);
+			this.ProofreaderToReaderToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+			this.ProofreaderToReaderToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.ProofreaderToReaderToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
+			this.ProofreaderToReaderToolStripMenuItem.Name = "ProofreaderToReaderToolStripMenuItem";
+			this.ProofreaderToReaderToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+			this.ProofreaderToReaderToolStripMenuItem.Text = "To Reader";
+			this.ProofreaderToReaderToolStripMenuItem.Click += new System.EventHandler(this.ProofreaderToReaderToolStripMenuItem_Click);
 			// 
 			// ProofreaderToTranslatorToolStripMenuItem
 			// 
+			this.ProofreaderToTranslatorToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+			this.ProofreaderToTranslatorToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.ProofreaderToTranslatorToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.ProofreaderToTranslatorToolStripMenuItem.Name = "ProofreaderToTranslatorToolStripMenuItem";
 			this.ProofreaderToTranslatorToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
 			this.ProofreaderToTranslatorToolStripMenuItem.Text = "To Translator";
 			this.ProofreaderToTranslatorToolStripMenuItem.Click += new System.EventHandler(this.ProofreaderToTranslatorToolStripMenuItem_Click);
 			// 
-			// ProofreaderToTypesetterToolStripMenuItem1
+			// ProofreaderToTypesetterToolStripMenuItem
 			// 
-			this.ProofreaderToTypesetterToolStripMenuItem1.Name = "ProofreaderToTypesetterToolStripMenuItem1";
-			this.ProofreaderToTypesetterToolStripMenuItem1.Size = new System.Drawing.Size(142, 22);
-			this.ProofreaderToTypesetterToolStripMenuItem1.Text = "To Typesetter";
-			this.ProofreaderToTypesetterToolStripMenuItem1.Click += new System.EventHandler(this.ProofreaderToTypesetterToolStripMenuItem_Click);
+			this.ProofreaderToTypesetterToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+			this.ProofreaderToTypesetterToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.ProofreaderToTypesetterToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
+			this.ProofreaderToTypesetterToolStripMenuItem.Name = "ProofreaderToTypesetterToolStripMenuItem";
+			this.ProofreaderToTypesetterToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+			this.ProofreaderToTypesetterToolStripMenuItem.Text = "To Typesetter";
+			this.ProofreaderToTypesetterToolStripMenuItem.Click += new System.EventHandler(this.ProofreaderToTypesetterToolStripMenuItem_Click);
 			// 
 			// MainPanel
 			// 
@@ -621,10 +676,10 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
 			this.ClientSize = new System.Drawing.Size(1137, 474);
 			this.Controls.Add(this.MainPanel);
-			this.ForeColor = System.Drawing.SystemColors.Control;
+			this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "RawsViewerForm";
 			this.Text = "Translation Script Maker";
@@ -641,8 +696,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.ViewersSplitContainer)).EndInit();
 			this.ViewersSplitContainer.ResumeLayout(false);
 			this.RawsViewerGroupBox.ResumeLayout(false);
-			this.ScriptViewerGroupBox.ResumeLayout(false);
-			this.ScriptViewerContextMenuStrip.ResumeLayout(false);
+			this.ScriptEditorGroupBox.ResumeLayout(false);
+			this.ScriptEditorContextMenuStrip.ResumeLayout(false);
 			this.MainPanel.ResumeLayout(false);
 			this.ResumeLayout(false);
 
@@ -672,11 +727,11 @@
 		private System.Windows.Forms.CheckBox Panel3CheckBox;
 		private System.Windows.Forms.CheckBox Panel2CheckBox;
 		private System.Windows.Forms.CheckBox IsPageASpreadCheckBox;
-        private System.Windows.Forms.GroupBox ScriptViewerGroupBox;
+        private System.Windows.Forms.GroupBox ScriptEditorGroupBox;
         private System.Windows.Forms.SplitContainer ViewersSplitContainer;
 		private Cyotek.Windows.Forms.ImageBox RawsImageBox;
 		private System.Windows.Forms.ComboBox CurrentPageComboBox;
-		private System.Windows.Forms.ContextMenuStrip ScriptViewerContextMenuStrip;
+		private System.Windows.Forms.ContextMenuStrip ScriptEditorContextMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem PasteToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem CopyToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem InsertToolStripMenuItem;
@@ -688,9 +743,9 @@
 		private System.Windows.Forms.ToolStripMenuItem TranslatorToProofreaderToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem TranslatorToTypesetterToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem ProofreadersToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem ProofreaderToReaderToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem ProofreaderToReaderToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem ProofreaderToTranslatorToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem ProofreaderToTypesetterToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem ProofreaderToTypesetterToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem CutToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem DeleteToolStripMenuItem;
 		private ScintillaNET.Scintilla STTB;

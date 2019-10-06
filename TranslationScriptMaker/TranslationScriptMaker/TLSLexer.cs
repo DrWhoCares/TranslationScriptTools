@@ -20,8 +20,8 @@ namespace TranslationScriptMaker
 		private static readonly Regex HeaderRegex = new Regex(@"(-+# )(Page |Panel )([0-9]+?)(( - )([0-9]+?))?( #-+)({)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 		private static readonly Regex FooterRegex = new Regex(@"(-+#+-+)(})", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 		private static readonly Regex ImportantInfoRegex = new Regex(@"`(.*?)`", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
-		private static readonly Regex NoteRegex = new Regex(@"\(T/P:(.*?)\)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
-		private static readonly Regex TLNoteRegex = new Regex(@"\[T/N\]:", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex NoteRegex = new Regex(@"\([A-Z]+/[A-Z]+:(.*?)\)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex TLNoteRegex = new Regex(@"\[[A-Z]/N\]:", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 		private static readonly Regex SubsectionRegex = new Regex(@"(\[(.*?)\])({)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
 		private struct StyleMatch

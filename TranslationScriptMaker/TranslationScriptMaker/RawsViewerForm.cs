@@ -77,11 +77,11 @@ namespace TranslationScriptMaker
 
 				if ( value )
 				{
-					this.Text = "Translation Script Maker*";
+					this.Text = "Translation Script Maker* - v" + typeof(MainForm).Assembly.GetName().Version;
 				}
 				else
 				{
-					this.Text = "Translation Script Maker";
+					this.Text = "Translation Script Maker - v" + typeof(MainForm).Assembly.GetName().Version;
 				}
 
 				_AreThereUnsavedChanges = value;
@@ -121,6 +121,10 @@ namespace TranslationScriptMaker
 
 		private void InitializeScintillaStyles()
 		{
+			// Context Menu
+			STTB.ContextMenuStrip = ScriptEditorContextMenuStrip;
+			ScriptEditorContextMenuStrip.Renderer = new DarkContextMenuRenderer();
+
 			// Default Style
 			STTB.Styles[Style.Default].BackColor = COLOR_BACKGROUND;
 			STTB.Styles[Style.Default].ForeColor = COLOR_FOREGROUND;
@@ -458,7 +462,7 @@ namespace TranslationScriptMaker
 		{
 			RawsImageBox.BeginUpdate();
 			RawsViewerGroupBox.Text = "Raws Viewer - Page: " + (CurrentPageIndex + 1).ToString() + " / " + RawsFiles.Count().ToString();
-			ScriptViewerGroupBox.Text = "Script Viewer - Page : " + (CurrentPageIndex + 1).ToString() + " / " + RawsFiles.Count().ToString();
+			ScriptEditorGroupBox.Text = "Script Editor - Page : " + (CurrentPageIndex + 1).ToString() + " / " + RawsFiles.Count().ToString();
 			RawsImageBox.Image = Image.FromFile(RawsFiles.ElementAt(CurrentPageIndex).FullName);
 			RawsImageBox.ZoomToFit();
 			RawsImageBox.EndUpdate();
@@ -485,7 +489,7 @@ namespace TranslationScriptMaker
 
 			IsPageASpreadCheckBox.Checked = pageInfo.isSpread;
 
-			UpdateScriptViewerContents(pageInfo.pageScriptContents);
+			UpdateScriptEditorContents(pageInfo.pageScriptContents);
 
 			TotalPanelsTextBox.Text = pageInfo.totalPanels.ToString();
 
@@ -710,10 +714,10 @@ namespace TranslationScriptMaker
 				}
 			}
 
-			UpdateScriptViewerContents(pageContents);
+			UpdateScriptEditorContents(pageContents);
 		}
 
-		private void UpdateScriptViewerContents(List<string> newContents)
+		private void UpdateScriptEditorContents(List<string> newContents)
 		{
 			STTB.Text = string.Join("", newContents);
 		}
@@ -784,7 +788,7 @@ namespace TranslationScriptMaker
 				pageContents.RemoveRange(indexToRemove, linesBetweenSFX);
 			}
 
-			UpdateScriptViewerContents(pageContents);
+			UpdateScriptEditorContents(pageContents);
 		}
 
 		private void ValidateSelectionIsNotSyntax()
@@ -1006,7 +1010,43 @@ namespace TranslationScriptMaker
 				}
 			}
 
-			UpdateScriptViewerContents(PageInformations.ElementAt(CurrentPageIndex).pageScriptContents);
+			UpdateScriptEditorContents(PageInformations.ElementAt(CurrentPageIndex).pageScriptContents);
+		}
+
+		private void PaintGroupBoxBorderDarkTheme(object sender, PaintEventArgs e)
+		{
+			if ( !(sender is GroupBox groupBox) )
+			{
+				return;
+			}
+
+			using ( Brush textBrush = new SolidBrush(COLOR_FOREGROUND) )
+			using ( Brush borderBrush = new SolidBrush(Color.DimGray) )
+			using ( Pen borderPen = new Pen(borderBrush) )
+			{
+				SizeF strSize = e.Graphics.MeasureString(groupBox.Text, groupBox.Font);
+				Rectangle rect = new Rectangle(groupBox.ClientRectangle.X,
+										   groupBox.ClientRectangle.Y + (int)(strSize.Height / 2),
+										   groupBox.ClientRectangle.Width - 1,
+										   groupBox.ClientRectangle.Height - (int)(strSize.Height / 2) - 1);
+
+				e.Graphics.Clear(groupBox.BackColor);
+
+				// Draw Label
+				e.Graphics.DrawString(groupBox.Text, groupBox.Font, textBrush, groupBox.Padding.Left, 0);
+
+				// Draw Border
+				//Left
+				e.Graphics.DrawLine(borderPen, rect.Location, new Point(rect.X, rect.Y + rect.Height));
+				//Right
+				e.Graphics.DrawLine(borderPen, new Point(rect.X + rect.Width, rect.Y), new Point(rect.X + rect.Width, rect.Y + rect.Height));
+				//Bottom
+				e.Graphics.DrawLine(borderPen, new Point(rect.X, rect.Y + rect.Height), new Point(rect.X + rect.Width, rect.Y + rect.Height));
+				//Top1
+				e.Graphics.DrawLine(borderPen, new Point(rect.X, rect.Y), new Point(rect.X + groupBox.Padding.Left, rect.Y));
+				//Top2
+				e.Graphics.DrawLine(borderPen, new Point(rect.X + groupBox.Padding.Left + (int)(strSize.Width), rect.Y), new Point(rect.X + rect.Width, rect.Y));
+			}
 		}
 
 		#region ToolStripMenu Handlers
@@ -1100,9 +1140,9 @@ namespace TranslationScriptMaker
 				return;
 			}
 
-			if ( sender is Scintilla scriptViewer )
+			if ( sender is Scintilla scriptEditor )
 			{
-				if ( scriptViewer.Text == string.Join("", PageInformations.ElementAt(CurrentPageIndex).pageScriptContents) )
+				if ( scriptEditor.Text == string.Join("", PageInformations.ElementAt(CurrentPageIndex).pageScriptContents) )
 				{
 					AreThereUnsavedChanges = false;
 					return; // The text is the same as the unsaved version
@@ -1129,12 +1169,36 @@ namespace TranslationScriptMaker
 			}
 		}
 		#endregion
+
+		private class DarkContextMenuRenderer : ToolStripProfessionalRenderer
+		{
+			public DarkContextMenuRenderer() : base(new DarkContextMenuColors())
+			{
+			}
+
+			protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
+			{
+				Rectangle rect = new Rectangle(Point.Empty, e.Item.Size);
+				Color color = e.Item.Selected ? COLOR_CURRENT_LINE_BACKGROUND : COLOR_BACKGROUND;
+
+				using ( SolidBrush brush = new SolidBrush(color) )
+				{
+					e.Graphics.FillRectangle(brush, rect);
+				}
+			}
+		}
+
+		private class DarkContextMenuColors : ProfessionalColorTable
+		{
+			public override Color MenuBorder => COLOR_CURRENT_LINE_BACKGROUND;
+			public override Color ToolStripDropDownBackground => COLOR_BACKGROUND;
+		}
 	}
 
-	public static class TextUtils
+	internal static class TextUtils
 	{
 
-		public static IEnumerable<string> SplitToLines(string input)
+		internal static IEnumerable<string> SplitToLines(string input)
 		{
 			if ( input == null )
 			{
@@ -1152,7 +1216,7 @@ namespace TranslationScriptMaker
 			}
 		}
 
-		public static List<string> ParseScriptPageContents(string input)
+		internal static List<string> ParseScriptPageContents(string input)
 		{
 			List<string> pageContents = new List<string>();
 

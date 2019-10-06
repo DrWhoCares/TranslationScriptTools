@@ -62,7 +62,7 @@ namespace TranslationScriptMaker
 			this.OutputToGroupBox.Controls.Add(this.OutputWithRawsRadioButton);
 			this.OutputToGroupBox.Controls.Add(this.OutputToChapterFolderRadioButton);
 			this.OutputToGroupBox.Controls.Add(this.OutputToCustomLocationRadioButton);
-			this.OutputToGroupBox.ForeColor = System.Drawing.SystemColors.Control;
+			this.OutputToGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			resources.ApplyResources(this.OutputToGroupBox, "OutputToGroupBox");
 			this.OutputToGroupBox.Name = "OutputToGroupBox";
 			this.OutputToGroupBox.TabStop = false;
@@ -94,6 +94,7 @@ namespace TranslationScriptMaker
 			// 
 			// ChapterSelectionComboBox
 			// 
+			this.ChapterSelectionComboBox.BackColor = System.Drawing.SystemColors.AppWorkspace;
 			this.ChapterSelectionComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.ChapterSelectionComboBox.FormattingEnabled = true;
 			resources.ApplyResources(this.ChapterSelectionComboBox, "ChapterSelectionComboBox");
@@ -102,6 +103,7 @@ namespace TranslationScriptMaker
 			// 
 			// SeriesSelectionComboBox
 			// 
+			this.SeriesSelectionComboBox.BackColor = System.Drawing.SystemColors.AppWorkspace;
 			this.SeriesSelectionComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.SeriesSelectionComboBox.FormattingEnabled = true;
 			resources.ApplyResources(this.SeriesSelectionComboBox, "SeriesSelectionComboBox");
@@ -125,18 +127,24 @@ namespace TranslationScriptMaker
 			// 
 			// OutputLocationTextBox
 			// 
+			this.OutputLocationTextBox.BackColor = System.Drawing.SystemColors.AppWorkspace;
+			this.OutputLocationTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			resources.ApplyResources(this.OutputLocationTextBox, "OutputLocationTextBox");
 			this.OutputLocationTextBox.Name = "OutputLocationTextBox";
 			this.OutputLocationTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.OutputLocationTextBox_Validating);
 			// 
 			// RawsLocationTextBox
 			// 
+			this.RawsLocationTextBox.BackColor = System.Drawing.SystemColors.AppWorkspace;
+			this.RawsLocationTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			resources.ApplyResources(this.RawsLocationTextBox, "RawsLocationTextBox");
 			this.RawsLocationTextBox.Name = "RawsLocationTextBox";
 			this.RawsLocationTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.RawsLocationTextBox_Validating);
 			// 
 			// TranslatorNameTextBox
 			// 
+			this.TranslatorNameTextBox.BackColor = System.Drawing.SystemColors.AppWorkspace;
+			this.TranslatorNameTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			resources.ApplyResources(this.TranslatorNameTextBox, "TranslatorNameTextBox");
 			this.TranslatorNameTextBox.Name = "TranslatorNameTextBox";
 			this.TranslatorNameTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.TranslatorNameTextBox_Validating);
@@ -152,7 +160,7 @@ namespace TranslationScriptMaker
 			// 
 			// BeginScriptCreationButton
 			// 
-			this.BeginScriptCreationButton.BackColor = System.Drawing.SystemColors.Control;
+			this.BeginScriptCreationButton.BackColor = System.Drawing.SystemColors.ControlLight;
 			this.BeginScriptCreationButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			resources.ApplyResources(this.BeginScriptCreationButton, "BeginScriptCreationButton");
 			this.BeginScriptCreationButton.Name = "BeginScriptCreationButton";
@@ -181,7 +189,7 @@ namespace TranslationScriptMaker
 			// 
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
 			this.Controls.Add(this.ChapterSelectionComboBox);
 			this.Controls.Add(this.RawsLocationTextBox);
 			this.Controls.Add(this.SeriesSelectionComboBox);
@@ -196,7 +204,7 @@ namespace TranslationScriptMaker
 			this.Controls.Add(this.TranslatorNameTextBox);
 			this.Controls.Add(this.OutputToGroupBox);
 			this.Controls.Add(this.OutputLocationLabel);
-			this.ForeColor = System.Drawing.SystemColors.ButtonFace;
+			this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
 			this.Name = "MainForm";

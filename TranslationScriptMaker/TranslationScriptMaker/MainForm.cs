@@ -29,7 +29,7 @@ namespace TranslationScriptMaker
 		public MainForm()
 		{
 			InitializeComponent();
-			this.Text = "Translation Script Maker v" + typeof(MainForm).Assembly.GetName().Version;
+			this.Text = "Translation Script Maker - v" + typeof(MainForm).Assembly.GetName().Version;
 			InitializeWithConfigValues();
 		}
 
