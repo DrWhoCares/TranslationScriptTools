@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Linq;
 using System.Drawing;
+using ScintillaNET;
 
 namespace TranslationScriptMaker
 {
@@ -18,6 +19,20 @@ namespace TranslationScriptMaker
 		private const string PANEL_SFX_SECTION = "[SFX]{\n\n}\n";
 		private const string PANEL_FOOTER = "\n---#####---}\n";
 		private const string PAGE_FOOTER = "\n----------##########----------}\n\n";
+
+		private static readonly Color COLOR_BACKGROUND = Color.FromArgb(30, 30, 30);
+		private static readonly Color COLOR_FOREGROUND = Color.FromArgb(216, 216, 216);
+		private static readonly Color COLOR_SELECTION = Color.FromArgb(38, 79, 120);
+		private static readonly Color COLOR_CURRENT_LINE_BACKGROUND = Color.FromArgb(15, 15, 15);
+		private static readonly Color COLOR_CURRENT_LINE_FOREGROUND = Color.FromArgb(220, 220, 220);
+		private static readonly Color COLOR_FORMATTING_BLOCK = Color.FromArgb(0, 128, 192);
+		private static readonly Color COLOR_HEADER_TITLE = Color.FromArgb(0, 128, 255);
+		private static readonly Color COLOR_HEADER_VALUE = Color.FromArgb(255, 128, 0);
+		private static readonly Color COLOR_BRACES = Color.FromArgb(128, 128, 255);
+		private static readonly Color COLOR_IMPORTANT = Color.FromArgb(220, 20, 20);
+		private static readonly Color COLOR_NOTE = Color.FromArgb(255, 128, 128);
+		private static readonly Color COLOR_TL_NOTE = Color.FromArgb(0, 128, 0);
+		private static readonly Color COLOR_SUBSECTION = Color.FromArgb(0, 128, 0);
 
 		private static readonly IEnumerable<string> PAGE_SYNTAX_MARKERS = new HashSet<string>
 		{
@@ -93,6 +108,102 @@ namespace TranslationScriptMaker
 			InitializePageInformations();
 
 			this.StartPosition = FormStartPosition.Manual;
+		}
+
+		private void RawsViewerForm_Load(object sender, EventArgs e)
+		{
+			InitializeScintillaStyles();
+			IsChangingPage = true;
+			DisplaySFXGroupBoxes(PageInformations.ElementAt(CurrentPageIndex).totalPanels);
+			LoadPageInformation();
+			IsChangingPage = false;
+		}
+
+		private void InitializeScintillaStyles()
+		{
+			// Default Style
+			STTB.Styles[Style.Default].BackColor = COLOR_BACKGROUND;
+			STTB.Styles[Style.Default].ForeColor = COLOR_FOREGROUND;
+			STTB.Styles[Style.Default].Font = "Yu Gothic";
+			STTB.Styles[Style.Default].SizeF = 9.75F;
+			STTB.Zoom = 4;
+			STTB.StyleClearAll();
+
+			// Selection
+			STTB.SetSelectionBackColor(true, COLOR_SELECTION);
+
+			// Margins Style
+			STTB.Styles[Style.LineNumber].BackColor = COLOR_BACKGROUND;
+			STTB.Styles[Style.LineNumber].ForeColor = Color.DeepSkyBlue;
+			STTB.Margins[0].Width = 48;
+
+			STTB.Margins[1].Type = MarginType.Symbol;
+			STTB.Margins[1].Mask = Marker.MaskFolders;
+			STTB.Margins[1].BackColor = COLOR_BACKGROUND;
+			STTB.Margins[1].Sensitive = true;
+			STTB.Margins[1].Width = 16;
+			STTB.SetFoldMarginColor(true, COLOR_BACKGROUND);
+			STTB.SetFoldMarginHighlightColor(true, COLOR_BACKGROUND);
+
+			// Set colors for all folding markers
+			for ( int folderIndex = Marker.FolderEnd; folderIndex <= Marker.FolderOpen; ++folderIndex )
+			{
+				STTB.Markers[folderIndex].SetForeColor(SystemColors.Control);
+				STTB.Markers[folderIndex].SetBackColor(SystemColors.ControlDark);
+			}
+
+			// Configure folding markers with respective symbols
+			STTB.Markers[Marker.FolderEnd].Symbol = MarkerSymbol.BoxPlusConnected;
+			STTB.Markers[Marker.FolderOpenMid].Symbol = MarkerSymbol.BoxMinusConnected;
+			STTB.Markers[Marker.FolderMidTail].Symbol = MarkerSymbol.TCorner;
+			STTB.Markers[Marker.FolderTail].Symbol = MarkerSymbol.LCorner;
+			STTB.Markers[Marker.FolderSub].Symbol = MarkerSymbol.VLine;
+			STTB.Markers[Marker.Folder].Symbol = MarkerSymbol.BoxPlus;
+			STTB.Markers[Marker.FolderOpen].Symbol = MarkerSymbol.BoxMinus;
+
+			//// TEST
+			//STTB.Lines[0].FoldLevelFlags = FoldLevelFlags.Header;
+			//var foldLevel = STTB.Lines[0].FoldLevel;
+			//STTB.Lines[1].FoldLevel = ++foldLevel;
+			//STTB.Lines[2].FoldLevel = foldLevel;
+			//STTB.Lines[3].FoldLevel = --foldLevel;
+
+			//STTB.MarginClick += (s, mcea) =>
+			//{
+			//	// Toggle the fold when clicking
+			//	var line = STTB.LineFromPosition(mcea.Position);
+			//	STTB.Lines[line].ToggleFold();
+			//};
+
+			// Custom Styles
+			STTB.Styles[TLSLexer.STYLE_FORMATTING_BLOCK].ForeColor = COLOR_FORMATTING_BLOCK;
+			STTB.Styles[TLSLexer.STYLE_FORMATTING_BLOCK].Font = "Consolas";
+
+			STTB.Styles[TLSLexer.STYLE_HEADER_TITLE].ForeColor = COLOR_HEADER_TITLE;
+			STTB.Styles[TLSLexer.STYLE_HEADER_TITLE].Font = "Consolas";
+			STTB.Styles[TLSLexer.STYLE_HEADER_TITLE].Bold = true;
+
+			STTB.Styles[TLSLexer.STYLE_HEADER_VALUE].ForeColor = COLOR_HEADER_VALUE;
+			STTB.Styles[TLSLexer.STYLE_HEADER_VALUE].Font = "Consolas";
+			STTB.Styles[TLSLexer.STYLE_HEADER_VALUE].Bold = true;
+
+			STTB.Styles[TLSLexer.STYLE_BRACES].ForeColor = COLOR_BRACES;
+			STTB.Styles[TLSLexer.STYLE_BRACES].Font = "Consolas";
+			STTB.Styles[TLSLexer.STYLE_BRACES].Bold = true;
+
+			STTB.Styles[TLSLexer.STYLE_IMPORTANT].ForeColor = COLOR_IMPORTANT;
+			STTB.Styles[TLSLexer.STYLE_IMPORTANT].Bold = true;
+
+			STTB.Styles[TLSLexer.STYLE_NOTE].ForeColor = COLOR_NOTE;
+			STTB.Styles[TLSLexer.STYLE_NOTE].Italic = true;
+
+			STTB.Styles[TLSLexer.STYLE_TL_NOTE].ForeColor = COLOR_TL_NOTE;
+			STTB.Styles[TLSLexer.STYLE_TL_NOTE].Font = "Consolas";
+			STTB.Styles[TLSLexer.STYLE_TL_NOTE].Bold = true;
+
+			STTB.Styles[TLSLexer.STYLE_SUBSECTION].ForeColor = COLOR_SUBSECTION;
+			STTB.Styles[TLSLexer.STYLE_SUBSECTION].Font = "Consolas";
+			STTB.Styles[TLSLexer.STYLE_SUBSECTION].Bold = true;
 		}
 
 		private void InitializePageInformations()
@@ -309,18 +420,15 @@ namespace TranslationScriptMaker
 
 			SaveCurrentScript(false);
 			IsChangingPage = false;
-
-			ScriptViewerRichTextBox.ZoomFactor = 1.0F; // If you reset the text, it resets the zoom factor
-			ScriptViewerRichTextBox.ZoomFactor = 1.4F; // But you first need to set it to 1.0F, then set it to the value you want for it to work
 		}
 
 		private void SavePageInformation()
 		{
 			PageInformation pageInfo = PageInformations.ElementAt(PreviousPageIndex);
 
-			pageInfo.pageScriptContents = new List<string>(TextUtils.ParseScriptPageContents(ScriptViewerRichTextBox.Text));
-
-			ScriptViewerRichTextBox.Clear();
+			pageInfo.pageScriptContents = new List<string>(TextUtils.ParseScriptPageContents(STTB.Text));
+			
+			STTB.Clear();
 
 			bool didSucceed = int.TryParse(TotalPanelsTextBox.Text, out int totalPanelsInput);
 
@@ -433,7 +541,7 @@ namespace TranslationScriptMaker
 
 			PageInformation pageInfo = PageInformations.ElementAt(CurrentPageIndex);
 
-			pageInfo.pageScriptContents = new List<string>(TextUtils.ParseScriptPageContents(ScriptViewerRichTextBox.Text));
+			pageInfo.pageScriptContents = new List<string>(TextUtils.ParseScriptPageContents(STTB.Text));
 
 			if ( int.TryParse(TotalPanelsTextBox.Text, out int totalPanels) )
 			{
@@ -538,7 +646,7 @@ namespace TranslationScriptMaker
 
 		private void AddPanelsToScriptPageContent(int totalPanels)
 		{
-			List<string> pageContents = TextUtils.ParseScriptPageContents(ScriptViewerRichTextBox.Text);
+			List<string> pageContents = TextUtils.ParseScriptPageContents(STTB.Text);
 
 			int index = 0;
 			int totalExistingPanels = 0;
@@ -607,7 +715,7 @@ namespace TranslationScriptMaker
 
 		private void UpdateScriptViewerContents(List<string> newContents)
 		{
-			ScriptViewerRichTextBox.Text = string.Join("", newContents);
+			STTB.Text = string.Join("", newContents);
 		}
 
 		private void PanelCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -619,7 +727,7 @@ namespace TranslationScriptMaker
 				return; // Switching pages
 			}
 
-			List<string> pageContents = TextUtils.ParseScriptPageContents(ScriptViewerRichTextBox.Text);
+			List<string> pageContents = TextUtils.ParseScriptPageContents(STTB.Text);
 
 			int indexOfPanelToFind = -1;
 			int indexOfPanelToFindFooter = 0;
@@ -679,25 +787,12 @@ namespace TranslationScriptMaker
 			UpdateScriptViewerContents(pageContents);
 		}
 
-		private void ScriptViewerRichTextBox_MouseClick(object sender, MouseEventArgs e)
-		{
-			ValidateSelectionIsNotSyntax();
-		}
-
-		private void ScriptViewerRichTextBox_KeyUp(object sender, KeyEventArgs e)
-		{
-			if ( e.KeyCode == Keys.Up || e.KeyCode == Keys.Down )
-			{
-				ValidateSelectionIsNotSyntax();
-			}
-		}
-
 		private void ValidateSelectionIsNotSyntax()
 		{
-			int totalLines = ScriptViewerRichTextBox.Lines.Count();
-			int currentLineIndex = ScriptViewerRichTextBox.GetLineFromCharIndex(ScriptViewerRichTextBox.GetFirstCharIndexOfCurrentLine());
+			int totalLines = STTB.Lines.Count();
+			int currentLineIndex = STTB.CurrentLine;
 
-			string currentLine = ScriptViewerRichTextBox.Lines[currentLineIndex];
+			string currentLine = STTB.Lines[currentLineIndex].Text;
 
 			bool isCurrentLineUneditable = false;
 
@@ -707,8 +802,8 @@ namespace TranslationScriptMaker
 			}
 			else if ( currentLine == "" && currentLineIndex != 0 && currentLineIndex != totalLines - 1 && currentLineIndex != totalLines - 2 )
 			{
-				string previousLine = ScriptViewerRichTextBox.Lines[currentLineIndex - 1];
-				string nextLine = ScriptViewerRichTextBox.Lines[currentLineIndex + 1];
+				string previousLine = STTB.Lines[currentLineIndex - 1].Text;
+				string nextLine = STTB.Lines[currentLineIndex + 1].Text;
 
 				if ( previousLine.Contains(PAGE_HEADER_BEGIN) && nextLine.Contains("---# Panel ") )
 				{
@@ -734,7 +829,7 @@ namespace TranslationScriptMaker
 				isCurrentLineUneditable = DoesLineContainSyntaxMarkers(currentLine);
 			}
 
-			ScriptViewerRichTextBox.ReadOnly = isCurrentLineUneditable;
+			STTB.ReadOnly = isCurrentLineUneditable;
 		}
 
 		private bool DoesLineContainSyntaxMarkers(string line)
@@ -795,15 +890,6 @@ namespace TranslationScriptMaker
 			}
 		}
 
-		private void RawsViewerForm_Load(object sender, EventArgs e)
-		{
-			IsChangingPage = true;
-			ScriptViewerRichTextBox.AutoWordSelection = false;
-			DisplaySFXGroupBoxes(PageInformations.ElementAt(CurrentPageIndex).totalPanels);
-			LoadPageInformation();
-			IsChangingPage = false;
-		}
-
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
 			if ( keyData == (Keys.Control | Keys.S) )
@@ -812,7 +898,7 @@ namespace TranslationScriptMaker
 				return true;
 			}
 
-			bool shouldChangePage = FindFocusedControl(this.ActiveControl) != ScriptViewerRichTextBox;
+			bool shouldChangePage = FindFocusedControl(this.ActiveControl) != STTB;
 
 			if ( keyData == Keys.Left && shouldChangePage )
 			{
@@ -855,28 +941,6 @@ namespace TranslationScriptMaker
 			}
 
 			return false;
-		}
-
-		private void ScriptViewerRichTextBox_TextChanged(object sender, EventArgs e)
-		{
-			if ( CurrentPageIndex >= PageInformations.Count() )
-			{
-				return;
-			}
-
-			if ( sender is RichTextBox scriptViewer )
-			{
-				if ( scriptViewer.Text == string.Join("", PageInformations.ElementAt(CurrentPageIndex).pageScriptContents) )
-				{
-					AreThereUnsavedChanges = false;
-					return; // The text is the same as the unsaved version
-				}
-			}
-
-			if ( !AreThereUnsavedChanges )
-			{
-				AreThereUnsavedChanges = true; // After the fact, in the very unlikely case that the sender can't be casted
-			}
 		}
 
 		private void CurrentPageComboBox_DrawItem(object sender, DrawItemEventArgs e)
@@ -945,82 +1009,124 @@ namespace TranslationScriptMaker
 			UpdateScriptViewerContents(PageInformations.ElementAt(CurrentPageIndex).pageScriptContents);
 		}
 
-		private void ScriptViewerRichTextBox_MouseUp(object sender, MouseEventArgs e)
-		{
-			if ( e.Button == MouseButtons.Right && string.IsNullOrEmpty(ScriptViewerRichTextBox.SelectedText) )
-			{
-				int newStartPosition = ScriptViewerRichTextBox.GetCharIndexFromPosition(e.Location);
-
-				if ( newStartPosition < ScriptViewerRichTextBox.SelectionStart || newStartPosition > ScriptViewerRichTextBox.SelectionStart + ScriptViewerRichTextBox.SelectionLength )
-				{
-					ScriptViewerRichTextBox.SelectionStart = newStartPosition;
-					ScriptViewerRichTextBox.SelectionLength = 0;
-				}
-			}
-		}
-
-		#region
+		#region ToolStripMenu Handlers
 		private void CutToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ScriptViewerRichTextBox.Cut();
+			STTB.Cut();
 		}
 
 		private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			Clipboard.SetText(ScriptViewerRichTextBox.SelectedText);
+			Clipboard.SetText(STTB.SelectedText);
 		}
 
 		private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if ( Clipboard.ContainsText() )
 			{
-				ScriptViewerRichTextBox.SelectedText = Clipboard.GetText(TextDataFormat.UnicodeText).ToString();
+				STTB.InsertText(STTB.SelectionStart, Clipboard.GetText(TextDataFormat.UnicodeText).ToString());
 			}
 		}
 
 		private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ScriptViewerRichTextBox.SelectedText = string.Empty;
+			STTB.DeleteRange(STTB.SelectionStart, STTB.SelectionEnd);
 		}
 
 		private void SFXToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ScriptViewerRichTextBox.SelectedText = PANEL_SFX_SECTION;
+			STTB.InsertText(STTB.SelectionStart, PANEL_SFX_SECTION);
 		}
 
 		private void BubbleToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ScriptViewerRichTextBox.SelectedText = "[B1]\n";
+			STTB.InsertText(STTB.SelectionStart, "[B1]\n");
 		}
 
 		private void TranslatorToReaderToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ScriptViewerRichTextBox.SelectedText = "[T/N]: ";
+			STTB.InsertText(STTB.SelectionStart, "[T/N]: ");
 		}
 
 		private void TranslatorToProofreaderToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ScriptViewerRichTextBox.SelectedText = "(T/P: )";
+			STTB.InsertText(STTB.SelectionStart, "(T/P: )");
 		}
 
 		private void TranslatorToTypesetterToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ScriptViewerRichTextBox.SelectedText = "(T/TS: )";
+			STTB.InsertText(STTB.SelectionStart, "(T/TS: )");
 		}
 
 		private void ProofreaderToReaderToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ScriptViewerRichTextBox.SelectedText = "[PR/N]: ";
+			STTB.InsertText(STTB.SelectionStart, "[PR/N]: ");
 		}
 
 		private void ProofreaderToTranslatorToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ScriptViewerRichTextBox.SelectedText = "(P/T: )";
+			STTB.InsertText(STTB.SelectionStart, "(P/T: )");
 		}
 
 		private void ProofreaderToTypesetterToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ScriptViewerRichTextBox.SelectedText = "(P/TS: )";
+			STTB.InsertText(STTB.SelectionStart, "(P/TS: )");
+		}
+		#endregion
+
+		#region Scintilla Handling
+		private void STTB_StyleNeeded(object sender, StyleNeededEventArgs e)
+		{
+			TLSLexer.StyleText(STTB);
+		}
+
+		private void STTB_MouseClick(object sender, MouseEventArgs e)
+		{
+			ValidateSelectionIsNotSyntax();
+		}
+
+		private void STTB_KeyUp(object sender, KeyEventArgs e)
+		{
+			if ( e.KeyCode == Keys.Up || e.KeyCode == Keys.Down )
+			{
+				ValidateSelectionIsNotSyntax();
+			}
+		}
+
+		private void STTB_TextChanged(object sender, EventArgs e)
+		{
+			if ( CurrentPageIndex >= PageInformations.Count() )
+			{
+				return;
+			}
+
+			if ( sender is Scintilla scriptViewer )
+			{
+				if ( scriptViewer.Text == string.Join("", PageInformations.ElementAt(CurrentPageIndex).pageScriptContents) )
+				{
+					AreThereUnsavedChanges = false;
+					return; // The text is the same as the unsaved version
+				}
+			}
+
+			if ( !AreThereUnsavedChanges )
+			{
+				AreThereUnsavedChanges = true; // After the fact, in the very unlikely case that the sender can't be casted
+			}
+		}
+
+		private void STTB_MouseUp(object sender, MouseEventArgs e)
+		{
+			if ( e.Button == MouseButtons.Right && string.IsNullOrEmpty(STTB.SelectedText) )
+			{
+				int newStartPosition = STTB.CurrentPosition;
+
+				if ( newStartPosition < STTB.SelectionStart || newStartPosition > STTB.SelectionStart + STTB.SelectedText.Length )
+				{
+					STTB.SelectionStart = newStartPosition;
+					STTB.SelectionEnd = STTB.SelectionStart;
+				}
+			}
 		}
 		#endregion
 	}

@@ -56,7 +56,7 @@
 			this.RawsViewerGroupBox = new System.Windows.Forms.GroupBox();
 			this.RawsImageBox = new Cyotek.Windows.Forms.ImageBox();
 			this.ScriptViewerGroupBox = new System.Windows.Forms.GroupBox();
-			this.ScriptViewerRichTextBox = new System.Windows.Forms.RichTextBox();
+			this.STTB = new ScintillaNET.Scintilla();
 			this.ScriptViewerContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.CutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.CopyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -444,7 +444,7 @@
 			// 
 			// ScriptViewerGroupBox
 			// 
-			this.ScriptViewerGroupBox.Controls.Add(this.ScriptViewerRichTextBox);
+			this.ScriptViewerGroupBox.Controls.Add(this.STTB);
 			this.ScriptViewerGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.ScriptViewerGroupBox.ForeColor = System.Drawing.SystemColors.ButtonFace;
 			this.ScriptViewerGroupBox.Location = new System.Drawing.Point(0, 0);
@@ -454,24 +454,24 @@
 			this.ScriptViewerGroupBox.TabStop = false;
 			this.ScriptViewerGroupBox.Text = "Script Viewer - Page: XXX / XXX";
 			// 
-			// ScriptViewerRichTextBox
+			// STTB
 			// 
-			this.ScriptViewerRichTextBox.BackColor = System.Drawing.SystemColors.WindowFrame;
-			this.ScriptViewerRichTextBox.ContextMenuStrip = this.ScriptViewerContextMenuStrip;
-			this.ScriptViewerRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ScriptViewerRichTextBox.Font = new System.Drawing.Font("Yu Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.ScriptViewerRichTextBox.ForeColor = System.Drawing.SystemColors.Control;
-			this.ScriptViewerRichTextBox.Location = new System.Drawing.Point(3, 16);
-			this.ScriptViewerRichTextBox.Name = "ScriptViewerRichTextBox";
-			this.ScriptViewerRichTextBox.Size = new System.Drawing.Size(615, 404);
-			this.ScriptViewerRichTextBox.TabIndex = 0;
-			this.ScriptViewerRichTextBox.Text = "";
-			this.ScriptViewerRichTextBox.WordWrap = false;
-			this.ScriptViewerRichTextBox.ZoomFactor = 1.4F;
-			this.ScriptViewerRichTextBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ScriptViewerRichTextBox_MouseClick);
-			this.ScriptViewerRichTextBox.TextChanged += new System.EventHandler(this.ScriptViewerRichTextBox_TextChanged);
-			this.ScriptViewerRichTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ScriptViewerRichTextBox_KeyUp);
-			this.ScriptViewerRichTextBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ScriptViewerRichTextBox_MouseUp);
+			this.STTB.AdditionalCaretForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(195)))), ((int)(((byte)(195)))), ((int)(((byte)(195)))));
+			this.STTB.AutomaticFold = ((ScintillaNET.AutomaticFold)(((ScintillaNET.AutomaticFold.Show | ScintillaNET.AutomaticFold.Click) 
+            | ScintillaNET.AutomaticFold.Change)));
+			this.STTB.CaretForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(195)))), ((int)(((byte)(195)))), ((int)(((byte)(195)))));
+			this.STTB.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.STTB.Location = new System.Drawing.Point(3, 16);
+			this.STTB.Margins.Left = 4;
+			this.STTB.Name = "STTB";
+			this.STTB.Size = new System.Drawing.Size(615, 404);
+			this.STTB.TabIndex = 1;
+			this.STTB.Text = resources.GetString("STTB.Text");
+			this.STTB.StyleNeeded += new System.EventHandler<ScintillaNET.StyleNeededEventArgs>(this.STTB_StyleNeeded);
+			this.STTB.TextChanged += new System.EventHandler(this.STTB_TextChanged);
+			this.STTB.KeyUp += new System.Windows.Forms.KeyEventHandler(this.STTB_KeyUp);
+			this.STTB.MouseClick += new System.Windows.Forms.MouseEventHandler(this.STTB_MouseClick);
+			this.STTB.MouseUp += new System.Windows.Forms.MouseEventHandler(this.STTB_MouseUp);
 			// 
 			// ScriptViewerContextMenuStrip
 			// 
@@ -674,7 +674,6 @@
 		private System.Windows.Forms.CheckBox IsPageASpreadCheckBox;
         private System.Windows.Forms.GroupBox ScriptViewerGroupBox;
         private System.Windows.Forms.SplitContainer ViewersSplitContainer;
-        private System.Windows.Forms.RichTextBox ScriptViewerRichTextBox;
 		private Cyotek.Windows.Forms.ImageBox RawsImageBox;
 		private System.Windows.Forms.ComboBox CurrentPageComboBox;
 		private System.Windows.Forms.ContextMenuStrip ScriptViewerContextMenuStrip;
@@ -694,5 +693,6 @@
 		private System.Windows.Forms.ToolStripMenuItem ProofreaderToTypesetterToolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem CutToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem DeleteToolStripMenuItem;
+		private ScintillaNET.Scintilla STTB;
 	}
 }
