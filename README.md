@@ -27,7 +27,7 @@ A small set of utilities for creating Translation Scripts
 
 ## Translation Script Maker
 ### Technical Details
-The Translation Script Maker is a utility built using C# and the .NET Framework (v4.7.1).
+The Translation Script Maker is a utility built using C# and the .NET Framework (v4.7.2).
 
 It also makes use of these packages:
 - [CyotekImageBox v1.2.1](https://github.com/cyotek/Cyotek.Windows.Forms.ImageBox)
