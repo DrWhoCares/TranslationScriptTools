@@ -36,6 +36,16 @@ namespace TranslationScriptMaker
 		#region Initialization
 		private void InitializeWithConfigValues()
 		{
+			if ( !Directory.Exists(Config.RawsLocation) )
+			{
+				Config.RawsLocation = "";
+			}
+
+			if ( !Directory.Exists(Config.ScriptOutputLocation) )
+			{
+				Config.ScriptOutputLocation = "";
+			}
+
 			RawsLocationTextBox.Text = !string.IsNullOrWhiteSpace(Config.RawsLocation) ? Config.RawsLocation : "";
 			OutputLocationTextBox.Text = !string.IsNullOrWhiteSpace(Config.ScriptOutputLocation) ? Config.ScriptOutputLocation : "";
 			TranslatorNameTextBox.Text = !string.IsNullOrWhiteSpace(Config.TranslatorName) ? Config.TranslatorName : "";
