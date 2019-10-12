@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using ScintillaNET;
@@ -28,6 +29,12 @@ namespace TranslationScriptMaker
 		{
 			internal int style;
 			internal Match match;
+		}
+
+		private struct StyleMatchCollection
+		{
+			internal int style;
+			internal MatchCollection matches;
 		}
 
 		internal static void StyleText(Scintilla scintilla)
@@ -95,49 +102,80 @@ namespace TranslationScriptMaker
 					continue;
 				}
 
-				List<StyleMatch> regexMatches = new List<StyleMatch>
+				List<StyleMatchCollection> regexMatches = new List<StyleMatchCollection>
 				{
-					new StyleMatch { style = STYLE_IMPORTANT, match = ImportantInfoRegex.Match(currentLine.Text) },
-					new StyleMatch { style = STYLE_NOTE, match = NoteRegex.Match(currentLine.Text) },
-					new StyleMatch { style = STYLE_TL_NOTE, match = TLNoteRegex.Match(currentLine.Text) },
-					new StyleMatch { style = STYLE_SUBSECTION, match = SubsectionRegex.Match(currentLine.Text) }
+					new StyleMatchCollection { style = STYLE_IMPORTANT, matches = ImportantInfoRegex.Matches(currentLine.Text) },
+					new StyleMatchCollection { style = STYLE_NOTE, matches = NoteRegex.Matches(currentLine.Text) },
+					new StyleMatchCollection { style = STYLE_TL_NOTE, matches = TLNoteRegex.Matches(currentLine.Text) },
+					new StyleMatchCollection { style = STYLE_SUBSECTION, matches = SubsectionRegex.Matches(currentLine.Text) }
 				};
 
-				regexMatches.RemoveAll(m => m.match.Success == false);
+				regexMatches.RemoveAll(RemoveAllZeroMatches);
 
-				if ( regexMatches.Count > 0 )
+				if ( !regexMatches.Any() )
 				{
-					regexMatches = regexMatches.OrderBy(m => m.match.Index).ToList();
+					scintilla.SetStyling(totalCharactersRemaining, STYLE_DEFAULT);
+					continue;
+				}
 
-					int previousMatchEndingIndex = 0;
+				List<StyleMatch> sortedMatches = new List<StyleMatch>();
 
-					foreach ( StyleMatch result in regexMatches )
+				foreach ( StyleMatchCollection result in regexMatches )
+				{
+					foreach ( Match match in result.matches )
 					{
-						int lengthBetweenMatches = result.match.Index - previousMatchEndingIndex;
-
-						if ( lengthBetweenMatches > 0 )
-						{
-							scintilla.SetStyling(lengthBetweenMatches, STYLE_DEFAULT);
-							totalCharactersRemaining -= lengthBetweenMatches;
-						}
-
-						if ( result.style == STYLE_SUBSECTION )
-						{
-							scintilla.SetStyling(result.match.Groups[1].Length, result.style);
-							scintilla.SetStyling(result.match.Groups[3].Length, STYLE_BRACES);
-						}
-						else
-						{
-							scintilla.SetStyling(result.match.Length, result.style);
-						}
-
-						totalCharactersRemaining -= result.match.Length;
-						previousMatchEndingIndex = result.match.Index + result.match.Length;
+						sortedMatches.Add(new StyleMatch {
+							style = result.style,
+							match = match
+						});
 					}
+				}
+
+				sortedMatches = sortedMatches.OrderBy(m => m.match.Index).ToList();
+
+				int previousMatchEndingIndex = 0;
+
+				foreach ( StyleMatch styleMatch in sortedMatches )
+				{
+					int lengthBetweenMatches = styleMatch.match.Index - previousMatchEndingIndex;
+
+					if ( lengthBetweenMatches > 0 )
+					{
+						scintilla.SetStyling(lengthBetweenMatches, STYLE_DEFAULT);
+						totalCharactersRemaining -= lengthBetweenMatches;
+					}
+
+					if ( styleMatch.style == STYLE_SUBSECTION )
+					{
+						scintilla.SetStyling(styleMatch.match.Groups[1].Length, styleMatch.style);
+						scintilla.SetStyling(styleMatch.match.Groups[3].Length, STYLE_BRACES);
+					}
+					else
+					{
+						scintilla.SetStyling(styleMatch.match.Length, styleMatch.style);
+					}
+
+					totalCharactersRemaining -= styleMatch.match.Length;
+					previousMatchEndingIndex = styleMatch.match.Index + styleMatch.match.Length;
 				}
 
 				scintilla.SetStyling(totalCharactersRemaining, STYLE_DEFAULT);
 			}
+		}
+
+		private static bool RemoveAllZeroMatches(StyleMatchCollection styleMatch)
+		{
+			bool wereAllMatchesFailures = true;
+
+			foreach ( Match match in styleMatch.matches )
+			{
+				if ( match.Success )
+				{
+					wereAllMatchesFailures = false;
+				}
+			}
+
+			return wereAllMatchesFailures;
 		}
 	}
 }
