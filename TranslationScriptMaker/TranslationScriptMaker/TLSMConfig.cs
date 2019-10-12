@@ -29,11 +29,11 @@ namespace TranslationScriptMaker
 
 		private void Defaults()
 		{
-			rawsLocation = rawsLocation ?? "";
-			scriptOutputLocation = scriptOutputLocation ?? "";
+			rawsLocation ??= "";
+			scriptOutputLocation ??= "";
 			translatorName = string.IsNullOrWhiteSpace(translatorName) ? Environment.UserName : translatorName;
-			lastSelectedSeries = lastSelectedSeries ?? "";
-			lastSelectedChapter = lastSelectedChapter ?? "";
+			lastSelectedSeries ??= "";
+			lastSelectedChapter ??= "";
 			scriptOutputToChoice = scriptOutputToChoice != OutputToChoice.Invalid ? scriptOutputToChoice : OutputToChoice.ChapterFolder;
 		}
 
