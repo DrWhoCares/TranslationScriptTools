@@ -315,6 +315,12 @@ namespace TranslationScriptMaker
 		private void CurrentPageComboBox_SelectionChangeCommitted(object sender, EventArgs e)
 		{
 			IsChangingPage = true;
+
+			if ( STTB.ReadOnly )
+			{
+				STTB.ReadOnly = false;
+			}
+
 			string fileNeedsEditingMarker = string.Empty;
 
 			if ( string.IsNullOrWhiteSpace(TotalPanelsTextBox.Text) || int.Parse(TotalPanelsTextBox.Text) == 0 )
@@ -602,9 +608,13 @@ namespace TranslationScriptMaker
 
 		private void TotalPanelsTextBox_TextChanged(object sender, EventArgs e)
 		{
+			bool wasReadOnly = STTB.ReadOnly;
+			STTB.ReadOnly = false;
+
 			if ( string.IsNullOrWhiteSpace(TotalPanelsTextBox.Text) )
 			{
 				ResetSFXCheckBoxes();
+				STTB.ReadOnly = wasReadOnly;
 				return;
 			}
 
@@ -625,6 +635,7 @@ namespace TranslationScriptMaker
 
 			DisplaySFXGroupBoxes(totalPanels);
 			AddPanelsToScriptPageContent(totalPanels);
+			STTB.ReadOnly = wasReadOnly;
 		}
 
 		private void DisplaySFXGroupBoxes(int totalPanels)
@@ -737,6 +748,9 @@ namespace TranslationScriptMaker
 				return; // Switching pages
 			}
 
+			bool wasReadOnly = STTB.ReadOnly;
+			STTB.ReadOnly = false;
+
 			List<string> pageContents = TextUtils.ParseScriptPageContents(STTB.Text);
 
 			int indexOfPanelToFind = -1;
@@ -795,6 +809,7 @@ namespace TranslationScriptMaker
 			}
 
 			UpdateScriptEditorContents(pageContents);
+			STTB.ReadOnly = wasReadOnly;
 		}
 
 		private void ValidateSelectionIsNotSyntax()
@@ -986,6 +1001,9 @@ namespace TranslationScriptMaker
 				return; // Switching pages
 			}
 
+			bool wasReadOnly = STTB.ReadOnly;
+			STTB.ReadOnly = false;
+
 			PageInformations.ElementAt(CurrentPageIndex).isSpread = checkBox.Checked;
 
 			int pageNumberOffset = 0;
@@ -1017,6 +1035,7 @@ namespace TranslationScriptMaker
 			}
 
 			UpdateScriptEditorContents(PageInformations.ElementAt(CurrentPageIndex).pageScriptContents);
+			STTB.ReadOnly = wasReadOnly;
 		}
 
 		private void PaintGroupBoxBorderDarkTheme(object sender, PaintEventArgs e)
