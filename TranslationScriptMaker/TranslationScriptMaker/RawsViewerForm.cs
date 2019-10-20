@@ -416,6 +416,12 @@ namespace TranslationScriptMaker
 		private void ChangePage()
 		{
 			IsChangingPage = true;
+
+			if ( STTB.ReadOnly )
+			{
+				STTB.ReadOnly = false;
+			}
+
 			SavePageInformation();
 			LoadImage();
 			LoadPageInformation();
