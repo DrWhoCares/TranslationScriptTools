@@ -1,5 +1,6 @@
 # TranslationScriptTools
-A small set of utilities for creating Translation Scripts
+A small set of utilities for creating Translation Scripts.
+Program will automatically check for new releases on Github and prompt the user to install on startup.
 
 ## Table of Contents
 * [Translation Script Maker](#translation-script-maker)

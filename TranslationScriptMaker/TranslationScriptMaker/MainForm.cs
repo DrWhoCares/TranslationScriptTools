@@ -5,6 +5,8 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Linq;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using Onova;
+using Onova.Services;
 
 namespace TranslationScriptMaker
 {
@@ -30,10 +32,47 @@ namespace TranslationScriptMaker
 		{
 			InitializeComponent();
 			this.Text = "Translation Script Maker - v" + typeof(MainForm).Assembly.GetName().Version;
+			CheckForProgramUpdates();
 			InitializeWithConfigValues();
 		}
 
 		#region Initialization
+		private async void CheckForProgramUpdates()
+		{
+			using UpdateManager updateManager = new UpdateManager(
+				new GithubPackageResolver("DrWhoCares", "TranslationScriptTools", "TranslationScriptTools_*.zip"),
+				new ZipPackageExtractor()
+			);
+
+			// Check for updates
+			var check = await updateManager.CheckForUpdatesAsync();
+
+			// If there are no updates, continue on silently
+			if ( !check.CanUpdate )
+			{
+				return;
+			}
+
+			DialogResult result = MessageBox.Show("There is a new version (" + check.LastVersion + ") available for download. Would you like to download and install it?", "New Version Update", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+
+			switch ( result )
+			{
+				case DialogResult.Yes:
+					break;
+
+				case DialogResult.No:
+				case DialogResult.Cancel:
+				default: return;
+			}
+
+			// Prepare the latest update
+			await updateManager.PrepareUpdateAsync(check.LastVersion);
+
+			// Launch updater and exit
+			updateManager.LaunchUpdater(check.LastVersion);
+			Application.Exit();
+		}
+
 		private void InitializeWithConfigValues()
 		{
 			if ( !Directory.Exists(Config.RawsLocation) )
