@@ -433,6 +433,7 @@ namespace TranslationScriptMaker
 			LoadPageInformation();
 			TotalPanelsTextBox.Select();
 			CurrentPageComboBox.SelectedIndex = CurrentPageIndex;
+			STTB.ScrollCaret();
 
 			SaveCurrentScript(false);
 			IsChangingPage = false;
