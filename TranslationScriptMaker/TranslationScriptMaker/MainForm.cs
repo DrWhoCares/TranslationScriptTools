@@ -45,32 +45,39 @@ namespace TranslationScriptMaker
 			);
 
 			// Check for updates
-			var check = await updateManager.CheckForUpdatesAsync();
-
-			// If there are no updates, continue on silently
-			if ( !check.CanUpdate )
+			try
 			{
-				return;
+				var check = await updateManager.CheckForUpdatesAsync();
+
+				// If there are no updates, continue on silently
+				if ( !check.CanUpdate )
+				{
+					return;
+				}
+
+				DialogResult result = MessageBox.Show("There is a new version (" + check.LastVersion + ") available for download. Would you like to download and install it?", "New Version Update", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+
+				switch ( result )
+				{
+					case DialogResult.Yes:
+						break;
+
+					case DialogResult.No:
+					case DialogResult.Cancel:
+					default: return;
+				}
+
+				// Prepare the latest update
+				await updateManager.PrepareUpdateAsync(check.LastVersion);
+
+				// Launch updater and exit
+				updateManager.LaunchUpdater(check.LastVersion);
+				Application.Exit();
 			}
-
-			DialogResult result = MessageBox.Show("There is a new version (" + check.LastVersion + ") available for download. Would you like to download and install it?", "New Version Update", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-
-			switch ( result )
+			catch ( Exception e )
 			{
-				case DialogResult.Yes:
-					break;
-
-				case DialogResult.No:
-				case DialogResult.Cancel:
-				default: return;
+				MessageBox.Show("Checking for updates threw an exception:\n\"" + e.Message + "\"\n\nYou may not be able to access api.github.com. You can safely continue using this offline.", "Error Checking For Update", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
-
-			// Prepare the latest update
-			await updateManager.PrepareUpdateAsync(check.LastVersion);
-
-			// Launch updater and exit
-			updateManager.LaunchUpdater(check.LastVersion);
-			Application.Exit();
 		}
 
 		private void InitializeWithConfigValues()
