@@ -824,7 +824,7 @@ namespace TranslationScriptMaker
 			{
 				isCurrentLineUneditable = true;
 			}
-			else if ( currentLine == "" && currentLineIndex != totalLines - 1 && currentLineIndex != totalLines - 2 )
+			else if ( string.IsNullOrWhiteSpace(currentLine) && currentLineIndex != totalLines - 1 && currentLineIndex != totalLines - 2 )
 			{
 				string previousLine = STTB.Lines[currentLineIndex - 1].Text;
 				string nextLine = STTB.Lines[currentLineIndex + 1].Text;
@@ -844,7 +844,7 @@ namespace TranslationScriptMaker
 					isCurrentLineUneditable = true;
 				}
 			}
-			else if ( currentLine == "" && (currentLineIndex == totalLines - 1 || currentLineIndex == totalLines - 2) )
+			else if ( string.IsNullOrWhiteSpace(currentLine) && (currentLineIndex == totalLines - 1 || currentLineIndex == totalLines - 2) )
 			{
 				isCurrentLineUneditable = true;
 			}
