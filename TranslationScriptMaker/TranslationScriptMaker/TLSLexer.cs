@@ -45,9 +45,8 @@ namespace TranslationScriptMaker
 
 			scintilla.StartStyling(0);
 
-			for ( int lineIndex = 0; lineIndex < scintilla.Lines.Count; ++lineIndex )
+			foreach ( Line currentLine in scintilla.Lines )
 			{
-				Line currentLine = scintilla.Lines[lineIndex];
 				int totalCharactersRemaining = currentLine.Length;
 
 				if ( currentLine.Text.Length == 0 )
@@ -55,16 +54,16 @@ namespace TranslationScriptMaker
 					continue;
 				}
 
-				if ( currentLine.Text[0] == '\r' || currentLine.Text[0] == '\n' )
+				switch (currentLine.Text[0])
 				{
-					scintilla.SetStyling(totalCharactersRemaining, STYLE_FORMATTING_BLOCK);
-					continue;
-				}
-
-				if ( currentLine.Text[0] == '{' || currentLine.Text[0] == '}' )
-				{
-					scintilla.SetStyling(totalCharactersRemaining, STYLE_BRACES);
-					continue;
+					case '\r':
+					case '\n':
+						scintilla.SetStyling(totalCharactersRemaining, STYLE_FORMATTING_BLOCK);
+						continue;
+					case '{':
+					case '}':
+						scintilla.SetStyling(totalCharactersRemaining, STYLE_BRACES);
+						continue;
 				}
 
 				Match formattingMatch = HeaderRegex.Match(currentLine.Text);
