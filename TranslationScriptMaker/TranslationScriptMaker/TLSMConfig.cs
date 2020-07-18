@@ -37,7 +37,7 @@ namespace TranslationScriptMaker
 			scriptOutputToChoice = scriptOutputToChoice != OutputToChoice.Invalid ? scriptOutputToChoice : OutputToChoice.ChapterFolder;
 		}
 
-		public void SaveConfig()
+		private void SaveConfig()
 		{
 			File.WriteAllText(CONFIG_FILENAME, JsonConvert.SerializeObject(this));
 		}
@@ -113,7 +113,7 @@ namespace TranslationScriptMaker
 		#endregion
 	}
 
-	enum OutputToChoice
+	internal enum OutputToChoice
 	{
 		Invalid = 0,
 		ChapterFolder,
