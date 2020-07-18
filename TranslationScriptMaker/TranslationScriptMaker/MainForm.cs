@@ -13,14 +13,14 @@ namespace TranslationScriptMaker
 	public partial class MainForm : Form
 	{
 		#region Regex Constants
-		private static readonly Regex VolumeRegex = new Regex(@"Vol(ume)?.? *([0-9]+$)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
-		private static readonly Regex ChapterRegex = new Regex(@"Ch(apter)?.? *([0-9]+([.,][0-9]+)?$)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
-		private static readonly Regex RawsRegex = new Regex(@"Raw(s)?", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
-		private static readonly Regex ImageRegex = new Regex(@".*\.(png|jpg|jpeg)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex VOLUME_REGEX = new Regex(@"Vol(ume)?.? *([0-9]+$)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex CHAPTER_REGEX = new Regex(@"Ch(apter)?.? *([0-9]+([.,][0-9]+)?$)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex RAWS_REGEX = new Regex(@"Raw(s)?", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex IMAGE_REGEX = new Regex(@".*\.(png|jpg|jpeg)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 		#endregion
 
 		#region Member Variables
-		private static TLSMConfig Config = TLSMConfig.LoadConfig();
+		private static readonly TLSMConfig Config = TLSMConfig.LoadConfig();
 
 		private bool WasRawsLocationVerified { get; set; }
 		private bool WasOutputLocationVerified { get; set; }
@@ -31,13 +31,19 @@ namespace TranslationScriptMaker
 		public MainForm()
 		{
 			InitializeComponent();
-			this.Text = "Translation Script Maker - v" + typeof(MainForm).Assembly.GetName().Version;
+			Text = "Translation Script Maker - v" + typeof(MainForm).Assembly.GetName().Version;
 			CheckForProgramUpdates();
 			InitializeWithConfigValues();
 		}
 
+		public sealed override string Text
+		{
+			get => base.Text;
+			set => base.Text = value;
+		}
+
 		#region Initialization
-		private async void CheckForProgramUpdates()
+		private static async void CheckForProgramUpdates()
 		{
 			using UpdateManager updateManager = new UpdateManager(
 				new GithubPackageResolver("DrWhoCares", "TranslationScriptTools", "TranslationScriptTools_*.zip"),
@@ -57,14 +63,9 @@ namespace TranslationScriptMaker
 
 				DialogResult result = MessageBox.Show("There is a new version (" + check.LastVersion + ") available for download. Would you like to download and install it?", "New Version Update", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 
-				switch ( result )
+				if ( result != DialogResult.Yes )
 				{
-					case DialogResult.Yes:
-						break;
-
-					case DialogResult.No:
-					case DialogResult.Cancel:
-					default: return;
+					return;
 				}
 
 				// Prepare the latest update
@@ -137,7 +138,7 @@ namespace TranslationScriptMaker
 
 				if ( SeriesSelectionComboBox.SelectedItem != null )
 				{
-					ParseSeriesDirectoryForChapters(RawsLocationTextBox.Text + "\\" + SeriesSelectionComboBox.SelectedItem.ToString());
+					ParseSeriesDirectoryForChapters(RawsLocationTextBox.Text + "\\" + SeriesSelectionComboBox.SelectedItem);
 
 					if ( !string.IsNullOrWhiteSpace(Config.LastSelectedChapter) )
 					{
@@ -165,14 +166,12 @@ namespace TranslationScriptMaker
 				return;
 			}
 
-			string previouslySelectedSeries = SeriesSelectionComboBox.SelectedItem != null ? SeriesSelectionComboBox.SelectedItem.ToString() : string.Empty;
-
 			SeriesSelectionComboBox.Items.Clear();
 			SeriesSelectionComboBox.DropDownHeight = 106;
 
 			DirectoryInfo[] seriesDirectories = new DirectoryInfo(rawsDirectoryPath).GetDirectories();
 
-			foreach ( DirectoryInfo seriesDirInfo in DirectoryOrderer.OrderByAlphaNumeric(seriesDirectories, DirectoryOrderer.GetDirectoryName) )
+			foreach ( DirectoryInfo seriesDirInfo in seriesDirectories.OrderByAlphaNumeric(DirectoryOrderer.GetDirectoryName) )
 			{
 				if ( DoesSeriesDirectoryContainChapters(seriesDirInfo.FullName) )
 				{
@@ -201,14 +200,16 @@ namespace TranslationScriptMaker
 
 		private static bool DoesSeriesDirectoryContainChapters(string seriesDirectoryPath)
 		{
-			return new DirectoryInfo(seriesDirectoryPath).GetDirectories("*", SearchOption.TopDirectoryOnly)
-				.Where((subdirectory) => ChapterRegex.IsMatch(subdirectory.Name) || IsSeriesSubdirectoryAVolume(subdirectory)).Count() > 0;
+			return new DirectoryInfo(seriesDirectoryPath)
+				.GetDirectories("*", SearchOption.TopDirectoryOnly)
+				.Any(subdirectory => CHAPTER_REGEX.IsMatch(subdirectory.Name) || IsSeriesSubdirectoryAVolume(subdirectory));
 		}
 
 		private static bool IsSeriesSubdirectoryAVolume(DirectoryInfo subdirectoryInfo)
 		{
-			return VolumeRegex.IsMatch(subdirectoryInfo.Name) && subdirectoryInfo.GetDirectories("*", SearchOption.TopDirectoryOnly)
-				.Where((subsubDirectory) => ChapterRegex.IsMatch(subsubDirectory.Name)).Count() > 0;
+			return VOLUME_REGEX.IsMatch(subdirectoryInfo.Name) && subdirectoryInfo
+				.GetDirectories("*", SearchOption.TopDirectoryOnly)
+				.Any(subsubDirectory => CHAPTER_REGEX.IsMatch(subsubDirectory.Name));
 		}
 
 		private void ParseSeriesDirectoryForChapters(string seriesDirectoryPath)
@@ -222,17 +223,22 @@ namespace TranslationScriptMaker
 			ChapterSelectionComboBox.DropDownHeight = 106;
 
 			DirectoryInfo seriesDirectoryInfo = new DirectoryInfo(seriesDirectoryPath);
-			IEnumerable<DirectoryInfo> chapterDirectories = seriesDirectoryInfo.GetDirectories("*", SearchOption.AllDirectories).Where((directory) => ChapterRegex.IsMatch(directory.Name));
+			IEnumerable<DirectoryInfo> chapterDirectories = seriesDirectoryInfo.GetDirectories("*", SearchOption.AllDirectories).Where((directory) => CHAPTER_REGEX.IsMatch(directory.Name));
 
-			foreach ( DirectoryInfo chapterDirInfo in DirectoryOrderer.OrderByAlphaNumeric(chapterDirectories, DirectoryOrderer.GetDirectoryName) )
+			foreach ( DirectoryInfo chapterDirInfo in chapterDirectories.OrderByAlphaNumeric(DirectoryOrderer.GetDirectoryName) )
 			{
-				if ( DoesChapterDirectoryContainRaws(chapterDirInfo.FullName) || DoesChapterDirectoryContainRawsFolder(chapterDirInfo.FullName) )
+				if ( !DoesChapterDirectoryContainRaws(chapterDirInfo.FullName) && !DoesChapterDirectoryContainRawsFolder(chapterDirInfo.FullName) )
 				{
-					if ( chapterDirInfo.Parent.Name == seriesDirectoryInfo.Name )
-					{
-						ChapterSelectionComboBox.Items.Add(chapterDirInfo.Name);
-					}
-					else
+					continue;
+				}
+
+				if ( chapterDirInfo.Parent != null && chapterDirInfo.Parent.Name == seriesDirectoryInfo.Name )
+				{
+					ChapterSelectionComboBox.Items.Add(chapterDirInfo.Name);
+				}
+				else
+				{
+					if ( chapterDirInfo.Parent != null )
 					{
 						ChapterSelectionComboBox.Items.Add(chapterDirInfo.Parent.Name + "\\" + chapterDirInfo.Name);
 					}
@@ -253,15 +259,15 @@ namespace TranslationScriptMaker
 
 		private static bool DoesChapterDirectoryContainRaws(string chapterDirectoryPath)
 		{
-			return new DirectoryInfo(chapterDirectoryPath).GetFiles("*", SearchOption.TopDirectoryOnly).Where((file) => ImageRegex.IsMatch(file.Name)).Count() > 0;
+			return new DirectoryInfo(chapterDirectoryPath).GetFiles("*", SearchOption.TopDirectoryOnly).Any(file => IMAGE_REGEX.IsMatch(file.Name));
 		}
 
 		private static bool DoesChapterDirectoryContainRawsFolder(string chapterDirectoryPath)
 		{
-			return new DirectoryInfo(chapterDirectoryPath).GetDirectories("*", SearchOption.TopDirectoryOnly)
-				.Where((subdirectory) => RawsRegex.IsMatch(subdirectory.Name)
-					&& subdirectory.GetFiles("*", SearchOption.TopDirectoryOnly)
-						.Where((file) => ImageRegex.IsMatch(file.Name)).Count() > 0).Count() > 0;
+			return new DirectoryInfo(chapterDirectoryPath)
+				.GetDirectories("*", SearchOption.TopDirectoryOnly)
+				.Any(subdirectory => RAWS_REGEX.IsMatch(subdirectory.Name)
+					&& subdirectory.GetFiles("*", SearchOption.TopDirectoryOnly).Any(file => IMAGE_REGEX.IsMatch(file.Name)));
 		}
 
 		private void UpdateOutputLocation()
@@ -271,20 +277,20 @@ namespace TranslationScriptMaker
 				return;
 			}
 
-			string selectedSeriesPath = RawsLocationTextBox.Text + "\\" + SeriesSelectionComboBox.SelectedItem.ToString() + "\\";
+			string selectedSeriesPath = RawsLocationTextBox.Text + "\\" + SeriesSelectionComboBox.SelectedItem + "\\";
 			string selectedChapter = ChapterSelectionComboBox.SelectedItem.ToString();
-			string rawsSuffix = string.Empty;
+			string rawsSuffix = "";
 
 			string outputLocationFullPath = selectedSeriesPath + selectedChapter + "\\";
 
 			if ( Config.ScriptOutputToChoice == OutputToChoice.WithRaws && DoesChapterDirectoryContainRawsFolder(outputLocationFullPath) )
 			{
-				var subdirectories = new DirectoryInfo(outputLocationFullPath).GetDirectories("*", SearchOption.TopDirectoryOnly).Where((subdirectory) => RawsRegex.IsMatch(subdirectory.Name));
+				var subdirectories = new DirectoryInfo(outputLocationFullPath).GetDirectories("*", SearchOption.TopDirectoryOnly).Where(subdirectory => RAWS_REGEX.IsMatch(subdirectory.Name));
 				
 				foreach ( DirectoryInfo dirInfo in subdirectories )
 				{
 					// Just take the first match that actually has files
-					if ( dirInfo.GetFiles("*", SearchOption.TopDirectoryOnly).Where((file) => ImageRegex.IsMatch(file.Name)).Count() > 0 )
+					if ( dirInfo.GetFiles("*", SearchOption.TopDirectoryOnly).Any(file => IMAGE_REGEX.IsMatch(file.Name)) )
 					{
 						rawsSuffix = dirInfo.Name;
 						break;
@@ -300,18 +306,19 @@ namespace TranslationScriptMaker
 		#region RawsLocationTextBox
 		private void RawsLocationButton_MouseClick(object sender, MouseEventArgs e)
 		{
-			using ( CommonOpenFileDialog rawsLocationDialog = new CommonOpenFileDialog
+			using CommonOpenFileDialog rawsLocationDialog = new CommonOpenFileDialog
 			{
 				IsFolderPicker = true
-			} )
+			};
+
+			if ( rawsLocationDialog.ShowDialog() != CommonFileDialogResult.Ok )
 			{
-				if ( rawsLocationDialog.ShowDialog() == CommonFileDialogResult.Ok )
-				{
-					RawsLocationTextBox.Text = rawsLocationDialog.FileName;
-					Config.RawsLocation = rawsLocationDialog.FileName;
-					ParseRawsDirectoryForSeries(RawsLocationTextBox.Text);
-				}
+				return;
 			}
+
+			RawsLocationTextBox.Text = rawsLocationDialog.FileName;
+			Config.RawsLocation = rawsLocationDialog.FileName;
+			ParseRawsDirectoryForSeries(RawsLocationTextBox.Text);
 		}
 
 		private void RawsLocationTextBox_Validating(object sender, System.ComponentModel.CancelEventArgs e)
@@ -323,18 +330,19 @@ namespace TranslationScriptMaker
 		#region OutputLocationTextBox
 		private void OutputLocationButton_MouseClick(object sender, MouseEventArgs e)
 		{
-			using ( CommonOpenFileDialog outputLocationDialog = new CommonOpenFileDialog
+			using CommonOpenFileDialog outputLocationDialog = new CommonOpenFileDialog
 			{
 				IsFolderPicker = true
-			} )
+			};
+
+			if ( outputLocationDialog.ShowDialog() != CommonFileDialogResult.Ok )
 			{
-				if ( outputLocationDialog.ShowDialog() == CommonFileDialogResult.Ok )
-				{
-					OutputLocationTextBox.Text = outputLocationDialog.FileName;
-					Config.ScriptOutputLocation = outputLocationDialog.FileName;
-					WasOutputLocationVerified = VerifyOutputLocation();
-				}
+				return;
 			}
+
+			OutputLocationTextBox.Text = outputLocationDialog.FileName;
+			Config.ScriptOutputLocation = outputLocationDialog.FileName;
+			WasOutputLocationVerified = VerifyOutputLocation();
 		}
 
 		private void OutputLocationTextBox_Validating(object sender, System.ComponentModel.CancelEventArgs e)
@@ -375,7 +383,7 @@ namespace TranslationScriptMaker
 
 			if ( !string.IsNullOrWhiteSpace(RawsLocationTextBox.Text) )
 			{
-				ParseSeriesDirectoryForChapters(RawsLocationTextBox.Text + "\\" + SeriesSelectionComboBox.SelectedItem.ToString());
+				ParseSeriesDirectoryForChapters(RawsLocationTextBox.Text + "\\" + SeriesSelectionComboBox.SelectedItem);
 				UpdateOutputLocation();
 			}
 		}
@@ -419,7 +427,7 @@ namespace TranslationScriptMaker
 
 			if ( OutputToCustomLocationRadioButton.Checked )
 			{
-				OutputLocationTextBox.Text = string.Empty;
+				OutputLocationTextBox.Text = "";
 			}
 		}
 		#endregion
@@ -427,7 +435,7 @@ namespace TranslationScriptMaker
 		#region Input Verification
 		private void BeginScriptCreationButton_MouseClick(object sender, MouseEventArgs e)
 		{
-			this.ValidateChildren();
+			ValidateChildren();
 
 			if ( AreScriptCreationInputsValid() )
 			{
@@ -456,7 +464,7 @@ namespace TranslationScriptMaker
 
 			try
 			{
-				System.Security.AccessControl.DirectorySecurity ds = Directory.GetAccessControl(pathToCheck);
+				Directory.GetAccessControl(pathToCheck);
 			}
 			catch ( UnauthorizedAccessException )
 			{
@@ -493,20 +501,18 @@ namespace TranslationScriptMaker
 		{
 			SaveInputsToConfig();
 
-			IEnumerable<FileInfo> rawsFiles = DirectoryOrderer.OrderByAlphaNumeric(GetRawsFiles(GetRawsFilesFullPath()), DirectoryOrderer.GetFileName);
+			IEnumerable<FileInfo> rawsFiles = GetRawsFiles(GetRawsFilesFullPath()).OrderByAlphaNumeric(DirectoryOrderer.GetFileName).ToList();
 
-			if ( rawsFiles.Count() == 0 )
+			if ( !rawsFiles.Any() )
 			{
 				MainFormErrorProvider.SetError(BeginScriptCreationButton, "Unable to parse any of the Raws Files. This should never happen.");
 				return;
 			}
 
-			using ( RawsViewerForm rawsViewerForm = new RawsViewerForm(rawsFiles, OutputLocationTextBox.Text + "\\" + GetOutputFilename()) )
-			{
-				this.Hide();
-				rawsViewerForm.ShowDialog();
-				this.Show();
-			}
+			using RawsViewerForm rawsViewerForm = new RawsViewerForm(rawsFiles, OutputLocationTextBox.Text + "\\" + GetOutputFilename());
+			Hide();
+			rawsViewerForm.ShowDialog();
+			Show();
 		}
 
 		private void SaveInputsToConfig()
@@ -516,10 +522,9 @@ namespace TranslationScriptMaker
 			Config.TranslatorName = TranslatorNameTextBox.Text;
 			Config.LastSelectedSeries = SeriesSelectionComboBox.SelectedItem.ToString();
 			Config.LastSelectedChapter = ChapterSelectionComboBox.SelectedItem.ToString();
-			Config.SaveConfig();
 		}
 
-		private IEnumerable<FileInfo> GetRawsFiles(string rawsFilesFullPath)
+		private static IEnumerable<FileInfo> GetRawsFiles(string rawsFilesFullPath)
 		{
 			return new DirectoryInfo(rawsFilesFullPath).EnumerateFiles("*.*", SearchOption.TopDirectoryOnly)
 				.Where(s => s.Name.EndsWith(".png", StringComparison.OrdinalIgnoreCase) || s.Name.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase)
@@ -528,21 +533,22 @@ namespace TranslationScriptMaker
 
 		private string GetRawsFilesFullPath()
 		{
-			string rawsFilesFullPath = RawsLocationTextBox.Text + "\\" + SeriesSelectionComboBox.SelectedItem.ToString() + "\\" + ChapterSelectionComboBox.SelectedItem.ToString() + "\\";
+			string rawsFilesFullPath = RawsLocationTextBox.Text + "\\" + SeriesSelectionComboBox.SelectedItem + "\\" + ChapterSelectionComboBox.SelectedItem + "\\";
 			return rawsFilesFullPath + GetRawsFolderName(rawsFilesFullPath);
 		}
 
-		private string GetRawsFolderName(string chapterDirectoryFullPath)
+		private static string GetRawsFolderName(string chapterDirectoryFullPath)
 		{
 			if ( DoesChapterDirectoryContainRaws(chapterDirectoryFullPath) )
 			{
 				return "";
 			}
 
-			return new DirectoryInfo(chapterDirectoryFullPath).GetDirectories("*", SearchOption.TopDirectoryOnly)
-				.Where((subdirectory) => RawsRegex.IsMatch(subdirectory.Name)
+			return new DirectoryInfo(chapterDirectoryFullPath)
+				.GetDirectories("*", SearchOption.TopDirectoryOnly)
+				.First(subdirectory => RAWS_REGEX.IsMatch(subdirectory.Name)
 					&& subdirectory.GetFiles("*", SearchOption.TopDirectoryOnly)
-						.Where((file) => ImageRegex.IsMatch(file.Name)).Count() > 0).First().Name;
+						.Any(file => IMAGE_REGEX.IsMatch(file.Name))).Name;
 		}
 
 		private string GetOutputFilename()
@@ -552,7 +558,7 @@ namespace TranslationScriptMaker
 
 		private string GetChapterNumber()
 		{
-			return ChapterRegex.Match(ChapterSelectionComboBox.SelectedItem.ToString()).Groups[2].Value;
+			return CHAPTER_REGEX.Match(ChapterSelectionComboBox.SelectedItem.ToString()).Groups[2].Value;
 		}
 		#endregion
 		#endregion
@@ -566,8 +572,9 @@ namespace TranslationScriptMaker
 
 		public static IOrderedEnumerable<T> OrderByAlphaNumeric<T>(this IEnumerable<T> source, Func<T, string> selector)
 		{
-			int max = source.SelectMany(i => Regex.Matches(selector(i), @"\d+").Cast<Match>().Select(m => m.Value.Length)).DefaultIfEmpty().Max();
-			return source.OrderBy(i => Regex.Replace(selector(i), @"\d+", m => m.Value.PadLeft(max, '0')));
+			IEnumerable<T> sourceAsListEnumerable = source.ToList();
+			int max = sourceAsListEnumerable.SelectMany(i => Regex.Matches(selector(i), @"\d+").Cast<Match>().Select(m => m.Value.Length)).DefaultIfEmpty().Max();
+			return sourceAsListEnumerable.OrderBy(i => Regex.Replace(selector(i), @"\d+", m => m.Value.PadLeft(max, '0')));
 		}
 	}
 }

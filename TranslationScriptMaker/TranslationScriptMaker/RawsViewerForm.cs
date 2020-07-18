@@ -24,7 +24,7 @@ namespace TranslationScriptMaker
 		private static readonly Color COLOR_FOREGROUND = Color.FromArgb(216, 216, 216);
 		private static readonly Color COLOR_SELECTION = Color.FromArgb(38, 79, 120);
 		private static readonly Color COLOR_CURRENT_LINE_BACKGROUND = Color.FromArgb(15, 15, 15);
-		private static readonly Color COLOR_CURRENT_LINE_FOREGROUND = Color.FromArgb(220, 220, 220);
+		//private static readonly Color COLOR_CURRENT_LINE_FOREGROUND = Color.FromArgb(220, 220, 220);
 		private static readonly Color COLOR_FORMATTING_BLOCK = Color.FromArgb(0, 128, 192);
 		private static readonly Color COLOR_HEADER_TITLE = Color.FromArgb(0, 128, 255);
 		private static readonly Color COLOR_HEADER_VALUE = Color.FromArgb(255, 128, 0);
@@ -44,7 +44,7 @@ namespace TranslationScriptMaker
 			"----------##########----------}"
 		};
 
-		class PageInformation
+		private class PageInformation
 		{
 			public bool isSpread { get; set; }
 			public int pageNumber { get; set; }
@@ -59,7 +59,7 @@ namespace TranslationScriptMaker
 		private bool IsCreatingScript { get; }
 		private int CurrentPageIndex { get; set; }
 		private int PreviousPageIndex { get; set; }
-		private List<PageInformation> PageInformations { get; set; }
+		private List<PageInformation> PageInformations { get; }
 
 		private bool IsChangingPage { get; set; } // TEMP, WILL REMOVE AFTER REFACTORING HOW SFX AND SUCH ARE ADDED
 		private bool HasUserPromptedZoomChanged { get; set; }
@@ -77,11 +77,11 @@ namespace TranslationScriptMaker
 
 				if ( value )
 				{
-					this.Text = "Translation Script Maker* - v" + typeof(MainForm).Assembly.GetName().Version;
+					Text = "Translation Script Maker* - v" + typeof(MainForm).Assembly.GetName().Version;
 				}
 				else
 				{
-					this.Text = "Translation Script Maker - v" + typeof(MainForm).Assembly.GetName().Version;
+					Text = "Translation Script Maker - v" + typeof(MainForm).Assembly.GetName().Version;
 				}
 
 				_AreThereUnsavedChanges = value;
@@ -92,8 +92,8 @@ namespace TranslationScriptMaker
 		{
 			InitializeComponent();
 
-			this.WindowState = FormWindowState.Maximized;
-			this.Text = "Translation Script Maker v" + typeof(MainForm).Assembly.GetName().Version;
+			WindowState = FormWindowState.Maximized;
+			Text = "Translation Script Maker v" + typeof(MainForm).Assembly.GetName().Version;
 
 			OutputLocationFullPath = outputLocationFullPath;
 			RawsFiles = rawsFiles;
@@ -107,7 +107,13 @@ namespace TranslationScriptMaker
 			LoadImage();
 			InitializePageInformations();
 
-			this.StartPosition = FormStartPosition.Manual;
+			StartPosition = FormStartPosition.Manual;
+		}
+
+		public sealed override string Text
+		{
+			get => base.Text;
+			set => base.Text = value;
 		}
 
 		private void RawsViewerForm_Load(object sender, EventArgs e)
@@ -256,7 +262,7 @@ namespace TranslationScriptMaker
 				}
 
 				pageInfo.pageScriptContents = new List<string>(TextUtils.ParseScriptPageContents(
-					PAGE_HEADER_BEGIN + currentPageNumber.ToString() + (pageInfo.isSpread ? " - " + (currentPageNumber + 1).ToString() : "") + PAGE_HEADER_END
+					PAGE_HEADER_BEGIN + currentPageNumber + (pageInfo.isSpread ? " - " + (currentPageNumber + 1) : "") + PAGE_HEADER_END
 					+ PANEL_HEADER_BEGIN + "1" + PANEL_HEADER_END + PANEL_FOOTER
 					+ PAGE_FOOTER));
 			}
@@ -410,7 +416,8 @@ namespace TranslationScriptMaker
 				SaveCurrentScript(true);
 				return;
 			}
-			else if ( CurrentPageIndex >= RawsFiles.Count() - 1 )
+			
+			if ( CurrentPageIndex >= RawsFiles.Count() - 1 )
 			{
 				NextImageButton.Text = "Finish";
 			}
@@ -474,8 +481,8 @@ namespace TranslationScriptMaker
 		private void LoadImage()
 		{
 			RawsImageBox.BeginUpdate();
-			RawsViewerGroupBox.Text = "Raws Viewer - Page: " + (CurrentPageIndex + 1).ToString() + " / " + RawsFiles.Count().ToString();
-			ScriptEditorGroupBox.Text = "Script Editor - Page : " + (CurrentPageIndex + 1).ToString() + " / " + RawsFiles.Count().ToString();
+			RawsViewerGroupBox.Text = "Raws Viewer - Page: " + (CurrentPageIndex + 1) + " / " + RawsFiles.Count();
+			ScriptEditorGroupBox.Text = "Script Editor - Page : " + (CurrentPageIndex + 1) + " / " + RawsFiles.Count();
 			RawsImageBox.Image = Image.FromFile(RawsFiles.ElementAt(CurrentPageIndex).FullName);
 			RawsImageBox.ZoomToFit();
 			RawsImageBox.EndUpdate();
@@ -487,10 +494,10 @@ namespace TranslationScriptMaker
 		private void ResizeWindowToImage()
 		{
 			Size currentScreenSize = Screen.FromControl(this).WorkingArea.Size;
-			this.Width = RawsImageBox.Image.Width < currentScreenSize.Width ? RawsImageBox.Image.Width : currentScreenSize.Width;
-			this.Height = RawsImageBox.Image.Height < currentScreenSize.Height ? RawsImageBox.Image.Height : currentScreenSize.Height;
-			this.Left = 0;
-			this.Top = 0;
+			Width = RawsImageBox.Image.Width < currentScreenSize.Width ? RawsImageBox.Image.Width : currentScreenSize.Width;
+			Height = RawsImageBox.Image.Height < currentScreenSize.Height ? RawsImageBox.Image.Height : currentScreenSize.Height;
+			Left = 0;
+			Top = 0;
 
 			HasUserPromptedZoomChanged = true;
 			SetSizeMode();
@@ -559,16 +566,7 @@ namespace TranslationScriptMaker
 			PageInformation pageInfo = PageInformations.ElementAt(CurrentPageIndex);
 
 			pageInfo.pageScriptContents = new List<string>(TextUtils.ParseScriptPageContents(STTB.Text));
-
-			if ( int.TryParse(TotalPanelsTextBox.Text, out int totalPanels) )
-			{
-				pageInfo.totalPanels = totalPanels;
-			}
-			else
-			{
-				pageInfo.totalPanels = 0;
-			}
-
+			pageInfo.totalPanels = int.TryParse(TotalPanelsTextBox.Text, out int totalPanels) ? totalPanels : 0;
 			pageInfo.panelsWithSFX.Clear();
 
 			foreach ( Control control in PanelsWithSFXGroupBox.Controls )
@@ -595,7 +593,7 @@ namespace TranslationScriptMaker
 				MessageBox.Show(this, "File output to:\n" + outputFilepath, "Script Successfully generated", MessageBoxButtons.OK,
 					MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 
-				this.Close();
+				Close();
 			}
 		}
 
@@ -693,7 +691,7 @@ namespace TranslationScriptMaker
 			{
 				for ( int panelIndex = totalExistingPanels; panelIndex < totalPanels; ++panelIndex )
 				{
-					pageContents.Insert(index, PANEL_HEADER_BEGIN + (panelIndex + 1).ToString() + PANEL_HEADER_END + PANEL_FOOTER);
+					pageContents.Insert(index, PANEL_HEADER_BEGIN + (panelIndex + 1) + PANEL_HEADER_END + PANEL_FOOTER);
 					++index;
 				}
 			}
@@ -702,9 +700,9 @@ namespace TranslationScriptMaker
 				int linesBetweenPanels = 0;
 				List<Tuple<int, int>> indicesToRemove = new List<Tuple<int, int>>();
 
-				for ( int lineIndex = pageContents.Count() - 1; lineIndex > 0; --lineIndex )
+				for ( int lineIndex = pageContents.Count - 1; lineIndex > 0; --lineIndex )
 				{
-					if ( indicesToRemove.Count() == totalExistingPanels - totalPanels )
+					if ( indicesToRemove.Count == totalExistingPanels - totalPanels )
 					{
 						break;
 					}
@@ -726,9 +724,9 @@ namespace TranslationScriptMaker
 					++linesBetweenPanels;
 				}
 
-				foreach ( Tuple<int, int> indexAndCount in indicesToRemove )
+				foreach ( var (indexToRemove, count) in indicesToRemove )
 				{
-					pageContents.RemoveRange(indexAndCount.Item1, indexAndCount.Item2);
+					pageContents.RemoveRange(indexToRemove, count);
 				}
 			}
 
@@ -826,7 +824,7 @@ namespace TranslationScriptMaker
 			{
 				isCurrentLineUneditable = true;
 			}
-			else if ( currentLine == "" && currentLineIndex != 0 && currentLineIndex != totalLines - 1 && currentLineIndex != totalLines - 2 )
+			else if ( currentLine == "" && currentLineIndex != totalLines - 1 && currentLineIndex != totalLines - 2 )
 			{
 				string previousLine = STTB.Lines[currentLineIndex - 1].Text;
 				string nextLine = STTB.Lines[currentLineIndex + 1].Text;
@@ -858,7 +856,7 @@ namespace TranslationScriptMaker
 			STTB.ReadOnly = isCurrentLineUneditable;
 		}
 
-		private bool DoesLineContainSyntaxMarkers(string line)
+		private static bool DoesLineContainSyntaxMarkers(string line)
 		{
 			foreach ( string syntaxMarker in PAGE_SYNTAX_MARKERS )
 			{
@@ -924,7 +922,7 @@ namespace TranslationScriptMaker
 				return true;
 			}
 
-			bool shouldChangePage = FindFocusedControl(this.ActiveControl) != STTB;
+			bool shouldChangePage = FindFocusedControl(ActiveControl) != STTB;
 
 			if ( keyData == Keys.Left && shouldChangePage )
 			{
@@ -951,7 +949,7 @@ namespace TranslationScriptMaker
 			return control;
 		}
 
-		private bool DoesControlContainControl(Control parent, Control searchFor)
+		/*private bool DoesControlContainControl(Control parent, Control searchFor)
 		{
 			if ( parent == searchFor )
 			{
@@ -967,7 +965,7 @@ namespace TranslationScriptMaker
 			}
 
 			return false;
-		}
+		}*/
 
 		private void CurrentPageComboBox_DrawItem(object sender, DrawItemEventArgs e)
 		{
@@ -978,19 +976,22 @@ namespace TranslationScriptMaker
 
 			ComboBox comboBox = sender as ComboBox;
 
-			using ( SolidBrush brush = new SolidBrush(e.ForeColor) )
+			using SolidBrush brush = new SolidBrush(e.ForeColor);
+			Font font = e.Font;
+
+			if ( comboBox != null && comboBox.Items[e.Index].ToString().Last() == '*' )
 			{
-				Font font = e.Font;
-
-				if ( comboBox.Items[e.Index].ToString().Last() == '*' )
-				{
-					font = new Font(font, FontStyle.Bold);
-				}
-
-				e.DrawBackground();
-				e.Graphics.DrawString(comboBox.Items[e.Index].ToString(), font, brush, e.Bounds);
-				e.DrawFocusRectangle();
+				font = new Font(font, FontStyle.Bold);
 			}
+
+			e.DrawBackground();
+
+			if ( comboBox != null )
+			{
+				e.Graphics.DrawString(comboBox.Items[e.Index].ToString(), font, brush, e.Bounds);
+			}
+
+			e.DrawFocusRectangle();
 		}
 
 		private void IsPageASpreadCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -1020,14 +1021,14 @@ namespace TranslationScriptMaker
 
 				int indexOfPageLine = pageInfo.pageScriptContents.First().Contains("Page") ? 0 : 1;
 
-				int indexBeforePageNum = pageInfo.pageScriptContents.ElementAt(indexOfPageLine).IndexOf("e") + 2;
+				int indexBeforePageNum = pageInfo.pageScriptContents.ElementAt(indexOfPageLine).IndexOf('e') + 2;
 				int indexAfterPageNum = pageInfo.pageScriptContents.ElementAt(indexOfPageLine).LastIndexOf(' ');
 
 				pageInfo.pageScriptContents[indexOfPageLine] = pageInfo.pageScriptContents.ElementAt(indexOfPageLine).Remove(indexBeforePageNum, indexAfterPageNum - indexBeforePageNum);
 
 				if ( pageInfo.isSpread )
 				{
-					pageInfo.pageScriptContents[indexOfPageLine] = pageInfo.pageScriptContents.ElementAt(indexOfPageLine).Insert(indexBeforePageNum, currentPageNumber.ToString() + " - " + (currentPageNumber + 1).ToString());
+					pageInfo.pageScriptContents[indexOfPageLine] = pageInfo.pageScriptContents.ElementAt(indexOfPageLine).Insert(indexBeforePageNum, currentPageNumber + " - " + (currentPageNumber + 1));
 				}
 				else
 				{
@@ -1046,33 +1047,31 @@ namespace TranslationScriptMaker
 				return;
 			}
 
-			using ( Brush textBrush = new SolidBrush(COLOR_FOREGROUND) )
-			using ( Brush borderBrush = new SolidBrush(Color.DimGray) )
-			using ( Pen borderPen = new Pen(borderBrush) )
-			{
-				SizeF strSize = e.Graphics.MeasureString(groupBox.Text, groupBox.Font);
-				Rectangle rect = new Rectangle(groupBox.ClientRectangle.X,
-										   groupBox.ClientRectangle.Y + (int)(strSize.Height / 2),
-										   groupBox.ClientRectangle.Width - 1,
-										   groupBox.ClientRectangle.Height - (int)(strSize.Height / 2) - 1);
+			using Brush textBrush = new SolidBrush(COLOR_FOREGROUND);
+			using Brush borderBrush = new SolidBrush(Color.DimGray);
+			using Pen borderPen = new Pen(borderBrush);
+			SizeF strSize = e.Graphics.MeasureString(groupBox.Text, groupBox.Font);
+			Rectangle rect = new Rectangle(groupBox.ClientRectangle.X,
+				groupBox.ClientRectangle.Y + (int)(strSize.Height / 2),
+				groupBox.ClientRectangle.Width - 1,
+				groupBox.ClientRectangle.Height - (int)(strSize.Height / 2) - 1);
 
-				e.Graphics.Clear(groupBox.BackColor);
+			e.Graphics.Clear(groupBox.BackColor);
 
-				// Draw Label
-				e.Graphics.DrawString(groupBox.Text, groupBox.Font, textBrush, groupBox.Padding.Left, 0);
+			// Draw Label
+			e.Graphics.DrawString(groupBox.Text, groupBox.Font, textBrush, groupBox.Padding.Left, 0);
 
-				// Draw Border
-				//Left
-				e.Graphics.DrawLine(borderPen, rect.Location, new Point(rect.X, rect.Y + rect.Height));
-				//Right
-				e.Graphics.DrawLine(borderPen, new Point(rect.X + rect.Width, rect.Y), new Point(rect.X + rect.Width, rect.Y + rect.Height));
-				//Bottom
-				e.Graphics.DrawLine(borderPen, new Point(rect.X, rect.Y + rect.Height), new Point(rect.X + rect.Width, rect.Y + rect.Height));
-				//Top1
-				e.Graphics.DrawLine(borderPen, new Point(rect.X, rect.Y), new Point(rect.X + groupBox.Padding.Left, rect.Y));
-				//Top2
-				e.Graphics.DrawLine(borderPen, new Point(rect.X + groupBox.Padding.Left + (int)(strSize.Width), rect.Y), new Point(rect.X + rect.Width, rect.Y));
-			}
+			// Draw Border
+			//Left
+			e.Graphics.DrawLine(borderPen, rect.Location, new Point(rect.X, rect.Y + rect.Height));
+			//Right
+			e.Graphics.DrawLine(borderPen, new Point(rect.X + rect.Width, rect.Y), new Point(rect.X + rect.Width, rect.Y + rect.Height));
+			//Bottom
+			e.Graphics.DrawLine(borderPen, new Point(rect.X, rect.Y + rect.Height), new Point(rect.X + rect.Width, rect.Y + rect.Height));
+			//Top1
+			e.Graphics.DrawLine(borderPen, new Point(rect.X, rect.Y), new Point(rect.X + groupBox.Padding.Left, rect.Y));
+			//Top2
+			e.Graphics.DrawLine(borderPen, new Point(rect.X + groupBox.Padding.Left + (int)(strSize.Width), rect.Y), new Point(rect.X + rect.Width, rect.Y));
 		}
 
 		#region ToolStripMenu Handlers
@@ -1090,7 +1089,7 @@ namespace TranslationScriptMaker
 		{
 			if ( Clipboard.ContainsText() )
 			{
-				STTB.InsertText(STTB.SelectionStart, Clipboard.GetText(TextDataFormat.UnicodeText).ToString());
+				STTB.InsertText(STTB.SelectionStart, Clipboard.GetText(TextDataFormat.UnicodeText));
 			}
 		}
 
@@ -1161,7 +1160,7 @@ namespace TranslationScriptMaker
 
 		private void STTB_TextChanged(object sender, EventArgs e)
 		{
-			if ( CurrentPageIndex >= PageInformations.Count() )
+			if ( CurrentPageIndex >= PageInformations.Count )
 			{
 				return;
 			}
@@ -1207,10 +1206,8 @@ namespace TranslationScriptMaker
 				Rectangle rect = new Rectangle(Point.Empty, e.Item.Size);
 				Color color = e.Item.Selected ? COLOR_CURRENT_LINE_BACKGROUND : COLOR_BACKGROUND;
 
-				using ( SolidBrush brush = new SolidBrush(color) )
-				{
-					e.Graphics.FillRectangle(brush, rect);
-				}
+				using SolidBrush brush = new SolidBrush(color);
+				e.Graphics.FillRectangle(brush, rect);
 			}
 		}
 
@@ -1223,22 +1220,19 @@ namespace TranslationScriptMaker
 
 	internal static class TextUtils
 	{
-
-		internal static IEnumerable<string> SplitToLines(string input)
+		private static IEnumerable<string> SplitToLines(string input)
 		{
 			if ( input == null )
 			{
 				yield break;
 			}
 
-			using ( StringReader reader = new StringReader(input) )
-			{
-				string line;
+			using StringReader reader = new StringReader(input);
+			string line;
 
-				while ( (line = reader.ReadLine()) != null )
-				{
-					yield return line + "\n";
-				}
+			while ( (line = reader.ReadLine()) != null )
+			{
+				yield return line + "\n";
 			}
 		}
 
@@ -1246,7 +1240,7 @@ namespace TranslationScriptMaker
 		{
 			List<string> pageContents = new List<string>();
 
-			foreach ( string line in TextUtils.SplitToLines(input) )
+			foreach ( string line in SplitToLines(input) )
 			{
 				pageContents.Add(line);
 			}
