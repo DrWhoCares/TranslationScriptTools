@@ -476,7 +476,6 @@
 			this.STTB.Name = "STTB";
 			this.STTB.Size = new System.Drawing.Size(615, 404);
 			this.STTB.TabIndex = 1;
-			this.STTB.Text = resources.GetString("STTB.Text");
 			this.STTB.StyleNeeded += new System.EventHandler<ScintillaNET.StyleNeededEventArgs>(this.STTB_StyleNeeded);
 			this.STTB.TextChanged += new System.EventHandler(this.STTB_TextChanged);
 			this.STTB.KeyUp += new System.Windows.Forms.KeyEventHandler(this.STTB_KeyUp);
@@ -494,14 +493,14 @@
             this.InsertToolStripMenuItem});
 			this.ScriptEditorContextMenuStrip.Name = "ScriptEditorContextMenuStrip";
 			this.ScriptEditorContextMenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-			this.ScriptEditorContextMenuStrip.Size = new System.Drawing.Size(181, 136);
+			this.ScriptEditorContextMenuStrip.Size = new System.Drawing.Size(113, 114);
 			// 
 			// CutToolStripMenuItem
 			// 
 			this.CutToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.CutToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.CutToolStripMenuItem.Name = "CutToolStripMenuItem";
-			this.CutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.CutToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
 			this.CutToolStripMenuItem.Text = "Cut";
 			this.CutToolStripMenuItem.Click += new System.EventHandler(this.CutToolStripMenuItem_Click);
 			// 
@@ -510,7 +509,7 @@
 			this.CopyToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.CopyToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.CopyToolStripMenuItem.Name = "CopyToolStripMenuItem";
-			this.CopyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.CopyToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
 			this.CopyToolStripMenuItem.Text = "Copy";
 			this.CopyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
 			// 
@@ -519,7 +518,7 @@
 			this.PasteToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.PasteToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.PasteToolStripMenuItem.Name = "PasteToolStripMenuItem";
-			this.PasteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.PasteToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
 			this.PasteToolStripMenuItem.Text = "Paste";
 			this.PasteToolStripMenuItem.Click += new System.EventHandler(this.PasteToolStripMenuItem_Click);
 			// 
@@ -528,7 +527,7 @@
 			this.DeleteToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.DeleteToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem";
-			this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
 			this.DeleteToolStripMenuItem.Text = "Delete";
 			this.DeleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
 			// 
@@ -541,7 +540,7 @@
             this.NotesToolStripMenuItem});
 			this.InsertToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
 			this.InsertToolStripMenuItem.Name = "InsertToolStripMenuItem";
-			this.InsertToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.InsertToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
 			this.InsertToolStripMenuItem.Text = "Insert...";
 			// 
 			// SFXToolStripMenuItem
