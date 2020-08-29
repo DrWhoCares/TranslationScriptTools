@@ -104,9 +104,12 @@ namespace TranslationScriptMaker
 
 			PageInformations = new List<PageInformation>();
 
-			LoadImage();
-			InitializePageInformations();
+			if ( !InitializePageInformations() )
+			{
+				return;
+			}
 
+			LoadImage();
 			StartPosition = FormStartPosition.Manual;
 		}
 
@@ -216,7 +219,7 @@ namespace TranslationScriptMaker
 			STTB.Styles[TLSLexer.STYLE_SUBSECTION].Bold = true;
 		}
 
-		private void InitializePageInformations()
+		private bool InitializePageInformations()
 		{
 			for ( int pageIndex = 0; pageIndex < RawsFiles.Count; ++pageIndex )
 			{
@@ -241,8 +244,10 @@ namespace TranslationScriptMaker
 			}
 			else
 			{
-				ParseScriptForPageInformations();
+				return ParseScriptForPageInformations();
 			}
+
+			return true;
 		}
 
 		private void InitializePageScriptContents()
@@ -268,14 +273,14 @@ namespace TranslationScriptMaker
 			}
 		}
 
-		private void ParseScriptForPageInformations()
+		private bool ParseScriptForPageInformations()
 		{
 			string[] fileContents = File.ReadAllLines(OutputLocationFullPath);
 
 			if ( !VerifyTotalFilesMatchesScript(fileContents) )
 			{
 				Close();
-				return;
+				return false;
 			}
 
 			int currentPageIndex = -1;
@@ -312,6 +317,8 @@ namespace TranslationScriptMaker
 					currentPanelIndex = -1;
 				}
 			}
+
+			return true;
 		}
 
 		private bool VerifyTotalFilesMatchesScript(string[] fileContents)
