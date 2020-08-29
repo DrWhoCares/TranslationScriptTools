@@ -804,7 +804,10 @@ namespace TranslationScriptMaker
 					++linesBetweenSFX;
 				}
 
-				pageContents.RemoveRange(indexToRemove, linesBetweenSFX);
+				if ( indexToRemove >= 0 )
+				{
+					pageContents.RemoveRange(indexToRemove, linesBetweenSFX);
+				}
 			}
 
 			UpdateScriptEditorContents(pageContents);
