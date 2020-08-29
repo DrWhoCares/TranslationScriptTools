@@ -501,7 +501,7 @@ namespace TranslationScriptMaker
 		{
 			SaveInputsToConfig();
 
-			IEnumerable<FileInfo> rawsFiles = GetRawsFiles(GetRawsFilesFullPath()).OrderByAlphaNumeric(DirectoryOrderer.GetFileName).ToList();
+			List<FileInfo> rawsFiles = GetRawsFiles(GetRawsFilesFullPath()).OrderByAlphaNumeric(DirectoryOrderer.GetFileName).ToList();
 
 			if ( !rawsFiles.Any() )
 			{
@@ -510,9 +510,15 @@ namespace TranslationScriptMaker
 			}
 
 			using RawsViewerForm rawsViewerForm = new RawsViewerForm(rawsFiles, OutputLocationTextBox.Text + "\\" + GetOutputFilename());
-			Hide();
-			rawsViewerForm.ShowDialog();
-			Show();
+
+			if ( !rawsViewerForm.IsDisposed )
+			{
+				Hide();
+				rawsViewerForm.ShowDialog();
+				Show();
+			}
+
+			ForceGarbageCollection();
 		}
 
 		private void SaveInputsToConfig()
@@ -560,7 +566,16 @@ namespace TranslationScriptMaker
 		{
 			return CHAPTER_REGEX.Match(ChapterSelectionComboBox.SelectedItem.ToString()).Groups[2].Value;
 		}
+
+		private static void ForceGarbageCollection()
+		{
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+			GC.Collect();
+		}
+
 		#endregion
+
 		#endregion
 	}
 
