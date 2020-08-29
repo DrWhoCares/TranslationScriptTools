@@ -119,6 +119,11 @@ namespace TranslationScriptMaker
 			set => base.Text = value;
 		}
 
+		private void RawsViewerForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			RawsImageBox.Image?.Dispose();
+		}
+
 		private void RawsViewerForm_Load(object sender, EventArgs e)
 		{
 			InitializeScintillaStyles();
@@ -1254,6 +1259,7 @@ namespace TranslationScriptMaker
 			public override Color MenuBorder => COLOR_CURRENT_LINE_BACKGROUND;
 			public override Color ToolStripDropDownBackground => COLOR_BACKGROUND;
 		}
+
 	}
 
 	internal static class TextUtils

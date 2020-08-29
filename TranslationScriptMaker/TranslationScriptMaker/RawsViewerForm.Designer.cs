@@ -682,6 +682,7 @@
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "RawsViewerForm";
 			this.Text = "Translation Script Maker";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RawsViewerForm_FormClosing);
 			this.Load += new System.EventHandler(this.RawsViewerForm_Load);
 			this.InputGroupBox.ResumeLayout(false);
 			this.InputGroupBox.PerformLayout();
