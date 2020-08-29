@@ -54,7 +54,7 @@ namespace TranslationScriptMaker
 			public List<string> pageScriptContents { get; set; }
 		}
 
-		private IEnumerable<FileInfo> RawsFiles { get; }
+		private List<FileInfo> RawsFiles { get; }
 		private string OutputLocationFullPath { get; }
 		private bool IsCreatingScript { get; }
 		private int CurrentPageIndex { get; set; }
@@ -88,7 +88,7 @@ namespace TranslationScriptMaker
 			}
 		}
 
-		public RawsViewerForm(IEnumerable<FileInfo> rawsFiles, string outputLocationFullPath)
+		public RawsViewerForm(List<FileInfo> rawsFiles, string outputLocationFullPath)
 		{
 			InitializeComponent();
 
@@ -218,7 +218,7 @@ namespace TranslationScriptMaker
 
 		private void InitializePageInformations()
 		{
-			for ( int pageIndex = 0; pageIndex < RawsFiles.Count(); ++pageIndex )
+			for ( int pageIndex = 0; pageIndex < RawsFiles.Count; ++pageIndex )
 			{
 				PageInformations.Add(new PageInformation
 				{
@@ -272,6 +272,12 @@ namespace TranslationScriptMaker
 		{
 			string[] fileContents = File.ReadAllLines(OutputLocationFullPath);
 
+			if ( !VerifyTotalFilesMatchesScript(fileContents) )
+			{
+				Close();
+				return;
+			}
+
 			int currentPageIndex = -1;
 			int currentPanelIndex = -1;
 			List<string> pageContents = new List<string>();
@@ -308,6 +314,28 @@ namespace TranslationScriptMaker
 			}
 		}
 
+		private bool VerifyTotalFilesMatchesScript(string[] fileContents)
+		{
+			int totalPagesInScript = 0;
+
+			foreach ( string line in fileContents )
+			{
+				if ( line.Contains(PAGE_HEADER_BEGIN) )
+				{
+					++totalPagesInScript;
+				}
+			}
+
+			bool doesScriptMatchFiles = totalPagesInScript == RawsFiles.Count;
+
+			if ( !doesScriptMatchFiles )
+			{
+				MessageBox.Show(this, "'totalFiles' (" + RawsFiles.Count + ") does not match the number of pages in the script (" + totalPagesInScript + ").", "Page counts do not match", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+			}
+
+			return doesScriptMatchFiles;
+		}
+
 		private void PreviousImageButton_MouseClick(object sender, MouseEventArgs e)
 		{
 			SwitchToPreviousPage();
@@ -342,7 +370,7 @@ namespace TranslationScriptMaker
 
 			PreviousImageButton.Enabled = CurrentPageIndex != 0;
 
-			if ( CurrentPageIndex >= RawsFiles.Count() - 1 )
+			if ( CurrentPageIndex >= RawsFiles.Count - 1 )
 			{
 				NextImageButton.Text = "Finish";
 			}
@@ -411,13 +439,13 @@ namespace TranslationScriptMaker
 			PreviousPageIndex = CurrentPageIndex;
 			++CurrentPageIndex;
 
-			if ( CurrentPageIndex >= RawsFiles.Count() )
+			if ( CurrentPageIndex >= RawsFiles.Count )
 			{
 				SaveCurrentScript(true);
 				return;
 			}
 			
-			if ( CurrentPageIndex >= RawsFiles.Count() - 1 )
+			if ( CurrentPageIndex >= RawsFiles.Count - 1 )
 			{
 				NextImageButton.Text = "Finish";
 			}
@@ -481,8 +509,8 @@ namespace TranslationScriptMaker
 		private void LoadImage()
 		{
 			RawsImageBox.BeginUpdate();
-			RawsViewerGroupBox.Text = "Raws Viewer - Page: " + (CurrentPageIndex + 1) + " / " + RawsFiles.Count();
-			ScriptEditorGroupBox.Text = "Script Editor - Page : " + (CurrentPageIndex + 1) + " / " + RawsFiles.Count();
+			RawsViewerGroupBox.Text = "Raws Viewer - Page: " + (CurrentPageIndex + 1) + " / " + RawsFiles.Count;
+			ScriptEditorGroupBox.Text = "Script Editor - Page : " + (CurrentPageIndex + 1) + " / " + RawsFiles.Count;
 			RawsImageBox.Image = Image.FromFile(RawsFiles.ElementAt(CurrentPageIndex).FullName);
 			RawsImageBox.ZoomToFit();
 			RawsImageBox.EndUpdate();
