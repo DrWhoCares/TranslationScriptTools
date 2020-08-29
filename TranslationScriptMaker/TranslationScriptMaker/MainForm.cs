@@ -69,7 +69,7 @@ namespace TranslationScriptMaker
 				}
 
 				// Prepare the latest update
-				await updateManager.PrepareUpdateAsync(check.LastVersion);
+				await updateManager.PrepareUpdateAsync(check.LastVersion ?? throw new InvalidOperationException());
 
 				// Launch updater and exit
 				updateManager.LaunchUpdater(check.LastVersion);
