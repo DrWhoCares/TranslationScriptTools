@@ -166,6 +166,13 @@ namespace TranslationScriptMaker
 				return;
 			}
 
+			if ( !Directory.Exists(rawsDirectoryPath) )
+			{
+				WasRawsLocationVerified = false;
+				MainFormErrorProvider.SetError(RawsLocationTextBox, "The Raws Location does not exist.");
+				return;
+			}
+
 			SeriesSelectionComboBox.Items.Clear();
 			SeriesSelectionComboBox.DropDownHeight = 106;
 
