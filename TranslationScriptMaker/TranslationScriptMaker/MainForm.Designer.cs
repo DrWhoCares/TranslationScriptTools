@@ -48,6 +48,7 @@ namespace TranslationScriptMaker
 			this.RawsLocationLabel = new System.Windows.Forms.Label();
 			this.RawsLocationButton = new System.Windows.Forms.Button();
 			this.TranslatorNameLabel = new System.Windows.Forms.Label();
+			this.OutputAsTypesettererCheckBox = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.MainFormErrorProvider)).BeginInit();
 			this.OutputToGroupBox.SuspendLayout();
 			this.SuspendLayout();
@@ -257,12 +258,25 @@ namespace TranslationScriptMaker
 			this.TranslatorNameLabel.TabIndex = 3;
 			this.TranslatorNameLabel.Text = "Translator Name:";
 			// 
+			// OutputAsTypesettererCheckBox
+			// 
+			this.OutputAsTypesettererCheckBox.AutoSize = true;
+			this.OutputAsTypesettererCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
+			this.OutputAsTypesettererCheckBox.Location = new System.Drawing.Point(93, 189);
+			this.OutputAsTypesettererCheckBox.Name = "OutputAsTypesettererCheckBox";
+			this.OutputAsTypesettererCheckBox.Size = new System.Drawing.Size(183, 17);
+			this.OutputAsTypesettererCheckBox.TabIndex = 19;
+			this.OutputAsTypesettererCheckBox.Text = "Output as Typesetterer Compliant";
+			this.OutputAsTypesettererCheckBox.UseVisualStyleBackColor = true;
+			this.OutputAsTypesettererCheckBox.CheckedChanged += new System.EventHandler(this.OutputAsTypesettererCheckBox_CheckedChanged);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
 			this.ClientSize = new System.Drawing.Size(601, 219);
+			this.Controls.Add(this.OutputAsTypesettererCheckBox);
 			this.Controls.Add(this.ChapterSelectionComboBox);
 			this.Controls.Add(this.RawsLocationTextBox);
 			this.Controls.Add(this.SeriesSelectionComboBox);
@@ -311,6 +325,7 @@ namespace TranslationScriptMaker
 		private System.Windows.Forms.RadioButton OutputToChapterFolderRadioButton;
 		private System.Windows.Forms.RadioButton OutputWithRawsRadioButton;
 		private System.Windows.Forms.RadioButton OutputToCustomLocationRadioButton;
+		private System.Windows.Forms.CheckBox OutputAsTypesettererCheckBox;
 	}
 }
 

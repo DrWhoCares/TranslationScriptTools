@@ -96,6 +96,7 @@ namespace TranslationScriptMaker
 			RawsLocationTextBox.Text = !string.IsNullOrWhiteSpace(Config.RawsLocation) ? Config.RawsLocation : "";
 			OutputLocationTextBox.Text = !string.IsNullOrWhiteSpace(Config.ScriptOutputLocation) ? Config.ScriptOutputLocation : "";
 			TranslatorNameTextBox.Text = !string.IsNullOrWhiteSpace(Config.TranslatorName) ? Config.TranslatorName : "";
+			OutputAsTypesettererCheckBox.Checked = Config.ShouldOutputAsTypesetterCompliant;
 
 			switch ( Config.ScriptOutputToChoice )
 			{
@@ -516,7 +517,7 @@ namespace TranslationScriptMaker
 				return;
 			}
 
-			using RawsViewerForm rawsViewerForm = new RawsViewerForm(rawsFiles, OutputLocationTextBox.Text + "\\" + GetOutputFilename());
+			using RawsViewerForm rawsViewerForm = new RawsViewerForm(rawsFiles, OutputLocationTextBox.Text + "\\" + GetOutputFilename(), Config.ShouldOutputAsTypesetterCompliant);
 
 			if ( !rawsViewerForm.IsDisposed )
 			{
@@ -584,6 +585,11 @@ namespace TranslationScriptMaker
 		#endregion
 
 		#endregion
+
+		private void OutputAsTypesettererCheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			Config.ShouldOutputAsTypesetterCompliant = OutputAsTypesettererCheckBox.Checked;
+		}
 	}
 
 	internal static class DirectoryOrderer

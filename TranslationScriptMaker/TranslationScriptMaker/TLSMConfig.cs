@@ -110,6 +110,19 @@ namespace TranslationScriptMaker
 				SaveConfig();
 			}
 		}
+
+		private bool _shouldOutputAsTypesetterCompliant;
+
+		public bool ShouldOutputAsTypesetterCompliant
+		{
+			get => _shouldOutputAsTypesetterCompliant;
+			set
+			{
+				_shouldOutputAsTypesetterCompliant = value;
+				SaveConfig();
+			}
+		}
+
 		#endregion
 	}
 

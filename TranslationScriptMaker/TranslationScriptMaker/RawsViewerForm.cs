@@ -56,6 +56,7 @@ namespace TranslationScriptMaker
 
 		private List<FileInfo> RawsFiles { get; }
 		private string OutputLocationFullPath { get; }
+		private bool ShouldOutputAsTypesettererCompliant { get; }
 		private bool IsCreatingScript { get; }
 		private int CurrentPageIndex { get; set; }
 		private int PreviousPageIndex { get; set; }
@@ -88,7 +89,7 @@ namespace TranslationScriptMaker
 			}
 		}
 
-		public RawsViewerForm(List<FileInfo> rawsFiles, string outputLocationFullPath)
+		public RawsViewerForm(List<FileInfo> rawsFiles, string outputLocationFullPath, bool shouldOutputAsTypesettererCompliant)
 		{
 			InitializeComponent();
 
@@ -97,7 +98,8 @@ namespace TranslationScriptMaker
 
 			OutputLocationFullPath = outputLocationFullPath;
 			RawsFiles = rawsFiles;
-			IsCreatingScript = !File.Exists(outputLocationFullPath);
+			ShouldOutputAsTypesettererCompliant = shouldOutputAsTypesettererCompliant;
+			IsCreatingScript = !File.Exists(OutputLocationFullPath);
 			PreviousPageIndex = 0;
 			CurrentPageIndex = 0;
 			AreThereUnsavedChanges = false;
@@ -625,8 +627,13 @@ namespace TranslationScriptMaker
 		private void OutputScript(string fileContents, bool shouldClose)
 		{
 			string outputFilepath = OutputLocationFullPath;
-
 			File.WriteAllLines(outputFilepath, fileContents.Split('\n'), System.Text.Encoding.UTF8);
+
+			if ( ShouldOutputAsTypesettererCompliant )
+			{
+				ConvertFileContentsToTypesettererCompliant(ref fileContents);
+				File.WriteAllLines(outputFilepath.Insert(outputFilepath.Length - 4, " TSerScript"), fileContents.Split('\n'), System.Text.Encoding.UTF8);
+			}
 
 			if ( shouldClose )
 			{
@@ -635,6 +642,50 @@ namespace TranslationScriptMaker
 
 				Close();
 			}
+		}
+
+		private static void ConvertFileContentsToTypesettererCompliant(ref string fileContents)
+		{
+			const string PAGE_HEADER_BEGIN_SHORT = "----------# ";
+			fileContents += '\n';
+			RemoveScriptElement(ref fileContents, PAGE_HEADER_BEGIN_SHORT);
+			RemoveScriptElement(ref fileContents, PAGE_HEADER_END);
+			RemoveEntireLineContaining(ref fileContents, PAGE_FOOTER);
+			RemoveEntireLineContaining(ref fileContents, PANEL_HEADER_BEGIN);
+			RemoveEntireLineContaining(ref fileContents, PANEL_FOOTER);
+			RemoveEntireLineContaining(ref fileContents, "[SFX]{");
+			RemoveEntireLineContaining(ref fileContents, "}");
+			RemoveEntireLineContaining(ref fileContents, "\n\n");
+		}
+
+		private static void RemoveScriptElement(ref string fileContents, string elementToRemove)
+		{
+			int startIndexToRemove;
+
+			do
+			{
+				startIndexToRemove = fileContents.IndexOf(elementToRemove, StringComparison.Ordinal);
+
+				if ( startIndexToRemove >= 0 )
+				{
+					fileContents = fileContents.Remove(startIndexToRemove, elementToRemove.Length);
+				}
+			} while ( startIndexToRemove >= 0 );
+		}
+
+		private static void RemoveEntireLineContaining(ref string fileContents, string elementToFind)
+		{
+			int startIndexToRemove;
+
+			do
+			{
+				startIndexToRemove = fileContents.IndexOf(elementToFind, StringComparison.Ordinal);
+
+				if ( startIndexToRemove >= 0 )
+				{
+					fileContents = fileContents.Remove(startIndexToRemove, fileContents.IndexOf('\n', startIndexToRemove + 1) - startIndexToRemove);
+				}
+			} while ( startIndexToRemove >= 0 );
 		}
 
 		private void TotalPanelsTextBox_KeyPress(object sender, KeyPressEventArgs e)
