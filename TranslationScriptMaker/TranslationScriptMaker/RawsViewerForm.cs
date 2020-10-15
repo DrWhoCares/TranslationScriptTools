@@ -44,6 +44,8 @@ namespace TranslationScriptMaker
 			"----------##########----------}"
 		};
 
+		private ScintillaSpellCheck.ScintillaSpellCheck SpellCheck;
+
 		private class PageInformation
 		{
 			public bool isSpread { get; set; }
@@ -129,6 +131,7 @@ namespace TranslationScriptMaker
 		private void RawsViewerForm_Load(object sender, EventArgs e)
 		{
 			InitializeScintillaStyles();
+			InitializeScintillaSpellCheck();
 			IsChangingPage = true;
 			DisplaySFXGroupBoxes(PageInformations.ElementAt(CurrentPageIndex).totalPanels);
 			LoadPageInformation();
@@ -226,6 +229,16 @@ namespace TranslationScriptMaker
 			STTB.Styles[TLSLexer.STYLE_SUBSECTION].Bold = true;
 		}
 
+		private void InitializeScintillaSpellCheck()
+		{
+			SpellCheck = new ScintillaSpellCheck.ScintillaSpellCheck(STTB, "./en_US.dic", "./en_US.aff", "./userdict.txt", "./userdict_ignorelist.txt")
+			{
+				OnlyWordCharacters = true
+			};
+
+			SpellCheck.SpellCheckScintillaFast();
+		}
+		
 		private bool InitializePageInformations()
 		{
 			for ( int pageIndex = 0; pageIndex < RawsFiles.Count; ++pageIndex )
@@ -1254,6 +1267,8 @@ namespace TranslationScriptMaker
 
 		private void STTB_TextChanged(object sender, EventArgs e)
 		{
+			SpellCheck.SpellCheckScintillaFast();
+
 			if ( CurrentPageIndex >= PageInformations.Count )
 			{
 				return;
@@ -1295,6 +1310,13 @@ namespace TranslationScriptMaker
 			{
 			}
 
+			protected override void OnRenderSeparator(ToolStripSeparatorRenderEventArgs e)
+			{
+				Rectangle rect = new Rectangle(Point.Empty, e.Item.Size);
+				using SolidBrush brush = new SolidBrush(Color.Black);
+				e.Graphics.FillRectangle(brush, rect);
+			}
+
 			protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
 			{
 				Rectangle rect = new Rectangle(Point.Empty, e.Item.Size);
@@ -1307,8 +1329,57 @@ namespace TranslationScriptMaker
 
 		private class DarkContextMenuColors : ProfessionalColorTable
 		{
+			//public override Color ButtonCheckedGradientBegin => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ButtonCheckedGradientEnd => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ButtonCheckedGradientMiddle => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ButtonCheckedHighlight => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ButtonCheckedHighlightBorder => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ButtonPressedBorder => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ButtonPressedGradientBegin => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ButtonPressedGradientEnd => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ButtonPressedGradientMiddle => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ButtonPressedHighlight => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ButtonPressedHighlightBorder => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ButtonSelectedGradientBegin => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ButtonSelectedGradientEnd => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ButtonSelectedGradientMiddle => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ButtonSelectedHighlight => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ButtonSelectedHighlightBorder => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color CheckBackground => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color CheckPressedBackground => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color CheckSelectedBackground => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color GripDark => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color GripLight => COLOR_CURRENT_LINE_BACKGROUND;
+			public override Color ImageMarginGradientBegin => Color.Black;
+			public override Color ImageMarginGradientEnd => Color.Black;
+			public override Color ImageMarginGradientMiddle => Color.Black;
 			public override Color MenuBorder => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color MenuItemPressedGradientBegin => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color MenuItemPressedGradientEnd => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color MenuItemPressedGradientMiddle => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color MenuItemSelected => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color MenuItemSelectedGradientBegin => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color MenuItemSelectedGradientEnd => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color MenuStripGradientBegin => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color MenuStripGradientEnd => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color OverflowButtonGradientBegin => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color OverflowButtonGradientEnd => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color OverflowButtonGradientMiddle => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color RaftingContainerGradientBegin => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color RaftingContainerGradientEnd => COLOR_CURRENT_LINE_BACKGROUND;
+			public override Color SeparatorDark => Color.Black;
+			public override Color SeparatorLight => Color.Black;
+			//public override Color StatusStripGradientBegin => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color StatusStripGradientEnd => COLOR_CURRENT_LINE_BACKGROUND;
+			public override Color ToolStripBorder => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ToolStripContentPanelGradientBegin => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ToolStripContentPanelGradientEnd => COLOR_CURRENT_LINE_BACKGROUND;
 			public override Color ToolStripDropDownBackground => COLOR_BACKGROUND;
+			//public override Color ToolStripGradientBegin => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ToolStripGradientEnd => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ToolStripGradientMiddle => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ToolStripPanelGradientBegin => COLOR_CURRENT_LINE_BACKGROUND;
+			//public override Color ToolStripPanelGradientEnd => COLOR_CURRENT_LINE_BACKGROUND;
 		}
 
 	}

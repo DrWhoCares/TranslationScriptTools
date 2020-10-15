@@ -54,12 +54,13 @@
     <ApplicationIcon>TLSM.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ScintillaSpellCheck">
+      <HintPath>libs\ScintillaSpellCheck.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
@@ -127,6 +128,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="libs\ScintillaSpellCheck.dll" />
     <Content Include="TLSM.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -141,6 +143,9 @@
     </PackageReference>
     <PackageReference Include="Onova">
       <Version>2.6.2</Version>
+    </PackageReference>
+    <PackageReference Include="WeCantSpell.Hunspell">
+      <Version>3.0.1</Version>
     </PackageReference>
     <PackageReference Include="WindowsAPICodePack-Core">
       <Version>1.1.2</Version>
