@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Linq;
 using System.Drawing;
+using System.Text.RegularExpressions;
 using ScintillaNET;
 
 namespace TranslationScriptMaker
@@ -20,6 +21,7 @@ namespace TranslationScriptMaker
 		private const string PANEL_FOOTER = "\n---#####---}\n";
 		private const string PAGE_FOOTER = "\n----------##########----------}\n\n";
 
+		private static readonly Regex BUBBLE_REGEX = new Regex(@"\[B[0-9]+\]", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 		private static readonly Color COLOR_BACKGROUND = Color.FromArgb(30, 30, 30);
 		private static readonly Color COLOR_FOREGROUND = Color.FromArgb(216, 216, 216);
 		private static readonly Color COLOR_SELECTION = Color.FromArgb(38, 79, 120);
@@ -1023,24 +1025,60 @@ namespace TranslationScriptMaker
 
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
-			if ( keyData == (Keys.Control | Keys.S) )
+			switch ( keyData )
 			{
-				SaveCurrentScript(false);
-				return true;
+				case Keys.Control | Keys.S:
+					SaveCurrentScript(false);
+					return true;
+				case Keys.Control | Keys.B:
+					return ProcessAddBubbleKey();
 			}
 
 			bool shouldChangePage = FindFocusedControl(ActiveControl) != STTB;
 
-			if ( keyData == Keys.Left && shouldChangePage )
+			switch ( keyData )
 			{
-				SwitchToPreviousPage();
-			}
-			else if ( keyData == Keys.Right && shouldChangePage )
-			{
-				SwitchToNextPage();
+				case Keys.Left when shouldChangePage:
+					SwitchToPreviousPage();
+					break;
+				case Keys.Right when shouldChangePage:
+					SwitchToNextPage();
+					break;
 			}
 
 			return base.ProcessCmdKey(ref msg, keyData);
+		}
+
+		private bool ProcessAddBubbleKey()
+		{
+			ValidateSelectionIsNotSyntax();
+
+			if ( STTB.ReadOnly )
+			{
+				return false;
+			}
+
+			AddBubbleSyntaxToPanel();
+			return true;
+		}
+
+		private void AddBubbleSyntaxToPanel()
+		{
+			string bubbleText = "[B";
+
+			int indexOfPanelBefore = 0;
+			int indexOfPanelAfter;
+
+			do
+			{
+				indexOfPanelBefore = STTB.Text.IndexOf(PANEL_HEADER_BEGIN, indexOfPanelBefore + 1, StringComparison.Ordinal);
+				indexOfPanelAfter = STTB.Text.IndexOf(PANEL_HEADER_BEGIN, indexOfPanelBefore + 1, StringComparison.Ordinal);
+			} while ( indexOfPanelAfter < STTB.SelectionStart && indexOfPanelAfter != -1 );
+
+			bubbleText += 1 + BUBBLE_REGEX.Matches(STTB.GetTextRange(indexOfPanelBefore, STTB.Text.IndexOf(PANEL_FOOTER, indexOfPanelBefore, StringComparison.Ordinal))).Count;
+			bubbleText += "] ";
+			STTB.InsertText(STTB.SelectionStart, bubbleText);
+			STTB.SelectionStart += bubbleText.Length;
 		}
 
 		private static Control FindFocusedControl(Control control)
@@ -1212,7 +1250,7 @@ namespace TranslationScriptMaker
 
 		private void BubbleToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			STTB.InsertText(STTB.SelectionStart, "[B1]\n");
+			AddBubbleSyntaxToPanel();
 		}
 
 		private void TranslatorToReaderToolStripMenuItem_Click(object sender, EventArgs e)
