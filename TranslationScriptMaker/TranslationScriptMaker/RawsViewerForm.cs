@@ -233,12 +233,19 @@ namespace TranslationScriptMaker
 
 		private void InitializeScintillaSpellCheck()
 		{
-			SpellCheck = new ScintillaSpellCheck.ScintillaSpellCheck(STTB, "./en_US.dic", "./en_US.aff", "./userdict.txt", "./userdict_ignorelist.txt")
+			try
 			{
-				OnlyWordCharacters = true
-			};
+				SpellCheck = new ScintillaSpellCheck.ScintillaSpellCheck(STTB, "./en_US.dic", "./en_US.aff", "./userdict.txt", "./userdict_ignorelist.txt")
+				{
+					OnlyWordCharacters = true
+				};
+			}
+			catch ( FileNotFoundException )
+			{
+				return;
+			}
 
-			SpellCheck.SpellCheckScintillaFast();
+			SpellCheck?.SpellCheckScintillaFast();
 		}
 		
 		private bool InitializePageInformations()
@@ -1305,7 +1312,7 @@ namespace TranslationScriptMaker
 
 		private void STTB_TextChanged(object sender, EventArgs e)
 		{
-			SpellCheck.SpellCheckScintillaFast();
+			SpellCheck?.SpellCheckScintillaFast();
 
 			if ( CurrentPageIndex >= PageInformations.Count )
 			{
