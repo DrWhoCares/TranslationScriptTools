@@ -14,7 +14,7 @@ namespace TranslationScriptMaker
 	{
 		#region Regex Constants
 		private static readonly Regex VOLUME_REGEX = new Regex(@"Vol(ume)?.? *([0-9]+$)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
-		private static readonly Regex CHAPTER_REGEX = new Regex(@"(Chapter)?.? *([0-9]+([.,][0-9]+)?$)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex CHAPTER_REGEX = new Regex(@"(Ch(apter)?.*([0-9]+([.,][0-9]+)?$){1})|(^([0-9]+([.,][0-9]+)?$){1})", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 		private static readonly Regex RAWS_REGEX = new Regex(@"Raw(s)?", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 		private static readonly Regex IMAGE_REGEX = new Regex(@".*\.(png|jpg|jpeg)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 		#endregion
@@ -210,14 +210,14 @@ namespace TranslationScriptMaker
 		{
 			return new DirectoryInfo(seriesDirectoryPath)
 				.GetDirectories("*", SearchOption.TopDirectoryOnly)
-				.Any(subdirectory => CHAPTER_REGEX.IsMatch(subdirectory.Name) || IsSeriesSubdirectoryAVolume(subdirectory));
+				.Any(subdirectory => CHAPTER_REGEX.IsMatch(subdirectory.Name) || IsDirectoryAVolume(subdirectory));
 		}
 
-		private static bool IsSeriesSubdirectoryAVolume(DirectoryInfo subdirectoryInfo)
+		private static bool IsDirectoryAVolume(DirectoryInfo directoryInfo)
 		{
-			return VOLUME_REGEX.IsMatch(subdirectoryInfo.Name) && subdirectoryInfo
+			return VOLUME_REGEX.IsMatch(directoryInfo.Name) && directoryInfo
 				.GetDirectories("*", SearchOption.TopDirectoryOnly)
-				.Any(subsubDirectory => CHAPTER_REGEX.IsMatch(subsubDirectory.Name));
+				.Any(subDirectory => CHAPTER_REGEX.IsMatch(subDirectory.Name));
 		}
 
 		private void ParseSeriesDirectoryForChapters(string seriesDirectoryPath)
@@ -235,7 +235,7 @@ namespace TranslationScriptMaker
 
 			foreach ( DirectoryInfo chapterDirInfo in chapterDirectories.OrderByAlphaNumeric(DirectoryOrderer.GetDirectoryName) )
 			{
-				if ( !DoesChapterDirectoryContainRaws(chapterDirInfo.FullName) && !DoesChapterDirectoryContainRawsFolder(chapterDirInfo.FullName) )
+				if ( IsDirectoryAVolume(chapterDirInfo) || (!DoesChapterDirectoryContainRaws(chapterDirInfo.FullName) && !DoesChapterDirectoryContainRawsFolder(chapterDirInfo.FullName)) )
 				{
 					continue;
 				}
@@ -246,7 +246,7 @@ namespace TranslationScriptMaker
 				}
 				else
 				{
-					if ( chapterDirInfo.Parent != null )
+					if ( chapterDirInfo.Parent != null && IsDirectoryAVolume(chapterDirInfo.Parent) )
 					{
 						ChapterSelectionComboBox.Items.Add(chapterDirInfo.Parent.Name + "\\" + chapterDirInfo.Name);
 					}
