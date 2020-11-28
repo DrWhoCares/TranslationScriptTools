@@ -69,8 +69,8 @@ The Series Selection ComboBox will automatically parse the folders within the [R
   * e.g., "Volume 12", "Vol12", "Volume_12", etc.
   * If a Volume Folder is included, the valid Chapter Folders must be within them.
 * A Title Folder must contain one or more valid Chapter Folders which have the following requirements:
-  * Chapter folders must match the following Regex Expression: `Ch(apter)?.? *([0-9]+([.,][0-9]+)?$)`.
-    * e.g., "Chapter 1", "Ch 1", "Ch_1.5", etc.
+  * Chapter folders must match the following Regex Expression: `(Ch(apter)?.*([0-9]+([.,][0-9]+)?$){1})|(^([0-9]+([.,][0-9]+)?$){1})`.
+    * e.g., "Chapter 1", "Ch 1", "Ch_1.5", "3", "16.5" etc.
   * Chapter folders must either contain a folder for raws, or contain the raws themselves.
     * Raws must be in one of the following formats: `png, jpg, jpeg`.
     * A folder containing raws must match the following Regex Expression: `Raw(s)?`.
