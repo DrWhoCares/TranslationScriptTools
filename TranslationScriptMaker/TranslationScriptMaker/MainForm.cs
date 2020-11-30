@@ -14,7 +14,7 @@ namespace TranslationScriptMaker
 	{
 		#region Regex Constants
 		private static readonly Regex VOLUME_REGEX = new Regex(@"Vol(ume)?.? *([0-9]+$)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
-		private static readonly Regex CHAPTER_REGEX = new Regex(@"(Ch(apter)?.*([0-9]+([.,][0-9]+)?$){1})|(^([0-9]+([.,][0-9]+)?$){1})", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex CHAPTER_REGEX = new Regex(@"(Ch(apter)?.? *([0-9]+([.,][0-9]+)?$){1})|(^([0-9]+([.,][0-9]+)?$){1})", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 		private static readonly Regex RAWS_REGEX = new Regex(@"Raw(s)?", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 		private static readonly Regex IMAGE_REGEX = new Regex(@".*\.(png|jpg|jpeg)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 		#endregion
@@ -572,7 +572,8 @@ namespace TranslationScriptMaker
 
 		private string GetChapterNumber()
 		{
-			return CHAPTER_REGEX.Match(ChapterSelectionComboBox.SelectedItem.ToString()).Groups[2].Value;
+			Match result = CHAPTER_REGEX.Match(ChapterSelectionComboBox.SelectedItem.ToString());
+			return string.IsNullOrWhiteSpace(result.Groups[5].Value) ? result.Groups[3].Value : result.Groups[5].Value;
 		}
 
 		private static void ForceGarbageCollection()
