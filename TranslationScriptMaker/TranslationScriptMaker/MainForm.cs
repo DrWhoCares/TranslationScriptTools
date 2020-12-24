@@ -139,7 +139,7 @@ namespace TranslationScriptMaker
 
 				if ( SeriesSelectionComboBox.SelectedItem != null )
 				{
-					ParseSeriesDirectoryForChapters(RawsLocationTextBox.Text + "\\" + SeriesSelectionComboBox.SelectedItem);
+					ParseSeriesDirectoryForChapters(RawsLocationTextBox.Text + "/" + SeriesSelectionComboBox.SelectedItem);
 
 					if ( !string.IsNullOrWhiteSpace(Config.LastSelectedChapter) )
 					{
@@ -248,7 +248,7 @@ namespace TranslationScriptMaker
 				{
 					if ( chapterDirInfo.Parent != null && IsDirectoryAVolume(chapterDirInfo.Parent) )
 					{
-						ChapterSelectionComboBox.Items.Add(chapterDirInfo.Parent.Name + "\\" + chapterDirInfo.Name);
+						ChapterSelectionComboBox.Items.Add(chapterDirInfo.Parent.Name + "/" + chapterDirInfo.Name);
 					}
 				}
 			}
@@ -285,11 +285,11 @@ namespace TranslationScriptMaker
 				return;
 			}
 
-			string selectedSeriesPath = RawsLocationTextBox.Text + "\\" + SeriesSelectionComboBox.SelectedItem + "\\";
+			string selectedSeriesPath = RawsLocationTextBox.Text + "/" + SeriesSelectionComboBox.SelectedItem + "/";
 			string selectedChapter = ChapterSelectionComboBox.SelectedItem.ToString();
 			string rawsSuffix = "";
 
-			string outputLocationFullPath = selectedSeriesPath + selectedChapter + "\\";
+			string outputLocationFullPath = selectedSeriesPath + selectedChapter + "/";
 
 			if ( Config.ScriptOutputToChoice == OutputToChoice.WithRaws && DoesChapterDirectoryContainRawsFolder(outputLocationFullPath) )
 			{
@@ -391,7 +391,7 @@ namespace TranslationScriptMaker
 
 			if ( !string.IsNullOrWhiteSpace(RawsLocationTextBox.Text) )
 			{
-				ParseSeriesDirectoryForChapters(RawsLocationTextBox.Text + "\\" + SeriesSelectionComboBox.SelectedItem);
+				ParseSeriesDirectoryForChapters(RawsLocationTextBox.Text + "/" + SeriesSelectionComboBox.SelectedItem);
 				UpdateOutputLocation();
 			}
 		}
@@ -517,7 +517,7 @@ namespace TranslationScriptMaker
 				return;
 			}
 
-			using RawsViewerForm rawsViewerForm = new(rawsFiles, OutputLocationTextBox.Text + "\\" + GetOutputFilename(), Config.ShouldOutputAsTypesetterCompliant);
+			using RawsViewerForm rawsViewerForm = new(rawsFiles, OutputLocationTextBox.Text + GetOutputFilename(), Config.ShouldOutputAsTypesetterCompliant);
 
 			if ( !rawsViewerForm.IsDisposed )
 			{
@@ -547,7 +547,7 @@ namespace TranslationScriptMaker
 
 		private string GetRawsFilesFullPath()
 		{
-			string rawsFilesFullPath = RawsLocationTextBox.Text + "\\" + SeriesSelectionComboBox.SelectedItem + "\\" + ChapterSelectionComboBox.SelectedItem + "\\";
+			string rawsFilesFullPath = RawsLocationTextBox.Text + "/" + SeriesSelectionComboBox.SelectedItem + "/" + ChapterSelectionComboBox.SelectedItem + "/";
 			return rawsFilesFullPath + GetRawsFolderName(rawsFilesFullPath);
 		}
 
