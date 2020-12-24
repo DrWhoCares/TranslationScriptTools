@@ -21,7 +21,7 @@ namespace TranslationScriptMaker
 		private const string PANEL_FOOTER = "\n---#####---}\n";
 		private const string PAGE_FOOTER = "\n----------##########----------}\n\n";
 
-		private static readonly Regex BUBBLE_REGEX = new Regex(@"\[B[0-9]+\]", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex BUBBLE_REGEX = new(@"\[B[0-9]+\]", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 		private static readonly Color COLOR_BACKGROUND = Color.FromArgb(30, 30, 30);
 		private static readonly Color COLOR_FOREGROUND = Color.FromArgb(216, 216, 216);
 		private static readonly Color COLOR_SELECTION = Color.FromArgb(38, 79, 120);
@@ -1128,7 +1128,7 @@ namespace TranslationScriptMaker
 
 			ComboBox comboBox = sender as ComboBox;
 
-			using SolidBrush brush = new SolidBrush(e.ForeColor);
+			using SolidBrush brush = new(e.ForeColor);
 			Font font = e.Font;
 
 			if ( comboBox != null && comboBox.Items[e.Index].ToString().Last() == '*' )
@@ -1201,9 +1201,9 @@ namespace TranslationScriptMaker
 
 			using Brush textBrush = new SolidBrush(COLOR_FOREGROUND);
 			using Brush borderBrush = new SolidBrush(Color.DimGray);
-			using Pen borderPen = new Pen(borderBrush);
+			using Pen borderPen = new(borderBrush);
 			SizeF strSize = e.Graphics.MeasureString(groupBox.Text, groupBox.Font);
-			Rectangle rect = new Rectangle(groupBox.ClientRectangle.X,
+			Rectangle rect = new(groupBox.ClientRectangle.X,
 				groupBox.ClientRectangle.Y + (int)(strSize.Height / 2),
 				groupBox.ClientRectangle.Width - 1,
 				groupBox.ClientRectangle.Height - (int)(strSize.Height / 2) - 1);
@@ -1357,17 +1357,17 @@ namespace TranslationScriptMaker
 
 			protected override void OnRenderSeparator(ToolStripSeparatorRenderEventArgs e)
 			{
-				Rectangle rect = new Rectangle(Point.Empty, e.Item.Size);
-				using SolidBrush brush = new SolidBrush(Color.Black);
+				Rectangle rect = new(Point.Empty, e.Item.Size);
+				using SolidBrush brush = new(Color.Black);
 				e.Graphics.FillRectangle(brush, rect);
 			}
 
 			protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
 			{
-				Rectangle rect = new Rectangle(Point.Empty, e.Item.Size);
+				Rectangle rect = new(Point.Empty, e.Item.Size);
 				Color color = e.Item.Selected ? COLOR_CURRENT_LINE_BACKGROUND : COLOR_BACKGROUND;
 
-				using SolidBrush brush = new SolidBrush(color);
+				using SolidBrush brush = new(color);
 				e.Graphics.FillRectangle(brush, rect);
 			}
 		}
@@ -1438,7 +1438,7 @@ namespace TranslationScriptMaker
 				yield break;
 			}
 
-			using StringReader reader = new StringReader(input);
+			using StringReader reader = new(input);
 			string line;
 
 			while ( (line = reader.ReadLine()) != null )

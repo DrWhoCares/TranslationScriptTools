@@ -13,10 +13,10 @@ namespace TranslationScriptMaker
 	public partial class MainForm : Form
 	{
 		#region Regex Constants
-		private static readonly Regex VOLUME_REGEX = new Regex(@"Vol(ume)?.? *([0-9]+$)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
-		private static readonly Regex CHAPTER_REGEX = new Regex(@"(Ch(apter)?.? *([0-9]+([.,][0-9]+)?$){1})|(^([0-9]+([.,][0-9]+)?$){1})", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
-		private static readonly Regex RAWS_REGEX = new Regex(@"Raw(s)?", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
-		private static readonly Regex IMAGE_REGEX = new Regex(@".*\.(png|jpg|jpeg)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex VOLUME_REGEX = new(@"Vol(ume)?.? *([0-9]+$)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex CHAPTER_REGEX = new(@"(Ch(apter)?.? *([0-9]+([.,][0-9]+)?$){1})|(^([0-9]+([.,][0-9]+)?$){1})", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex RAWS_REGEX = new(@"Raw(s)?", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex IMAGE_REGEX = new(@".*\.(png|jpg|jpeg)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 		#endregion
 
 		#region Member Variables
@@ -45,7 +45,7 @@ namespace TranslationScriptMaker
 		#region Initialization
 		private static async void CheckForProgramUpdates()
 		{
-			using UpdateManager updateManager = new UpdateManager(
+			using UpdateManager updateManager = new(
 				new GithubPackageResolver("DrWhoCares", "TranslationScriptTools", "TranslationScriptTools_*.zip"),
 				new ZipPackageExtractor()
 			);
@@ -230,7 +230,7 @@ namespace TranslationScriptMaker
 			ChapterSelectionComboBox.Items.Clear();
 			ChapterSelectionComboBox.DropDownHeight = 106;
 
-			DirectoryInfo seriesDirectoryInfo = new DirectoryInfo(seriesDirectoryPath);
+			DirectoryInfo seriesDirectoryInfo = new(seriesDirectoryPath);
 			IEnumerable<DirectoryInfo> chapterDirectories = seriesDirectoryInfo.GetDirectories("*", SearchOption.AllDirectories).Where((directory) => CHAPTER_REGEX.IsMatch(directory.Name));
 
 			foreach ( DirectoryInfo chapterDirInfo in chapterDirectories.OrderByAlphaNumeric(DirectoryOrderer.GetDirectoryName) )
@@ -314,7 +314,7 @@ namespace TranslationScriptMaker
 		#region RawsLocationTextBox
 		private void RawsLocationButton_MouseClick(object sender, MouseEventArgs e)
 		{
-			using CommonOpenFileDialog rawsLocationDialog = new CommonOpenFileDialog
+			using CommonOpenFileDialog rawsLocationDialog = new()
 			{
 				IsFolderPicker = true
 			};
@@ -338,7 +338,7 @@ namespace TranslationScriptMaker
 		#region OutputLocationTextBox
 		private void OutputLocationButton_MouseClick(object sender, MouseEventArgs e)
 		{
-			using CommonOpenFileDialog outputLocationDialog = new CommonOpenFileDialog
+			using CommonOpenFileDialog outputLocationDialog = new()
 			{
 				IsFolderPicker = true
 			};
@@ -517,7 +517,7 @@ namespace TranslationScriptMaker
 				return;
 			}
 
-			using RawsViewerForm rawsViewerForm = new RawsViewerForm(rawsFiles, OutputLocationTextBox.Text + "\\" + GetOutputFilename(), Config.ShouldOutputAsTypesetterCompliant);
+			using RawsViewerForm rawsViewerForm = new(rawsFiles, OutputLocationTextBox.Text + "\\" + GetOutputFilename(), Config.ShouldOutputAsTypesetterCompliant);
 
 			if ( !rawsViewerForm.IsDisposed )
 			{

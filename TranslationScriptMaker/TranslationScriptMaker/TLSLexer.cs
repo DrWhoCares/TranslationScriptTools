@@ -17,12 +17,12 @@ namespace TranslationScriptMaker
 		internal const int STYLE_TL_NOTE = 7;
 		internal const int STYLE_SUBSECTION = 8;
 
-		private static readonly Regex HeaderRegex = new Regex(@"(-+# )(Page |Panel )([0-9]+?)(( - )([0-9]+?))?( #-+)({)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
-		private static readonly Regex FooterRegex = new Regex(@"(-+#+-+)(})", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
-		private static readonly Regex ImportantInfoRegex = new Regex(@"`(.*?)`", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
-		private static readonly Regex NoteRegex = new Regex(@"\([A-Z]+/[A-Z]+:(.*?)\)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
-		private static readonly Regex TLNoteRegex = new Regex(@"\[[A-Z]/N\]:", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
-		private static readonly Regex SubsectionRegex = new Regex(@"(\[(.*?)\])({)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex HeaderRegex = new(@"(-+# )(Page |Panel )([0-9]+?)(( - )([0-9]+?))?( #-+)({)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex FooterRegex = new(@"(-+#+-+)(})", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex ImportantInfoRegex = new(@"`(.*?)`", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex NoteRegex = new(@"\([A-Z]+/[A-Z]+:(.*?)\)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex TLNoteRegex = new(@"\[[A-Z]/N\]:", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		private static readonly Regex SubsectionRegex = new(@"(\[(.*?)\])({)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
 		private struct StyleMatch
 		{
@@ -102,10 +102,10 @@ namespace TranslationScriptMaker
 
 				List<StyleMatchCollection> regexMatches = new List<StyleMatchCollection>
 				{
-					new StyleMatchCollection { style = STYLE_IMPORTANT, matches = ImportantInfoRegex.Matches(currentLine.Text) },
-					new StyleMatchCollection { style = STYLE_NOTE, matches = NoteRegex.Matches(currentLine.Text) },
-					new StyleMatchCollection { style = STYLE_TL_NOTE, matches = TLNoteRegex.Matches(currentLine.Text) },
-					new StyleMatchCollection { style = STYLE_SUBSECTION, matches = SubsectionRegex.Matches(currentLine.Text) }
+					new() { style = STYLE_IMPORTANT, matches = ImportantInfoRegex.Matches(currentLine.Text) },
+					new() { style = STYLE_NOTE, matches = NoteRegex.Matches(currentLine.Text) },
+					new() { style = STYLE_TL_NOTE, matches = TLNoteRegex.Matches(currentLine.Text) },
+					new() { style = STYLE_SUBSECTION, matches = SubsectionRegex.Matches(currentLine.Text) }
 				};
 
 				regexMatches.RemoveAll(RemoveAllZeroMatches);
