@@ -49,6 +49,7 @@ namespace TranslationScriptMaker
 			this.RawsLocationButton = new System.Windows.Forms.Button();
 			this.TranslatorNameLabel = new System.Windows.Forms.Label();
 			this.OutputAsTypesettererCheckBox = new System.Windows.Forms.CheckBox();
+			this.OpenChapterFolderButton = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.MainFormErrorProvider)).BeginInit();
 			this.OutputToGroupBox.SuspendLayout();
 			this.SuspendLayout();
@@ -270,12 +271,26 @@ namespace TranslationScriptMaker
 			this.OutputAsTypesettererCheckBox.UseVisualStyleBackColor = true;
 			this.OutputAsTypesettererCheckBox.CheckedChanged += new System.EventHandler(this.OutputAsTypesettererCheckBox_CheckedChanged);
 			// 
+			// OpenChapterFolderButton
+			// 
+			this.OpenChapterFolderButton.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.OpenChapterFolderButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+			this.OpenChapterFolderButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+			this.OpenChapterFolderButton.Location = new System.Drawing.Point(464, 185);
+			this.OpenChapterFolderButton.Name = "OpenChapterFolderButton";
+			this.OpenChapterFolderButton.Size = new System.Drawing.Size(113, 23);
+			this.OpenChapterFolderButton.TabIndex = 20;
+			this.OpenChapterFolderButton.Text = "Open Chapter Folder";
+			this.OpenChapterFolderButton.UseVisualStyleBackColor = false;
+			this.OpenChapterFolderButton.Click += new System.EventHandler(this.OpenChapterFolderButton_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
 			this.ClientSize = new System.Drawing.Size(601, 219);
+			this.Controls.Add(this.OpenChapterFolderButton);
 			this.Controls.Add(this.OutputAsTypesettererCheckBox);
 			this.Controls.Add(this.ChapterSelectionComboBox);
 			this.Controls.Add(this.RawsLocationTextBox);
@@ -326,6 +341,7 @@ namespace TranslationScriptMaker
 		private System.Windows.Forms.RadioButton OutputWithRawsRadioButton;
 		private System.Windows.Forms.RadioButton OutputToCustomLocationRadioButton;
 		private System.Windows.Forms.CheckBox OutputAsTypesettererCheckBox;
+		private System.Windows.Forms.Button OpenChapterFolderButton;
 	}
 }
 

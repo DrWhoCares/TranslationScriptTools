@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Onova;
 using Onova.Services;
@@ -12,6 +14,8 @@ namespace TranslationScriptMaker
 {
 	public partial class MainForm : Form
 	{
+		private static readonly bool IS_LINUX = RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+
 		#region Regex Constants
 		private static readonly Regex VOLUME_REGEX = new(@"Vol(ume)?.? *([0-9]+$)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 		private static readonly Regex CHAPTER_REGEX = new(@"(Ch(apter)?.? *([0-9]+([.,][0-9]+)?$){1})|(^([0-9]+([.,][0-9]+)?$){1})", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
@@ -267,7 +271,7 @@ namespace TranslationScriptMaker
 
 		private static bool DoesChapterDirectoryContainRaws(string chapterDirectoryPath)
 		{
-			return new DirectoryInfo(chapterDirectoryPath).GetFiles("*", SearchOption.TopDirectoryOnly).Any(file => IMAGE_REGEX.IsMatch(file.Name));
+			return Directory.Exists(chapterDirectoryPath) && new DirectoryInfo(chapterDirectoryPath).GetFiles("*", SearchOption.TopDirectoryOnly).Any(file => IMAGE_REGEX.IsMatch(file.Name));
 		}
 
 		private static bool DoesChapterDirectoryContainRawsFolder(string chapterDirectoryPath)
@@ -440,6 +444,44 @@ namespace TranslationScriptMaker
 		}
 		#endregion
 
+		#region Miscellanenous UI
+
+		private void OutputAsTypesettererCheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			CONFIG.ShouldOutputAsTypesetterCompliant = OutputAsTypesettererCheckBox.Checked;
+		}
+
+		private void OpenChapterFolderButton_Click(object sender, EventArgs e)
+		{
+			string pathToRaws = GetRawsFilesFullPath();
+
+			if ( !Directory.Exists(pathToRaws) )
+			{
+				return;
+			}
+
+			try
+			{
+				if ( IS_LINUX )
+				{
+					using Process process = Process.Start("xdg-open", pathToRaws);
+				}
+				else
+				{
+					using Process process = Process.Start(pathToRaws);
+				}
+			}
+			catch ( Exception ex )
+			{
+				MessageBox.Show("Unable to open the path to `" + pathToRaws + "`. Exception thrown:\n\n`" + ex.Message + "`",
+					"Cannot open path to raws",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Exclamation);
+			}
+		}
+
+		#endregion
+
 		#region Input Verification
 		private void BeginScriptCreationButton_MouseClick(object sender, MouseEventArgs e)
 		{
@@ -548,6 +590,12 @@ namespace TranslationScriptMaker
 		private string GetRawsFilesFullPath()
 		{
 			string rawsFilesFullPath = RawsLocationTextBox.Text + "/" + SeriesSelectionComboBox.SelectedItem + "/" + ChapterSelectionComboBox.SelectedItem + "/";
+
+			if ( !Directory.Exists(rawsFilesFullPath) )
+			{
+				return "";
+			}
+
 			return rawsFilesFullPath + GetRawsFolderName(rawsFilesFullPath);
 		}
 
@@ -587,10 +635,6 @@ namespace TranslationScriptMaker
 
 		#endregion
 
-		private void OutputAsTypesettererCheckBox_CheckedChanged(object sender, EventArgs e)
-		{
-			CONFIG.ShouldOutputAsTypesetterCompliant = OutputAsTypesettererCheckBox.Checked;
-		}
 	}
 
 	internal static class DirectoryOrderer
