@@ -20,7 +20,7 @@ namespace TranslationScriptMaker
 		#endregion
 
 		#region Member Variables
-		private static readonly TLSMConfig Config = TLSMConfig.LoadConfig();
+		private static readonly TLSMConfig CONFIG = TLSMConfig.LoadConfig();
 
 		private bool WasRawsLocationVerified { get; set; }
 		private bool WasOutputLocationVerified { get; set; }
@@ -83,22 +83,22 @@ namespace TranslationScriptMaker
 
 		private void InitializeWithConfigValues()
 		{
-			if ( !Directory.Exists(Config.RawsLocation) )
+			if ( !Directory.Exists(CONFIG.RawsLocation) )
 			{
-				Config.RawsLocation = "";
+				CONFIG.RawsLocation = "";
 			}
 
-			if ( !Directory.Exists(Config.ScriptOutputLocation) )
+			if ( !Directory.Exists(CONFIG.ScriptOutputLocation) )
 			{
-				Config.ScriptOutputLocation = "";
+				CONFIG.ScriptOutputLocation = "";
 			}
 
-			RawsLocationTextBox.Text = !string.IsNullOrWhiteSpace(Config.RawsLocation) ? Config.RawsLocation : "";
-			OutputLocationTextBox.Text = !string.IsNullOrWhiteSpace(Config.ScriptOutputLocation) ? Config.ScriptOutputLocation : "";
-			TranslatorNameTextBox.Text = !string.IsNullOrWhiteSpace(Config.TranslatorName) ? Config.TranslatorName : "";
-			OutputAsTypesettererCheckBox.Checked = Config.ShouldOutputAsTypesetterCompliant;
+			RawsLocationTextBox.Text = !string.IsNullOrWhiteSpace(CONFIG.RawsLocation) ? CONFIG.RawsLocation : "";
+			OutputLocationTextBox.Text = !string.IsNullOrWhiteSpace(CONFIG.ScriptOutputLocation) ? CONFIG.ScriptOutputLocation : "";
+			TranslatorNameTextBox.Text = !string.IsNullOrWhiteSpace(CONFIG.TranslatorName) ? CONFIG.TranslatorName : "";
+			OutputAsTypesettererCheckBox.Checked = CONFIG.ShouldOutputAsTypesetterCompliant;
 
-			switch ( Config.ScriptOutputToChoice )
+			switch ( CONFIG.ScriptOutputToChoice )
 			{
 				case OutputToChoice.ChapterFolder:
 					OutputToChapterFolderRadioButton.Checked = true;
@@ -111,7 +111,7 @@ namespace TranslationScriptMaker
 					break;
 
 				default:
-					Config.ScriptOutputToChoice = OutputToChoice.ChapterFolder;
+					CONFIG.ScriptOutputToChoice = OutputToChoice.ChapterFolder;
 					OutputToChapterFolderRadioButton.Checked = true;
 					break;
 			}
@@ -123,9 +123,9 @@ namespace TranslationScriptMaker
 			{
 				ParseRawsDirectoryForSeries(RawsLocationTextBox.Text);
 
-				if ( !string.IsNullOrWhiteSpace(Config.LastSelectedSeries) )
+				if ( !string.IsNullOrWhiteSpace(CONFIG.LastSelectedSeries) )
 				{
-					int selectedSeriesIndex = SeriesSelectionComboBox.Items.IndexOf(Config.LastSelectedSeries);
+					int selectedSeriesIndex = SeriesSelectionComboBox.Items.IndexOf(CONFIG.LastSelectedSeries);
 
 					if ( selectedSeriesIndex > -1 )
 					{
@@ -133,7 +133,7 @@ namespace TranslationScriptMaker
 					}
 					else
 					{
-						Config.LastSelectedSeries = ""; // Since it can no longer find the last selected series, reset the setting
+						CONFIG.LastSelectedSeries = ""; // Since it can no longer find the last selected series, reset the setting
 					}
 				}
 
@@ -141,9 +141,9 @@ namespace TranslationScriptMaker
 				{
 					ParseSeriesDirectoryForChapters(RawsLocationTextBox.Text + "/" + SeriesSelectionComboBox.SelectedItem);
 
-					if ( !string.IsNullOrWhiteSpace(Config.LastSelectedChapter) )
+					if ( !string.IsNullOrWhiteSpace(CONFIG.LastSelectedChapter) )
 					{
-						int selectedChapterIndex = ChapterSelectionComboBox.Items.IndexOf(Config.LastSelectedChapter);
+						int selectedChapterIndex = ChapterSelectionComboBox.Items.IndexOf(CONFIG.LastSelectedChapter);
 
 						if ( selectedChapterIndex > -1 )
 						{
@@ -151,7 +151,7 @@ namespace TranslationScriptMaker
 						}
 						else
 						{
-							Config.LastSelectedChapter = ""; // Since it can no longer find the last selected chapter, reset the setting
+							CONFIG.LastSelectedChapter = ""; // Since it can no longer find the last selected chapter, reset the setting
 						}
 					}
 				}
@@ -197,7 +197,7 @@ namespace TranslationScriptMaker
 				WasRawsLocationVerified = true;
 				MainFormErrorProvider.SetError(RawsLocationTextBox, null);
 
-				int selectedSeriesIndex = SeriesSelectionComboBox.Items.IndexOf(Config.LastSelectedSeries);
+				int selectedSeriesIndex = SeriesSelectionComboBox.Items.IndexOf(CONFIG.LastSelectedSeries);
 
 				if ( selectedSeriesIndex > -1 )
 				{
@@ -280,7 +280,7 @@ namespace TranslationScriptMaker
 
 		private void UpdateOutputLocation()
 		{
-			if ( Config.ScriptOutputToChoice == OutputToChoice.CustomLocation || SeriesSelectionComboBox.SelectedItem == null || ChapterSelectionComboBox.SelectedItem == null )
+			if ( CONFIG.ScriptOutputToChoice == OutputToChoice.CustomLocation || SeriesSelectionComboBox.SelectedItem == null || ChapterSelectionComboBox.SelectedItem == null )
 			{
 				return;
 			}
@@ -291,7 +291,7 @@ namespace TranslationScriptMaker
 
 			string outputLocationFullPath = selectedSeriesPath + selectedChapter + "/";
 
-			if ( Config.ScriptOutputToChoice == OutputToChoice.WithRaws && DoesChapterDirectoryContainRawsFolder(outputLocationFullPath) )
+			if ( CONFIG.ScriptOutputToChoice == OutputToChoice.WithRaws && DoesChapterDirectoryContainRawsFolder(outputLocationFullPath) )
 			{
 				var subdirectories = new DirectoryInfo(outputLocationFullPath).GetDirectories("*", SearchOption.TopDirectoryOnly).Where(subdirectory => RAWS_REGEX.IsMatch(subdirectory.Name));
 				
@@ -325,7 +325,7 @@ namespace TranslationScriptMaker
 			}
 
 			RawsLocationTextBox.Text = rawsLocationDialog.FileName;
-			Config.RawsLocation = rawsLocationDialog.FileName;
+			CONFIG.RawsLocation = rawsLocationDialog.FileName;
 			ParseRawsDirectoryForSeries(RawsLocationTextBox.Text);
 		}
 
@@ -349,7 +349,7 @@ namespace TranslationScriptMaker
 			}
 
 			OutputLocationTextBox.Text = outputLocationDialog.FileName;
-			Config.ScriptOutputLocation = outputLocationDialog.FileName;
+			CONFIG.ScriptOutputLocation = outputLocationDialog.FileName;
 			WasOutputLocationVerified = VerifyOutputLocation();
 		}
 
@@ -373,7 +373,7 @@ namespace TranslationScriptMaker
 
 		private void TranslatorNameTextBox_Validated(object sender, EventArgs e)
 		{
-			Config.TranslatorName = TranslatorNameTextBox.Text;
+			CONFIG.TranslatorName = TranslatorNameTextBox.Text;
 			WasTranslatorNameVerified = true;
 			MainFormErrorProvider.SetError(TranslatorNameTextBox, null);
 		}
@@ -387,7 +387,7 @@ namespace TranslationScriptMaker
 				return;
 			}
 
-			Config.LastSelectedSeries = SeriesSelectionComboBox.SelectedItem.ToString();
+			CONFIG.LastSelectedSeries = SeriesSelectionComboBox.SelectedItem.ToString();
 
 			if ( !string.IsNullOrWhiteSpace(RawsLocationTextBox.Text) )
 			{
@@ -405,7 +405,7 @@ namespace TranslationScriptMaker
 				return;
 			}
 
-			Config.LastSelectedChapter = ChapterSelectionComboBox.SelectedItem.ToString();
+			CONFIG.LastSelectedChapter = ChapterSelectionComboBox.SelectedItem.ToString();
 			UpdateOutputLocation();
 		}
 		#endregion
@@ -413,19 +413,19 @@ namespace TranslationScriptMaker
 		#region OutputToRadioButtons
 		private void OutputToChapterFolderRadioButton_MouseClick(object sender, MouseEventArgs e)
 		{
-			Config.ScriptOutputToChoice = OutputToChoice.ChapterFolder;
+			CONFIG.ScriptOutputToChoice = OutputToChoice.ChapterFolder;
 			UpdateOutputLocation();
 		}
 
 		private void OutputWithRawsRadioButton_MouseClick(object sender, MouseEventArgs e)
 		{
-			Config.ScriptOutputToChoice = OutputToChoice.WithRaws;
+			CONFIG.ScriptOutputToChoice = OutputToChoice.WithRaws;
 			UpdateOutputLocation();
 		}
 
 		private void OutputToCustomLocationRadioButton_MouseClick(object sender, MouseEventArgs e)
 		{
-			Config.ScriptOutputToChoice = OutputToChoice.CustomLocation;
+			CONFIG.ScriptOutputToChoice = OutputToChoice.CustomLocation;
 		}
 
 		private void OutputToCustomLocationRadioButton_CheckedChanged(object sender, EventArgs e)
@@ -517,7 +517,7 @@ namespace TranslationScriptMaker
 				return;
 			}
 
-			using RawsViewerForm rawsViewerForm = new(rawsFiles, OutputLocationTextBox.Text + GetOutputFilename(), Config.ShouldOutputAsTypesetterCompliant);
+			using RawsViewerForm rawsViewerForm = new(rawsFiles, OutputLocationTextBox.Text + GetOutputFilename(), CONFIG.ShouldOutputAsTypesetterCompliant);
 
 			if ( !rawsViewerForm.IsDisposed )
 			{
@@ -531,11 +531,11 @@ namespace TranslationScriptMaker
 
 		private void SaveInputsToConfig()
 		{
-			Config.RawsLocation = RawsLocationTextBox.Text;
-			Config.ScriptOutputLocation = OutputLocationTextBox.Text;
-			Config.TranslatorName = TranslatorNameTextBox.Text;
-			Config.LastSelectedSeries = SeriesSelectionComboBox.SelectedItem.ToString();
-			Config.LastSelectedChapter = ChapterSelectionComboBox.SelectedItem.ToString();
+			CONFIG.RawsLocation = RawsLocationTextBox.Text;
+			CONFIG.ScriptOutputLocation = OutputLocationTextBox.Text;
+			CONFIG.TranslatorName = TranslatorNameTextBox.Text;
+			CONFIG.LastSelectedSeries = SeriesSelectionComboBox.SelectedItem.ToString();
+			CONFIG.LastSelectedChapter = ChapterSelectionComboBox.SelectedItem.ToString();
 		}
 
 		private static IEnumerable<FileInfo> GetRawsFiles(string rawsFilesFullPath)
@@ -567,7 +567,7 @@ namespace TranslationScriptMaker
 
 		private string GetOutputFilename()
 		{
-			return "Ch " + GetChapterNumber() + " - TL " + Config.TranslatorName + ".txt";
+			return "Ch " + GetChapterNumber() + " - TL " + CONFIG.TranslatorName + ".txt";
 		}
 
 		private string GetChapterNumber()
@@ -589,7 +589,7 @@ namespace TranslationScriptMaker
 
 		private void OutputAsTypesettererCheckBox_CheckedChanged(object sender, EventArgs e)
 		{
-			Config.ShouldOutputAsTypesetterCompliant = OutputAsTypesettererCheckBox.Checked;
+			CONFIG.ShouldOutputAsTypesetterCompliant = OutputAsTypesettererCheckBox.Checked;
 		}
 	}
 
