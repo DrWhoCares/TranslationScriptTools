@@ -31,9 +31,11 @@ Program will automatically check for new releases on Github and prompt the user 
 The Translation Script Maker is a utility built using C# and the .NET Framework (v4.7.2).
 
 It also makes use of these packages:
-- [CyotekImageBox v1.2.1](https://github.com/cyotek/Cyotek.Windows.Forms.ImageBox)
+- [CyotekImageBox v1.3.1](https://github.com/cyotek/Cyotek.Windows.Forms.ImageBox)
 - [jacobslusser.ScintillaNET v3.6.3](https://github.com/jacobslusser/ScintillaNET)
-- [Newtonsoft.Json v12.0.2](https://www.newtonsoft.com/json)
+- [Newtonsoft.Json v13.0.1](https://www.newtonsoft.com/json)
+- [Onova v2.6.2](https://github.com/Tyrrrz/Onova)
+- [WeCantSpell.Hunspell](https://github.com/aarondandy/WeCantSpell.Hunspell/)
 - [WindowsAPICodePack-Core v1.1.2](https://github.com/aybe/Windows-API-Code-Pack-1.1)
 - [WindowsAPICodePack-Shell v1.1.1](https://github.com/aybe/Windows-API-Code-Pack-1.1)
 
